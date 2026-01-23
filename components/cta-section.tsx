@@ -1,20 +1,24 @@
 import { Globe, Bot, Calculator, ArrowRight } from "lucide-react"
+import Link from "next/link"
 
 const ctas = [
   {
     icon: Globe,
     title: "Build My Site",
-    description: "Launch a high-converting website",
+    description: "React & Node.js web development",
+    link: "/get-started",
   },
   {
     icon: Bot,
     title: "Automate My Workflow",
-    description: "Deploy Micro AI Agents today",
+    description: "OLLAMA-powered Micro AI Agents",
+    link: "/get-started",
   },
   {
     icon: Calculator,
     title: "Simplify My Payroll",
-    description: "Streamline your financial operations",
+    description: "Workday & financial consulting",
+    link: "/get-started",
   },
 ]
 
@@ -33,7 +37,8 @@ export function CTASection() {
 
         <div className="grid md:grid-cols-3 gap-6">
           {ctas.map((cta) => (
-            <button
+            <Link
+              href={cta.link}
               key={cta.title}
               className="group relative p-8 rounded-2xl bg-card border border-border/50 hover:border-accent hover:bg-secondary/30 transition-all duration-500 text-left"
             >
@@ -44,11 +49,11 @@ export function CTASection() {
                 {cta.title}
               </h3>
               <p className="text-muted-foreground mb-6">{cta.description}</p>
-              <div className="flex items-center text-sm text-muted-foreground group-hover:text-accent transition-colors duration-300">
+<div className="flex items-center text-sm text-muted-foreground group-hover:text-accent transition-colors duration-300">
                 Get started
                 <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform duration-300" />
               </div>
-            </button>
+            </Link>
           ))}
         </div>
       </div>

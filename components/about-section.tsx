@@ -1,4 +1,5 @@
 import Link from "next/link"
+import Image from "next/image"
 import { Linkedin, Github, MapPin, Briefcase } from "lucide-react"
 
 const experiences = [
@@ -40,8 +41,14 @@ export function AboutSection() {
             </h2>
 
             <div className="flex items-center gap-4 mb-8">
-              <div className="w-20 h-20 rounded-full bg-secondary flex items-center justify-center">
-                <span className="text-2xl font-semibold text-foreground">SS</span>
+              <div className="w-24 h-24 rounded-full overflow-hidden border-2 border-accent/20 flex-shrink-0">
+                <Image
+                  src="/shweta-sharma.png"
+                  alt="Shweta Sharma - Founder & CEO of Node2"
+                  width={96}
+                  height={96}
+                  className="w-full h-full object-cover object-top"
+                />
               </div>
               <div>
                 <h3 className="text-xl font-medium text-foreground">Shweta Sharma</h3>

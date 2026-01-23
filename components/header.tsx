@@ -63,12 +63,14 @@ export function Header() {
             >
               <Github className="h-4 w-4" />
             </Link>
-            <Button
-              size="sm"
-              className="bg-foreground text-background hover:bg-foreground/90 px-6 rounded-full transition-all duration-300"
-            >
-              Contact
-            </Button>
+            <Link href="/contact">
+              <Button
+                size="sm"
+                className="bg-foreground text-background hover:bg-foreground/90 px-6 rounded-full transition-all duration-300"
+              >
+                Contact
+              </Button>
+            </Link>
           </div>
 
           <button className="md:hidden p-2" onClick={() => setIsOpen(!isOpen)} aria-label="Toggle menu">
@@ -111,9 +113,11 @@ export function Header() {
                   <Github className="h-5 w-5" />
                 </Link>
               </div>
-              <Button size="sm" className="bg-foreground text-background hover:bg-foreground/90 mt-2 rounded-full">
-                Contact
-              </Button>
+              <Link href="/contact">
+                <Button size="sm" className="bg-foreground text-background hover:bg-foreground/90 mt-2 rounded-full w-full">
+                  Contact
+                </Button>
+              </Link>
             </nav>
           </div>
         )}

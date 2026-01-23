@@ -35,13 +35,18 @@ export function MicroAISection() {
               <span className="text-muted-foreground">Massive business impact.</span>
             </h2>
             <p className="text-lg text-muted-foreground leading-relaxed mb-6">
-              Unlike bulky enterprise AI systems, our Micro AI Agents are lightweight, affordable, and purpose-built for
-              specific tasks. They integrate seamlessly into your existing workflows.
+              Built on <span className="text-accent font-medium">OLLAMA</span>, our Micro AI Agents run locally on your infrastructure, ensuring complete privacy and data security. Unlike cloud-based AI, your data never leaves your servers.
             </p>
-            <p className="text-muted-foreground leading-relaxed">
+            <p className="text-muted-foreground leading-relaxed mb-6">
               Think of them as tireless digital employees who never take breaks, never make errors, and never ask for a
               raise.
             </p>
+            <div className="flex flex-wrap gap-2">
+              <span className="px-3 py-1 text-xs font-medium rounded-full bg-accent/20 text-accent">OLLAMA</span>
+              <span className="px-3 py-1 text-xs font-medium rounded-full bg-secondary text-muted-foreground">Llama 2</span>
+              <span className="px-3 py-1 text-xs font-medium rounded-full bg-secondary text-muted-foreground">Mistral</span>
+              <span className="px-3 py-1 text-xs font-medium rounded-full bg-secondary text-muted-foreground">Local LLMs</span>
+            </div>
           </div>
 
           <div className="grid sm:grid-cols-2 gap-4">
