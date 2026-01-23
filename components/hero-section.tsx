@@ -1,5 +1,6 @@
 import { Button } from "@/components/ui/button"
 import { ArrowRight } from "lucide-react"
+import Link from "next/link"
 
 export function HeroSection() {
   return (
@@ -24,20 +25,24 @@ export function HeroSection() {
           </p>
 
           <div className="flex flex-col sm:flex-row items-start gap-4">
-            <Button
-              size="lg"
-              className="bg-foreground text-background hover:bg-foreground/90 px-8 h-14 text-base rounded-full group transition-all duration-300"
-            >
-              Get Started
-              <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform duration-300" />
-            </Button>
-            <Button
-              variant="outline"
-              size="lg"
-              className="px-8 h-14 text-base rounded-full border-border hover:bg-secondary/50 transition-all duration-300 bg-transparent"
-            >
-              Learn More
-            </Button>
+            <Link href="/get-started">
+              <Button
+                size="lg"
+                className="bg-foreground text-background hover:bg-foreground/90 px-8 h-14 text-base rounded-full group transition-all duration-300"
+              >
+                Get Started
+                <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform duration-300" />
+              </Button>
+            </Link>
+            <Link href="#services">
+              <Button
+                variant="outline"
+                size="lg"
+                className="px-8 h-14 text-base rounded-full border-border hover:bg-secondary/50 transition-all duration-300 bg-transparent"
+              >
+                Learn More
+              </Button>
+            </Link>
           </div>
         </div>
       </div>

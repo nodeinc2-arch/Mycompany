@@ -1,24 +1,28 @@
 import { Globe, Bot, Calculator, ArrowUpRight } from "lucide-react"
+import Link from "next/link"
 
 const services = [
   {
     icon: Globe,
     title: "Web Development",
-    description: "High-speed, SEO-optimized sites designed to convert Canadian traffic into loyal customers.",
-    features: ["Custom Design", "Performance Optimized", "Mobile First"],
+    description: "Modern web applications built with React and Node.js. High-speed, SEO-optimized sites designed to convert Canadian traffic into loyal customers.",
+    features: ["React & Next.js", "Node.js Backend", "TypeScript"],
+    link: "/get-started",
   },
   {
     icon: Bot,
     title: "Micro AI Agents",
-    description: "Task-specific AI bots that handle customer service, lead gen, or data entry 24/7.",
-    features: ["24/7 Availability", "Lead Generation", "Customer Support"],
+    description: "Task-specific AI bots powered by OLLAMA for local, private AI deployment. Handle customer service, lead gen, or data entry 24/7.",
+    features: ["OLLAMA Powered", "Local & Private", "Custom Models"],
+    link: "/get-started",
   },
   {
     icon: Calculator,
     title: "Finance & Payroll",
     description:
-      "Error-free bookkeeping and payroll management tailored to Canadian tax standards and PIPEDA compliance.",
-    features: ["CRA Compliant", "PIPEDA Secure", "Automated Reports"],
+      "Expert consulting on financial tools like Workday, SAP, and QuickBooks. Canadian tax standards and PIPEDA compliance.",
+    features: ["Workday Consulting", "SAP Integration", "CRA Compliant"],
+    link: "/get-started",
   },
 ]
 
@@ -36,7 +40,8 @@ export function ServicePillars() {
 
         <div className="grid md:grid-cols-3 gap-6">
           {services.map((service, index) => (
-            <div
+            <Link
+              href={service.link}
               key={service.title}
               className="group relative p-8 rounded-2xl bg-card border border-border/50 hover:border-border hover:bg-secondary/30 transition-all duration-500 cursor-pointer"
             >
@@ -64,11 +69,11 @@ export function ServicePillars() {
                 ))}
               </div>
 
-              <div className="flex items-center text-sm text-muted-foreground group-hover:text-accent transition-colors duration-300">
+<div className="flex items-center text-sm text-muted-foreground group-hover:text-accent transition-colors duration-300">
                 Learn more
                 <ArrowUpRight className="ml-1 h-4 w-4 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform duration-300" />
               </div>
-            </div>
+            </Link>
           ))}
         </div>
       </div>

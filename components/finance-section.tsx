@@ -1,13 +1,17 @@
 import { CheckCircle2 } from "lucide-react"
 
 const features = [
-  "CRA-compliant payroll processing",
+  "Workday implementation & consulting",
+  "SAP integration & optimization",
+  "QuickBooks & Xero setup",
+  "ADP & Ceridian payroll systems",
+  "CRA-compliant tax processing",
   "PIPEDA-compliant data handling",
-  "Automated tax calculations",
-  "Real-time financial reporting",
-  "Seamless integration with your systems",
-  "Dedicated Canadian support team",
+  "Power BI & Tableau dashboards",
+  "Process automation consulting",
 ]
+
+const tools = ["Workday", "SAP", "QuickBooks", "ADP", "Ceridian", "Power BI", "Tableau", "Xero"]
 
 export function FinanceSection() {
   return (
@@ -26,13 +30,18 @@ export function FinanceSection() {
               <em className="font-serif italic font-normal">Canadian compliance.</em>
             </h2>
             <p className="text-lg text-accent-foreground/80 leading-relaxed mb-6">
-              Your finances deserve the same level of intelligence as the rest of your business. Our financial services
-              are built from the ground up for Canadian businesses.
+              Expert consulting on leading financial tools and platforms. We help Canadian businesses implement, optimize, and integrate the right systems for their needs.
             </p>
-            <p className="text-accent-foreground/70 leading-relaxed">
-              From automated bookkeeping to comprehensive payroll management, we handle the numbers so you can handle
-              the growth.
+            <p className="text-accent-foreground/70 leading-relaxed mb-6">
+              From Workday and SAP implementations to QuickBooks setup and custom reporting dashboards, we handle the complexity so you can focus on growth.
             </p>
+            <div className="flex flex-wrap gap-2">
+              {tools.map((tool) => (
+                <span key={tool} className="px-3 py-1 text-xs font-medium rounded-full bg-accent-foreground/20 text-accent-foreground">
+                  {tool}
+                </span>
+              ))}
+            </div>
           </div>
 
           <div className="bg-accent-foreground/10 rounded-2xl p-8 backdrop-blur">
