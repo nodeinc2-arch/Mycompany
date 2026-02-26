@@ -3,6 +3,7 @@ import type { Metadata } from "next"
 import { Inter, Geist_Mono, Playfair_Display } from "next/font/google"
 import Script from "next/script"
 import "./globals.css"
+import { LanguageProvider } from "@/lib/LanguageContext"
 
 const _inter = Inter({ subsets: ["latin"] })
 const _geistMono = Geist_Mono({ subsets: ["latin"] })
@@ -39,7 +40,9 @@ export default function RootLayout({
         </Script>
       </head>
       <body className={`font-sans antialiased`}>
-        {children}
+        <LanguageProvider>
+          {children}
+        </LanguageProvider>
       </body>
     </html>
   )
