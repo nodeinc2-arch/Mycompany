@@ -1,8 +1,15 @@
+"use client"
+
 import Link from "next/link"
 import { Logo } from "@/components/logo"
 import { Linkedin, Github } from "lucide-react"
+import { useLanguage } from "@/lib/LanguageContext"
+import { translations } from "@/lib/translations"
 
 export function Footer() {
+  const { language } = useLanguage()
+  const t = translations[language]
+
   return (
     <footer className="py-16 px-4 sm:px-6 lg:px-8 border-t border-border/50">
       <div className="max-w-7xl mx-auto">
@@ -12,8 +19,7 @@ export function Footer() {
               <Logo className="h-8 w-auto" />
             </Link>
             <p className="text-muted-foreground max-w-md leading-relaxed mb-6">
-              Empowering Canadian enterprises to scale by bridging the gap between high-performance digital presence and
-              automated operations.
+              {t.footer.description}
             </p>
             <div className="flex items-center gap-4">
               <Link
@@ -38,14 +44,14 @@ export function Footer() {
           </div>
 
           <div>
-            <h4 className="text-sm font-medium text-accent uppercase tracking-widest mb-6">Services</h4>
+            <h4 className="text-sm font-medium text-accent uppercase tracking-widest mb-6">{t.footer.services}</h4>
             <ul className="space-y-3">
               <li>
                 <Link
                   href="#services"
                   className="text-muted-foreground hover:text-foreground transition-colors duration-300"
                 >
-                  Web Development
+                  {t.footer.webDevelopment}
                 </Link>
               </li>
               <li>
@@ -53,7 +59,7 @@ export function Footer() {
                   href="#micro-ai"
                   className="text-muted-foreground hover:text-foreground transition-colors duration-300"
                 >
-                  Micro AI Agents
+                  {t.footer.microAi}
                 </Link>
               </li>
               <li>
@@ -61,26 +67,26 @@ export function Footer() {
                   href="#finance"
                   className="text-muted-foreground hover:text-foreground transition-colors duration-300"
                 >
-                  Finance & Payroll
+                  {t.footer.finance}
                 </Link>
               </li>
             </ul>
           </div>
 
           <div>
-            <h4 className="text-sm font-medium text-accent uppercase tracking-widest mb-6">Company</h4>
+            <h4 className="text-sm font-medium text-accent uppercase tracking-widest mb-6">{t.footer.company}</h4>
             <ul className="space-y-3">
               <li>
                 <Link
                   href="#about"
                   className="text-muted-foreground hover:text-foreground transition-colors duration-300"
                 >
-                  About
+                  {t.footer.about}
                 </Link>
               </li>
               <li>
-                <Link href="#" className="text-muted-foreground hover:text-foreground transition-colors duration-300">
-                  Contact
+                <Link href="/contact" className="text-muted-foreground hover:text-foreground transition-colors duration-300">
+                  {t.footer.contact}
                 </Link>
               </li>
               <li>
@@ -93,7 +99,7 @@ export function Footer() {
         </div>
 
         <div className="pt-8 border-t border-border/50 flex flex-col sm:flex-row items-center justify-between gap-4">
-          <p className="text-sm text-muted-foreground">© {new Date().getFullYear()} Node2. All rights reserved.</p>
+          <p className="text-sm text-muted-foreground">{t.footer.copyright}</p>
           <p className="text-sm text-muted-foreground">Built for Canadian Businesses</p>
         </div>
       </div>
