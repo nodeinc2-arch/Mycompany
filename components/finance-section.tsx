@@ -1,19 +1,15 @@
+"use client"
+
 import { CheckCircle2 } from "lucide-react"
-
-const features = [
-  "Workday implementation & consulting",
-  "SAP integration & optimization",
-  "QuickBooks & Xero setup",
-  "ADP & Ceridian payroll systems",
-  "CRA-compliant tax processing",
-  "PIPEDA-compliant data handling",
-  "Power BI & Tableau dashboards",
-  "Process automation consulting",
-]
-
-const tools = ["Workday", "SAP", "QuickBooks", "ADP", "Ceridian", "Power BI", "Tableau", "Xero"]
+import { useLanguage } from "@/lib/LanguageContext"
+import { translations } from "@/lib/translations"
 
 export function FinanceSection() {
+  const { language } = useLanguage()
+  const t = translations[language]
+  const features = t.finance.features
+  const tools = t.finance.tools
+
   return (
     <section
       id="finance"
@@ -23,17 +19,18 @@ export function FinanceSection() {
         <div className="grid lg:grid-cols-2 gap-20 items-center">
           <div>
             <p className="text-sm font-medium text-accent-foreground/70 uppercase tracking-widest mb-4">
-              Finance & Payroll
+              {t.finance.tagline}
             </p>
             <h2 className="text-4xl sm:text-5xl font-medium tracking-tight mb-8 leading-tight">
-              Security. Accuracy. <br />
-              <em className="font-serif italic font-normal">Canadian compliance.</em>
+              {t.finance.title.split('Canadian compliance.')[0]}
+              <br />
+              <em className="font-serif italic font-normal">{t.finance.complianceWord}</em>
             </h2>
             <p className="text-lg text-accent-foreground/80 leading-relaxed mb-6">
-              Expert consulting on leading financial tools and platforms. We help Canadian businesses implement, optimize, and integrate the right systems for their needs.
+              {t.finance.description}
             </p>
             <p className="text-accent-foreground/70 leading-relaxed mb-6">
-              From Workday and SAP implementations to QuickBooks setup and custom reporting dashboards, we handle the complexity so you can focus on growth.
+              {t.finance.subtitle}
             </p>
             <div className="flex flex-wrap gap-2">
               {tools.map((tool) => (
