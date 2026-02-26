@@ -46,7 +46,7 @@ export function Header() {
 
           <div className="hidden md:flex items-center gap-4">
             <Link
-              href="https://ca.linkedin.com/in/shwetasharma97"
+              href="https://www.linkedin.com/company/node2-io/"
               target="_blank"
               rel="noopener noreferrer"
               className="p-2 text-muted-foreground hover:text-foreground transition-colors duration-300"
@@ -95,7 +95,7 @@ export function Header() {
               </Link>
               <div className="flex items-center gap-4 pt-4">
                 <Link
-                  href="https://ca.linkedin.com/in/shwetasharma97"
+                  href="https://www.linkedin.com/company/node2-io/"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="p-2 text-muted-foreground hover:text-foreground transition-colors"

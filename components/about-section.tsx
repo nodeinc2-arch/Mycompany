@@ -75,7 +75,7 @@ export function AboutSection() {
             {/* Social Links */}
             <div className="flex items-center gap-4">
               <Link
-                href="https://ca.linkedin.com/in/shwetasharma97"
+                href="https://www.linkedin.com/company/node2-io/"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="flex items-center gap-2 px-4 py-2 rounded-full bg-secondary text-foreground hover:bg-secondary/80 transition-colors duration-300"
