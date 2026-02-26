@@ -4,10 +4,15 @@ import { useState } from "react"
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import { Logo } from "@/components/logo"
-import { Menu, X, Linkedin, Github } from "lucide-react"
+import { Menu, X, Linkedin, Github, Globe } from "lucide-react"
+import { useLanguage } from "@/lib/LanguageContext"
+import { translations } from "@/lib/translations"
 
 export function Header() {
   const [isOpen, setIsOpen] = useState(false)
+  const [isLangOpen, setIsLangOpen] = useState(false)
+  const { language, setLanguage } = useLanguage()
+  const t = translations[language]
 
   return (
     <header className="fixed top-0 left-0 right-0 z-50 bg-background/90 backdrop-blur-md border-b border-border/50">
@@ -22,25 +27,25 @@ export function Header() {
               href="#services"
               className="text-sm text-muted-foreground hover:text-foreground transition-colors duration-300"
             >
-              Services
+              {t.nav.services}
             </Link>
             <Link
               href="#micro-ai"
               className="text-sm text-muted-foreground hover:text-foreground transition-colors duration-300"
             >
-              Micro AI
+              {t.nav.microAi}
             </Link>
             <Link
               href="#finance"
               className="text-sm text-muted-foreground hover:text-foreground transition-colors duration-300"
             >
-              Finance
+              {t.nav.finance}
             </Link>
             <Link
               href="#about"
               className="text-sm text-muted-foreground hover:text-foreground transition-colors duration-300"
             >
-              About
+              {t.nav.about}
             </Link>
           </nav>
 
@@ -63,12 +68,55 @@ export function Header() {
             >
               <Github className="h-4 w-4" />
             </Link>
+            
+            <div className="relative">
+              <button
+                onClick={() => setIsLangOpen(!isLangOpen)}
+                className="p-2 text-muted-foreground hover:text-foreground transition-colors duration-300 flex items-center gap-1"
+                aria-label="Select language"
+              >
+                <Globe className="h-4 w-4" />
+                <span className="text-sm font-medium">{language.toUpperCase()}</span>
+              </button>
+              
+              {isLangOpen && (
+                <div className="absolute right-0 mt-2 w-32 bg-background border border-border rounded-md shadow-lg p-2">
+                  <button
+                    onClick={() => {
+                      setLanguage('en')
+                      setIsLangOpen(false)
+                    }}
+                    className={`w-full text-left px-3 py-2 rounded transition-colors ${
+                      language === 'en'
+                        ? 'bg-foreground/10 text-foreground'
+                        : 'text-muted-foreground hover:text-foreground'
+                    }`}
+                  >
+                    English
+                  </button>
+                  <button
+                    onClick={() => {
+                      setLanguage('fr')
+                      setIsLangOpen(false)
+                    }}
+                    className={`w-full text-left px-3 py-2 rounded transition-colors ${
+                      language === 'fr'
+                        ? 'bg-foreground/10 text-foreground'
+                        : 'text-muted-foreground hover:text-foreground'
+                    }`}
+                  >
+                    Français
+                  </button>
+                </div>
+              )}
+            </div>
+            
             <Link href="/contact">
               <Button
                 size="sm"
                 className="bg-foreground text-background hover:bg-foreground/90 px-6 rounded-full transition-all duration-300"
               >
-                Contact
+                {t.nav.contact}
               </Button>
             </Link>
           </div>
@@ -82,16 +130,16 @@ export function Header() {
           <div className="md:hidden py-6 border-t border-border/50">
             <nav className="flex flex-col gap-4">
               <Link href="#services" className="text-sm text-muted-foreground hover:text-foreground transition-colors">
-                Services
+                {t.nav.services}
               </Link>
               <Link href="#micro-ai" className="text-sm text-muted-foreground hover:text-foreground transition-colors">
-                Micro AI
+                {t.nav.microAi}
               </Link>
               <Link href="#finance" className="text-sm text-muted-foreground hover:text-foreground transition-colors">
-                Finance
+                {t.nav.finance}
               </Link>
               <Link href="#about" className="text-sm text-muted-foreground hover:text-foreground transition-colors">
-                About
+                {t.nav.about}
               </Link>
               <div className="flex items-center gap-4 pt-4">
                 <Link
@@ -112,10 +160,51 @@ export function Header() {
                 >
                   <Github className="h-5 w-5" />
                 </Link>
+                
+                <div className="relative">
+                  <button
+                    onClick={() => setIsLangOpen(!isLangOpen)}
+                    className="p-2 text-muted-foreground hover:text-foreground transition-colors flex items-center gap-1"
+                    aria-label="Select language"
+                  >
+                    <Globe className="h-5 w-5" />
+                  </button>
+                  
+                  {isLangOpen && (
+                    <div className="absolute right-0 mt-2 w-32 bg-background border border-border rounded-md shadow-lg p-2">
+                      <button
+                        onClick={() => {
+                          setLanguage('en')
+                          setIsLangOpen(false)
+                        }}
+                        className={`w-full text-left px-3 py-2 rounded transition-colors text-sm ${
+                          language === 'en'
+                            ? 'bg-foreground/10 text-foreground'
+                            : 'text-muted-foreground hover:text-foreground'
+                        }`}
+                      >
+                        English
+                      </button>
+                      <button
+                        onClick={() => {
+                          setLanguage('fr')
+                          setIsLangOpen(false)
+                        }}
+                        className={`w-full text-left px-3 py-2 rounded transition-colors text-sm ${
+                          language === 'fr'
+                            ? 'bg-foreground/10 text-foreground'
+                            : 'text-muted-foreground hover:text-foreground'
+                        }`}
+                      >
+                        Français
+                      </button>
+                    </div>
+                  )}
+                </div>
               </div>
               <Link href="/contact">
                 <Button size="sm" className="bg-foreground text-background hover:bg-foreground/90 mt-2 rounded-full w-full">
-                  Contact
+                  {t.nav.contact}
                 </Button>
               </Link>
             </nav>
