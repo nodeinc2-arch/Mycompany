@@ -2,6 +2,26 @@ export type Language = 'en' | 'fr'
 
 export const translations = {
   en: {
+    seo: {
+      title: 'Node2 | Building Canada\'s Next IT Technology Layer',
+      description: 'Node2 builds intelligent IT infrastructure for Canadian businesses — AI-integrated web platforms, custom local LLMs, and finance automation. Engineered in Canada.',
+      keywords: [
+        'Canadian IT company',
+        'Canadian software development',
+        'AI integration Canada',
+        'custom LLM development',
+        'local LLM Canada',
+        'PropTech Canada',
+        'BuildingSync.app',
+        'Workday consulting Canada',
+        'PIPEDA compliant software',
+        'Toronto tech',
+      ],
+      contactTitle: 'Contact Node2 — Canadian IT, AI & Automation',
+      contactDescription: 'Talk to Node2 about AI-integrated web platforms, custom local LLMs, and Canadian-compliant finance automation. We respond within 24 hours.',
+      getStartedTitle: 'Get Started with Node2',
+      getStartedDescription: 'Start a project with Node2 — Canadian IT, AI-integrated web development, and custom local LLMs for your business.',
+    },
     nav: {
       services: 'Services',
       microAi: 'Micro AI',
@@ -10,11 +30,11 @@ export const translations = {
       contact: 'Contact',
     },
     hero: {
-      tagline: 'Empowering Canadian Enterprises',
-      title: 'The intelligent infrastructure for growing Canadian businesses.',
+      tagline: 'Building Canada\'s Next IT Layer',
+      title: 'The intelligent IT infrastructure for growing Canadian businesses.',
       intelligentWord: 'intelligent',
       canadianWord: 'Canadian businesses.',
-      subtitle: 'Node2 combines premium web development with Micro AI Agents and automated finance tools to put your business on autopilot.',
+      subtitle: 'Node2 is a Canadian IT company building the technology that powers Canada — AI-integrated web platforms, custom local LLMs, and automated finance tools designed in Canada, for Canadian businesses.',
       getStarted: 'Get Started',
       learnMore: 'Learn More',
     },
@@ -24,14 +44,14 @@ export const translations = {
       titleHighlight: 'Three pillars of growth.',
       services: [
         {
-          title: 'Web Development',
-          description: 'Modern web applications built with React and Node.js. High-speed, SEO-optimized sites designed to convert Canadian traffic into loyal customers.',
-          features: ['React & Next.js', 'Node.js Backend', 'TypeScript'],
+          title: 'AI-Integrated Web Development',
+          description: 'Premium web applications with AI built in from day one. Powering BuildingSync.app — our upcoming SaaS PropTech platform, currently in MVP stage.',
+          features: ['AI-Integrated', 'Next.js & React', 'BuildingSync.app · MVP'],
         },
         {
-          title: 'Micro AI Agents',
-          description: 'Task-specific AI bots powered by OLLAMA for local, private AI deployment. Handle customer service, lead gen, or data entry 24/7.',
-          features: ['OLLAMA Powered', 'Local & Private', 'Custom Models'],
+          title: 'Custom Local LLMs',
+          description: 'We build custom large language model applications that run entirely on your infrastructure. Complete privacy, zero cloud dependency, tuned to your domain.',
+          features: ['Custom LLMs', 'Runs Locally', 'Private & Secure'],
         },
         {
           title: 'Finance & Payroll',
@@ -73,7 +93,7 @@ export const translations = {
       tools: ['Workday', 'SAP', 'QuickBooks', 'ADP', 'Ceridian', 'Power BI', 'Tableau', 'Xero'],
     },
     footer: {
-      description: 'Empowering Canadian enterprises to scale by bridging the gap between high-performance digital presence and automated operations.',
+      description: 'A Canadian IT company building the technology that powers Canadian enterprise — high-performance digital products, integrated AI, and automated operations.',
       company: 'Company',
       services: 'Services',
       about: 'About',
@@ -82,6 +102,11 @@ export const translations = {
       microAi: 'Micro AI',
       finance: 'Finance',
       copyright: '© 2025 Node2. All rights reserved.',
+      offices: 'Offices',
+      torontoLabel: 'Toronto, Canada',
+      torontoNote: 'Remote office',
+      puneLabel: 'Pune, India',
+      puneNote: 'Development Center · Registration pending',
     },
     contact: {
       title: 'Get in Touch',
@@ -97,6 +122,26 @@ export const translations = {
     },
   },
   fr: {
+    seo: {
+      title: 'Node2 | Construire la prochaine couche technologique du Canada',
+      description: 'Node2 conçoit l\'infrastructure informatique intelligente pour les entreprises canadiennes — plateformes web avec IA intégrée, LLM locaux sur mesure et automatisation financière. Conçu au Canada.',
+      keywords: [
+        'entreprise informatique canadienne',
+        'développement logiciel canadien',
+        'intégration IA Canada',
+        'LLM personnalisé',
+        'LLM local Canada',
+        'PropTech Canada',
+        'BuildingSync.app',
+        'conseil Workday Canada',
+        'logiciel conforme PIPEDA',
+        'technologie Toronto',
+      ],
+      contactTitle: 'Contactez Node2 — TI canadienne, IA et automatisation',
+      contactDescription: 'Discutez avec Node2 de plateformes web avec IA intégrée, de LLM locaux sur mesure et d\'automatisation financière conforme aux normes canadiennes. Réponse en moins de 24 heures.',
+      getStartedTitle: 'Commencer avec Node2',
+      getStartedDescription: 'Démarrez un projet avec Node2 — TI canadienne, développement web avec IA intégrée et LLM locaux personnalisés pour votre entreprise.',
+    },
     nav: {
       services: 'Services',
       microAi: 'Micro IA',
@@ -105,11 +150,11 @@ export const translations = {
       contact: 'Contact',
     },
     hero: {
-      tagline: 'Autonomiser les entreprises canadiennes',
-      title: 'L\'infrastructure intelligente pour les entreprises canadiennes en croissance.',
+      tagline: 'Construire la prochaine couche TI du Canada',
+      title: 'L\'infrastructure TI intelligente pour les entreprises canadiennes en croissance.',
       intelligentWord: 'intelligente',
       canadianWord: 'entreprises canadiennes.',
-      subtitle: 'Node2 combine le développement web premium avec les agents Micro IA et les outils de finance automatisés pour mettre votre entreprise sur pilote automatique.',
+      subtitle: 'Node2 est une entreprise informatique canadienne qui bâtit la technologie qui propulse le Canada — plateformes web avec IA intégrée, LLM locaux sur mesure et outils de finance automatisés, conçus au Canada pour les entreprises canadiennes.',
       getStarted: 'Commencer',
       learnMore: 'En savoir plus',
     },
@@ -119,14 +164,14 @@ export const translations = {
       titleHighlight: 'Trois piliers de croissance.',
       services: [
         {
-          title: 'Développement Web',
-          description: 'Applications web modernes construites avec React et Node.js. Sites rapides, optimisés pour le SEO, conçus pour convertir le trafic canadien en clients fidèles.',
-          features: ['React & Next.js', 'Backend Node.js', 'TypeScript'],
+          title: 'Développement Web avec IA intégrée',
+          description: 'Applications web premium avec IA intégrée dès le premier jour. Propulsant BuildingSync.app — notre prochaine plateforme SaaS PropTech, actuellement en phase MVP.',
+          features: ['IA intégrée', 'Next.js & React', 'BuildingSync.app · MVP'],
         },
         {
-          title: 'Agents Micro IA',
-          description: 'Des bots IA spécifiques à des tâches alimentés par OLLAMA pour un déploiement IA local et privé. Gérez le service clientèle, la génération de prospects ou la saisie de données 24/7.',
-          features: ['Alimenté par OLLAMA', 'Local et Privé', 'Modèles personnalisés'],
+          title: 'LLM personnalisés locaux',
+          description: 'Nous concevons des applications LLM personnalisées qui s\'exécutent entièrement sur votre infrastructure. Confidentialité totale, sans dépendance au cloud, adaptées à votre domaine.',
+          features: ['LLM personnalisés', 'Exécution locale', 'Privé et sécurisé'],
         },
         {
           title: 'Finance et paie',
@@ -168,7 +213,7 @@ export const translations = {
       tools: ['Workday', 'SAP', 'QuickBooks', 'ADP', 'Ceridian', 'Power BI', 'Tableau', 'Xero'],
     },
     footer: {
-      description: 'Autonomiser les entreprises canadiennes à l\'échelle en comblant le fossé entre une présence numérique hautement performante et des opérations automatisées.',
+      description: 'Une entreprise informatique canadienne qui bâtit la technologie au service du tissu d\'affaires canadien — produits numériques performants, IA intégrée et opérations automatisées.',
       company: 'Entreprise',
       services: 'Services',
       about: 'À propos',
@@ -177,6 +222,11 @@ export const translations = {
       microAi: 'Micro IA',
       finance: 'Finance',
       copyright: '© 2025 Node2. Tous droits réservés.',
+      offices: 'Bureaux',
+      torontoLabel: 'Toronto, Canada',
+      torontoNote: 'Bureau à distance',
+      puneLabel: 'Pune, Inde',
+      puneNote: 'Centre de développement · Enregistrement en cours',
     },
     contact: {
       title: 'Nous contacter',

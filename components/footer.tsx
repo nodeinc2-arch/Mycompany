@@ -2,7 +2,7 @@
 
 import Link from "next/link"
 import { Logo } from "@/components/logo"
-import { Linkedin, Github } from "lucide-react"
+import { Linkedin, Github, MapPin } from "lucide-react"
 import { useLanguage } from "@/lib/LanguageContext"
 import { translations } from "@/lib/translations"
 
@@ -95,6 +95,26 @@ export function Footer() {
                 </Link>
               </li>
             </ul>
+          </div>
+        </div>
+
+        <div className="pt-8 border-t border-border/50 mb-8">
+          <h4 className="text-sm font-medium text-accent uppercase tracking-widest mb-6">{t.footer.offices}</h4>
+          <div className="grid sm:grid-cols-2 gap-6">
+            <div className="flex items-start gap-3">
+              <MapPin className="h-4 w-4 text-muted-foreground mt-1 shrink-0" />
+              <div>
+                <p className="text-foreground font-medium">{t.footer.torontoLabel}</p>
+                <p className="text-sm text-muted-foreground">{t.footer.torontoNote}</p>
+              </div>
+            </div>
+            <div className="flex items-start gap-3">
+              <MapPin className="h-4 w-4 text-muted-foreground mt-1 shrink-0" />
+              <div>
+                <p className="text-foreground font-medium">{t.footer.puneLabel}</p>
+                <p className="text-sm text-muted-foreground">{t.footer.puneNote}</p>
+              </div>
+            </div>
           </div>
         </div>
 

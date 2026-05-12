@@ -43,7 +43,7 @@ export function AboutSection() {
             <div className="flex items-center gap-4 mb-8">
               <div className="w-24 h-24 rounded-full overflow-hidden border-2 border-accent/20 flex-shrink-0">
                 <Image
-                  src="/shweta-sharma.png"
+                  src="/shweta-sharma.jpeg"
                   alt="Shweta Sharma - Founder & CEO of Node2"
                   width={96}
                   height={96}
@@ -61,15 +61,16 @@ export function AboutSection() {
             </div>
 
             <p className="text-lg text-muted-foreground leading-relaxed mb-6">
-              Shweta Sharma is a technology entrepreneur passionate about empowering Canadian businesses through
-              intelligent automation and modern web solutions. With expertise spanning software engineering, AI
-              development, and business operations, she founded Node2 to bridge the gap between complex technology and
-              practical business needs.
+              Shweta Sharma is a technology entrepreneur on a mission to build IT technology in Canada — the platforms,
+              AI systems, and automation tools that Canadian enterprise will rely on. With expertise spanning software
+              engineering, AI development, and business operations, she founded Node2 to close the gap between deep
+              technology and the practical needs of Canadian businesses.
             </p>
 
             <p className="text-muted-foreground leading-relaxed mb-8">
-              Her vision is to make enterprise-grade technology accessible to mid-sized Canadian businesses, helping
-              them compete on a global scale while maintaining local compliance and values.
+              The vision: an independent Canadian IT layer — engineered locally, deployed privately, compliant by
+              default — that lets mid-sized Canadian businesses compete globally without surrendering their data or
+              their margins to foreign platforms.
             </p>
 
             {/* Social Links */}
