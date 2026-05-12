@@ -6,6 +6,7 @@ import { cookies } from "next/headers"
 import "./globals.css"
 import { LanguageProvider } from "@/lib/LanguageContext"
 import { translations, type Language } from "@/lib/translations"
+import { ChatWidget } from "@/components/chat-widget"
 
 const _inter = Inter({ subsets: ["latin"] })
 const _geistMono = Geist_Mono({ subsets: ["latin"] })
@@ -123,6 +124,7 @@ export default async function RootLayout({
       <body className={`font-sans antialiased`}>
         <LanguageProvider initialLanguage={lang}>
           {children}
+          <ChatWidget />
         </LanguageProvider>
       </body>
     </html>
