@@ -1,0 +1,118 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Node2 — Letterhead</title>
+    <style>
+      @page { size: Letter; margin: 0.75in 0.9in; }
+      :root {
+        --fg: #0a0a0a;
+        --muted: #555;
+        --rule: #d4d4d8;
+        --accent: #22c55e;
+      }
+      * { box-sizing: border-box; }
+      body {
+        font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+        color: var(--fg);
+        margin: 0;
+        line-height: 1.55;
+        font-size: 11pt;
+      }
+      header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding-bottom: 18px;
+        border-bottom: 2px solid var(--accent);
+        margin-bottom: 36px;
+      }
+      header .brand img { height: 42px; display: block; }
+      header .brand .wordmark {
+        font-size: 22pt;
+        font-weight: 600;
+        letter-spacing: -0.5px;
+      }
+      header .contact {
+        text-align: right;
+        font-size: 9pt;
+        color: var(--muted);
+        line-height: 1.45;
+      }
+      header .contact a { color: var(--muted); text-decoration: none; }
+      .meta {
+        font-size: 9.5pt;
+        color: var(--muted);
+        margin-bottom: 24px;
+      }
+      .meta div { margin-bottom: 2px; }
+      h1 {
+        font-size: 14pt;
+        margin: 0 0 18px;
+        font-weight: 600;
+      }
+      .body p { margin: 0 0 12px; }
+      .signature { margin-top: 36px; }
+      .signature .name { font-weight: 600; margin-bottom: 0; }
+      .signature .title { color: var(--muted); font-size: 10pt; margin: 2px 0 0; }
+      footer {
+        position: fixed;
+        bottom: 0.5in;
+        left: 0.9in;
+        right: 0.9in;
+        font-size: 8.5pt;
+        color: var(--muted);
+        border-top: 1px solid var(--rule);
+        padding-top: 10px;
+        display: flex;
+        justify-content: space-between;
+      }
+      @media screen {
+        body { max-width: 8.5in; margin: 24px auto; padding: 0.75in 0.9in; background: #fff; box-shadow: 0 2px 12px rgba(0,0,0,0.08); }
+        footer { position: static; margin-top: 60px; }
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <div class="brand">
+        <!-- Replace src with absolute path or inline SVG before sending -->
+        <span class="wordmark">Node<span style="color: var(--accent)">2</span></span>
+      </div>
+      <div class="contact">
+        node2.io<br />
+        nodeinc2@gmail.com<br />
+        Toronto, Canada · Pune, India
+      </div>
+    </header>
+
+    <div class="meta">
+      <div><strong>Date:</strong> [Month Day, Year]</div>
+      <div><strong>To:</strong> [Recipient Name]<br />[Title]<br />[Company]<br />[Address]</div>
+    </div>
+
+    <h1>[Subject line]</h1>
+
+    <div class="body">
+      <p>Dear [Recipient],</p>
+
+      <p>[Opening — context and purpose of the letter in one or two sentences.]</p>
+
+      <p>[Body — supporting detail, requests, decisions, deliverables.]</p>
+
+      <p>[Closing — clear next step or call to action.]</p>
+
+      <p>Sincerely,</p>
+    </div>
+
+    <div class="signature">
+      <p class="name">Shweta Sharma</p>
+      <p class="title">Founder &amp; CEO, Node2</p>
+    </div>
+
+    <footer>
+      <span>Node2 · Building Canada's Next IT Layer</span>
+      <span>node2.io</span>
+    </footer>
+  </body>
+</html>
