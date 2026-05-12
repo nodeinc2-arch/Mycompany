@@ -120,17 +120,6 @@ export const translations = {
         send: 'Send Message',
       },
     },
-    chat: {
-      openLabel: 'Chat with Node2',
-      closeLabel: 'Close chat',
-      heading: 'Hi — how can we help?',
-      subheading: 'We typically reply within a business day. Pick the fastest path:',
-      emailAction: 'Email us',
-      contactAction: 'Send a project brief',
-      learnAction: 'How Node2 works',
-      learnReply: 'Node2 is a Canadian IT company. We build AI-integrated web platforms, custom local LLMs, and Canadian-compliant finance automation. Our flagship in-progress product is BuildingSync.app, a SaaS PropTech platform now in MVP. Tell us about your project and we\'ll respond within 24 hours.',
-      footerNote: 'A full conversational assistant is coming soon — powered by our own local LLM.',
-    },
   },
   fr: {
     seo: {
@@ -250,17 +239,6 @@ export const translations = {
         message: 'Message',
         send: 'Envoyer le message',
       },
-    },
-    chat: {
-      openLabel: 'Discuter avec Node2',
-      closeLabel: 'Fermer la discussion',
-      heading: 'Bonjour — comment pouvons-nous aider ?',
-      subheading: 'Nous répondons généralement sous un jour ouvrable. Choisissez la voie la plus rapide :',
-      emailAction: 'Nous écrire',
-      contactAction: 'Envoyer un brief de projet',
-      learnAction: 'Comment fonctionne Node2',
-      learnReply: 'Node2 est une entreprise informatique canadienne. Nous concevons des plateformes web avec IA intégrée, des LLM locaux sur mesure et des solutions d\'automatisation financière conformes aux normes canadiennes. Notre produit phare en cours, BuildingSync.app, est une plateforme SaaS PropTech actuellement en phase MVP. Parlez-nous de votre projet et nous vous répondrons sous 24 heures.',
-      footerNote: 'Un assistant conversationnel complet arrive bientôt — propulsé par notre propre LLM local.',
     },
   },
 }

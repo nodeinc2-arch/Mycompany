@@ -97,6 +97,43 @@ export async function POST(request: Request) {
       return NextResponse.json({ success: false, message: "Failed to send email" }, { status: 500 })
     }
 
+    const hubspotPortalId = process.env.HUBSPOT_PORTAL_ID
+    const hubspotFormId = process.env.HUBSPOT_FORM_ID
+    if (hubspotPortalId && hubspotFormId) {
+      const [firstname, ...rest] = name.split(/\s+/)
+      const lastname = rest.join(" ") || "—"
+      const referer = request.headers.get("referer") ?? ""
+      try {
+        const hsRes = await fetch(
+          `https://api.hsforms.com/submissions/v3/integration/submit/${hubspotPortalId}/${hubspotFormId}`,
+          {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              fields: [
+                { objectTypeId: "0-1", name: "firstname", value: firstname },
+                { objectTypeId: "0-1", name: "lastname", value: lastname },
+                { objectTypeId: "0-1", name: "email", value: email },
+                { objectTypeId: "0-1", name: "company", value: company || "" },
+                { objectTypeId: "0-1", name: "service", value: service },
+                { objectTypeId: "0-1", name: "message", value: message },
+              ],
+              context: {
+                pageUri: referer,
+                pageName: "Node2 — Website Contact Form",
+              },
+            }),
+          },
+        )
+        if (!hsRes.ok) {
+          const body = await hsRes.text()
+          console.error("HubSpot form submit failed:", hsRes.status, body)
+        }
+      } catch (hsErr) {
+        console.error("HubSpot form submit threw:", hsErr)
+      }
+    }
+
     return NextResponse.json({ success: true, message: "Message sent successfully" })
   } catch (error) {
     console.error("Error processing contact form:", error)
