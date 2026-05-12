@@ -1,6 +1,6 @@
 'use client'
 
-import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react'
+import React, { createContext, useContext, useState, ReactNode } from 'react'
 import type { Language } from './translations'
 
 interface LanguageContextType {
@@ -10,23 +10,23 @@ interface LanguageContextType {
 
 const LanguageContext = createContext<LanguageContextType>({ language: 'en', setLanguage: () => {} })
 
-export function LanguageProvider({ children }: { children: ReactNode }) {
-  const [language, setLanguageState] = useState<Language>('en')
-  const [mounted, setMounted] = useState(false)
+function writeCookie(lang: Language) {
+  document.cookie = `lang=${lang}; path=/; max-age=${60 * 60 * 24 * 365}; samesite=lax`
+}
 
-  useEffect(() => {
-    setMounted(true)
-    // Get language preference from localStorage or browser
-    const saved = localStorage.getItem('language') as Language | null
-    const browserLang = navigator.language.split('-')[0]
-    const lang = saved || (browserLang === 'fr' ? 'fr' : 'en')
-    setLanguageState(lang)
-    localStorage.setItem('language', lang)
-  }, [])
+export function LanguageProvider({
+  children,
+  initialLanguage = 'en',
+}: {
+  children: ReactNode
+  initialLanguage?: Language
+}) {
+  const [language, setLanguageState] = useState<Language>(initialLanguage)
 
   const setLanguage = (lang: Language) => {
     setLanguageState(lang)
-    localStorage.setItem('language', lang)
+    writeCookie(lang)
+    document.documentElement.lang = lang === 'fr' ? 'fr-CA' : 'en-CA'
   }
 
   return (
