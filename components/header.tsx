@@ -42,6 +42,14 @@ export function Header() {
               {t.nav.finance}
             </Link>
             <Link
+              href="https://www.buildingsync.app"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-sm text-muted-foreground hover:text-foreground transition-colors duration-300"
+            >
+              {t.nav.innovation}
+            </Link>
+            <Link
               href="#about"
               className="text-sm text-muted-foreground hover:text-foreground transition-colors duration-300"
             >
@@ -137,6 +145,14 @@ export function Header() {
               </Link>
               <Link href="#finance" className="text-sm text-muted-foreground hover:text-foreground transition-colors">
                 {t.nav.finance}
+              </Link>
+              <Link
+                href="https://www.buildingsync.app"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-sm text-muted-foreground hover:text-foreground transition-colors"
+              >
+                {t.nav.innovation}
               </Link>
               <Link href="#about" className="text-sm text-muted-foreground hover:text-foreground transition-colors">
                 {t.nav.about}
