@@ -40,34 +40,34 @@ export function AboutSection() {
               Meet <em className="font-serif italic font-normal">Shweta Sharma</em>
             </h2>
 
-            <div className="flex items-center gap-4 mb-8">
-              <div className="w-24 h-24 rounded-full overflow-hidden border-2 border-accent/20 flex-shrink-0">
+            <div className="flex items-center gap-6 mb-8">
+              <div className="w-40 h-40 sm:w-44 sm:h-44 rounded-full overflow-hidden border-2 border-accent/20 shrink-0">
                 <Image
                   src="/shweta-sharma.jpeg"
                   alt="Shweta Sharma - Founder & CEO of Node2"
-                  width={96}
-                  height={96}
+                  width={176}
+                  height={176}
                   className="w-full h-full object-cover object-top"
                 />
               </div>
               <div>
-                <h3 className="text-xl font-medium text-foreground">Shweta Sharma</h3>
-                <p className="text-muted-foreground">Founder & CEO, Node2</p>
-                <div className="flex items-center gap-1 text-sm text-muted-foreground mt-1">
+                <h3 className="text-lg font-medium text-foreground">Shweta Sharma</h3>
+                <p className="text-sm text-muted-foreground">Founder & CEO, Node2</p>
+                <div className="flex items-center gap-1 text-xs text-muted-foreground mt-1">
                   <MapPin className="h-3 w-3" />
                   <span>Canada</span>
                 </div>
               </div>
             </div>
 
-            <p className="text-lg text-muted-foreground leading-relaxed mb-6">
+            <p className="text-sm sm:text-base text-muted-foreground leading-relaxed mb-5">
               Shweta Sharma is a technology entrepreneur on a mission to build IT technology in Canada — the platforms,
               AI systems, and automation tools that Canadian enterprise will rely on. With expertise spanning software
               engineering, AI development, and business operations, she founded Node2 to close the gap between deep
               technology and the practical needs of Canadian businesses.
             </p>
 
-            <p className="text-muted-foreground leading-relaxed mb-8">
+            <p className="text-sm sm:text-base text-muted-foreground leading-relaxed mb-8">
               The vision: an independent Canadian IT layer — engineered locally, deployed privately, compliant by
               default — that lets mid-sized Canadian businesses compete globally without surrendering their data or
               their margins to foreign platforms.

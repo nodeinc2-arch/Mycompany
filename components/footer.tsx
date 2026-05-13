@@ -13,7 +13,7 @@ export function Footer() {
   return (
     <footer className="py-16 px-4 sm:px-6 lg:px-8 border-t border-border/50">
       <div className="max-w-7xl mx-auto">
-        <div className="grid md:grid-cols-4 gap-12 mb-16">
+        <div className="grid md:grid-cols-5 gap-12 mb-16">
           <div className="md:col-span-2">
             <Link href="/" className="text-foreground inline-block mb-6">
               <Logo className="h-8 w-auto" />
@@ -69,6 +69,23 @@ export function Footer() {
                 >
                   {t.footer.finance}
                 </Link>
+              </li>
+            </ul>
+          </div>
+
+          <div>
+            <h4 className="text-sm font-medium text-accent uppercase tracking-widest mb-6">{t.footer.innovation}</h4>
+            <ul className="space-y-3">
+              <li>
+                <Link
+                  href="https://www.buildingsync.app"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-muted-foreground hover:text-foreground transition-colors duration-300"
+                >
+                  {t.footer.buildingSync}
+                </Link>
+                <p className="text-xs text-muted-foreground/70 mt-1">{t.footer.buildingSyncNote}</p>
               </li>
             </ul>
           </div>
