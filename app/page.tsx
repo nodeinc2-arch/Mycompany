@@ -3,6 +3,7 @@ import { HeroSection } from "@/components/hero-section"
 import { ServicePillars } from "@/components/service-pillars"
 import { MicroAISection } from "@/components/micro-ai-section"
 import { FinanceSection } from "@/components/finance-section"
+import { PropTechSection } from "@/components/proptech-section"
 import { AboutSection } from "@/components/about-section"
 import { FounderNote } from "@/components/founder-note"
 import { CTASection } from "@/components/cta-section"
@@ -16,6 +17,7 @@ export default function Home() {
       <ServicePillars />
       <MicroAISection />
       <FinanceSection />
+      <PropTechSection />
       <AboutSection />
       <FounderNote />
       <CTASection />
