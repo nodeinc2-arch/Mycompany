@@ -77,6 +77,16 @@ Shweta Sharma is the founder and CEO of Node2. The company exists to build the t
 
 French support is available. The site and materials are maintained in English and French where needed.
 
+## Deployment
+
+The real public website is the Next.js app in `app/`.
+
+- Local development: `pnpm dev`
+- Cloudflare Workers preview: `pnpm preview`
+- Cloudflare Workers deploy: `pnpm deploy`
+
+The old `index.html` file is only a temporary static fallback and should not be treated as the canonical production site.
+
 ---
 
 If you are looking for the interactive Next.js experience, it lives in this repository as the app in `/app`. This README is the public-facing page currently served by the static site host.
