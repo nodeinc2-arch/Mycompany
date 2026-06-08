@@ -6,3 +6,13 @@ compatibility_flags = ["nodejs_compat"]
 [assets]
 directory = ".open-next/assets"
 binding = "ASSETS"
+
+[[routes]]
+pattern = "www.node2.io"
+zone_name = "node2.io"
+custom_domain = true
+
+[[routes]]
+pattern = "node2.io"
+zone_name = "node2.io"
+custom_domain = true
