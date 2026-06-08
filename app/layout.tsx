@@ -13,7 +13,7 @@ const _geistMono = Geist_Mono({ subsets: ["latin"] })
 const _playfair = Playfair_Display({ subsets: ["latin"], variable: "--font-serif" })
 
 const GA_MEASUREMENT_ID = "G-4Z7DS3Q5H9"
-const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://node2.io"
+const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://www.node2.io"
 
 async function readLang(): Promise<Language> {
   const store = await cookies()
