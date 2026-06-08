@@ -41,7 +41,7 @@ export const translations = {
     },
     servicePillars: {
       tagline: 'Our Trinity of Services',
-      title: 'One partner. Three pillars of growth.',
+      title: 'One partner.',
       titleHighlight: 'Three pillars of growth.',
       services: [
         {
@@ -66,7 +66,7 @@ export const translations = {
       title: 'Small, dedicated AI agents. Massive business impact.',
       dedicatedWord: 'dedicated',
       impactWord: 'Massive business impact.',
-      description: 'Built on OLLAMA, our Micro AI Agents run locally on your infrastructure, ensuring complete privacy and data security. Unlike cloud-based AI, your data never leaves your servers.',
+      description: 'our Micro AI Agents run locally on your infrastructure, ensuring complete privacy and data security. Unlike cloud-based AI, your data never leaves your servers.',
       subtitle: 'Think of them as tireless digital employees who never take breaks, never make errors, and never ask for a raise.',
       benefits: [
         { title: 'Save 20+ Hours Weekly', description: 'Automate repetitive tasks and focus on what matters most.' },
@@ -182,7 +182,7 @@ export const translations = {
     },
     servicePillars: {
       tagline: 'Notre trinité de services',
-      title: 'Un partenaire. Trois piliers de croissance.',
+      title: 'Un partenaire.',
       titleHighlight: 'Trois piliers de croissance.',
       services: [
         {
@@ -207,7 +207,7 @@ export const translations = {
       title: 'De petits agents IA dédiés. Un impact commercial massif.',
       dedicatedWord: 'dédiés',
       impactWord: 'Un impact commercial massif.',
-      description: 'Basés sur OLLAMA, nos agents Micro IA s\'exécutent localement sur votre infrastructure, garantissant une confidentialité et une sécurité des données complètes. Contrairement à l\'IA basée sur le cloud, vos données ne quittent jamais vos serveurs.',
+      description: 'nos agents Micro IA s\'exécutent localement sur votre infrastructure, garantissant une confidentialité et une sécurité des données complètes. Contrairement à l\'IA basée sur le cloud, vos données ne quittent jamais vos serveurs.',
       subtitle: 'Pensez-les comme des employés numériques infatigables qui ne prennent jamais de pauses, ne font jamais d\'erreurs et ne demandent jamais une augmentation.',
       benefits: [
         { title: 'Economisez plus de 20 heures par semaine', description: 'Automatisez les tâches répétitives et concentrez-vous sur l\'essentiel.' },
