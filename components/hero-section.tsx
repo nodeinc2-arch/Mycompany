@@ -5,7 +5,7 @@ import { ArrowRight } from "lucide-react"
 import Link from "next/link"
 import { useLanguage } from "@/lib/LanguageContext"
 import { translations } from "@/lib/translations"
-import { HeroNetwork } from "@/components/hero-network"
+import { HeroVisual } from "@/components/hero-visual"
 import { ContactCta } from "@/components/contact-cta"
 
 export function HeroSection() {
@@ -58,9 +58,9 @@ export function HeroSection() {
             <ContactCta className="mt-10" />
           </div>
 
-          {/* Right: living node-network animation built from the logo mark */}
+          {/* Right: alternating hero visuals — node-network ⇄ pendulum wave */}
           <div className="relative hidden lg:block">
-            <HeroNetwork className="w-full max-w-[520px] aspect-square mx-auto text-foreground/70" />
+            <HeroVisual />
           </div>
         </div>
       </div>
