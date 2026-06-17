@@ -7,6 +7,7 @@ import { Header } from "@/components/header"
 import { Footer } from "@/components/footer"
 import { Mail, Phone, MapPin, Send, ArrowLeft } from "lucide-react"
 import Link from "next/link"
+import { ProtectedEmail } from "@/components/protected-email"
 
 export default function ContactPage() {
   const [formData, setFormData] = useState({
@@ -73,12 +74,11 @@ export default function ContactPage() {
                   </div>
                   <div>
                     <h3 className="font-medium text-foreground mb-1">Email Us</h3>
-                    <a
-                      href="mailto:nodeinc2@gmail.com"
-                      className="text-muted-foreground hover:text-accent transition-colors"
-                    >
-                      nodeinc2@gmail.com
-                    </a>
+                    <ProtectedEmail
+                      label="Send us an email"
+                      subject="Let's build something amazing together"
+                      className="text-muted-foreground hover:text-accent transition-colors cursor-pointer underline-offset-4 hover:underline rounded-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
+                    />
                   </div>
                 </div>
 

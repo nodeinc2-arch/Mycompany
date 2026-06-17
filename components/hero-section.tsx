@@ -5,6 +5,8 @@ import { ArrowRight } from "lucide-react"
 import Link from "next/link"
 import { useLanguage } from "@/lib/LanguageContext"
 import { translations } from "@/lib/translations"
+import { HeroNetwork } from "@/components/hero-network"
+import { ContactCta } from "@/components/contact-cta"
 
 export function HeroSection() {
   const { language } = useLanguage()
@@ -16,39 +18,49 @@ export function HeroSection() {
       <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-secondary/50 via-background to-background" />
 
       <div className="max-w-7xl mx-auto relative">
-        <div className="max-w-5xl">
-          <p className="text-sm font-medium text-accent uppercase tracking-widest mb-8">
-            {t.hero.tagline}
-          </p>
+        <div className="grid lg:grid-cols-2 gap-12 lg:gap-8 items-center">
+          {/* Left: copy + CTAs */}
+          <div className="max-w-2xl">
+            <p className="text-sm font-medium text-accent uppercase tracking-widest mb-8">
+              {t.hero.tagline}
+            </p>
 
-          <h1 className="text-5xl sm:text-6xl lg:text-7xl xl:text-8xl font-medium tracking-tight text-foreground leading-[1.05] mb-8">
-            The <em className="font-serif italic font-normal">{t.hero.intelligentWord}</em> infrastructure for growing{" "}
-            <span className="text-muted-foreground">{t.hero.canadianWord}</span>
-          </h1>
+            <h1 className="text-5xl sm:text-6xl lg:text-6xl xl:text-7xl font-medium tracking-tight text-foreground leading-[1.05] mb-8">
+              The <em className="font-serif italic font-normal">{t.hero.intelligentWord}</em> infrastructure for growing{" "}
+              <span className="text-muted-foreground">{t.hero.canadianWord}</span>
+            </h1>
 
-          <p className="text-xl sm:text-2xl text-muted-foreground max-w-2xl leading-relaxed mb-12">
-            {t.hero.subtitle}
-          </p>
+            <p className="text-xl sm:text-2xl text-muted-foreground max-w-2xl leading-relaxed mb-12">
+              {t.hero.subtitle}
+            </p>
 
-          <div className="flex flex-col sm:flex-row items-start gap-4">
-            <Link href="/get-started">
-              <Button
-                size="lg"
-                className="bg-foreground text-background hover:bg-foreground/90 px-8 h-14 text-base rounded-full group transition-all duration-300"
-              >
-                {t.hero.getStarted}
-                <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform duration-300" />
-              </Button>
-            </Link>
-            <Link href="#services">
-              <Button
-                variant="outline"
-                size="lg"
-                className="px-8 h-14 text-base rounded-full border-border hover:bg-secondary/50 transition-all duration-300 bg-transparent"
-              >
-                {t.hero.learnMore}
-              </Button>
-            </Link>
+            <div className="flex flex-col sm:flex-row items-start gap-4">
+              <Link href="/get-started">
+                <Button
+                  size="lg"
+                  className="bg-foreground text-background hover:bg-foreground/90 px-8 h-14 text-base rounded-full group transition-all duration-300"
+                >
+                  {t.hero.getStarted}
+                  <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform duration-300" />
+                </Button>
+              </Link>
+              <Link href="#services">
+                <Button
+                  variant="outline"
+                  size="lg"
+                  className="px-8 h-14 text-base rounded-full border-border hover:bg-secondary/50 transition-all duration-300 bg-transparent"
+                >
+                  {t.hero.learnMore}
+                </Button>
+              </Link>
+            </div>
+
+            <ContactCta className="mt-10" />
+          </div>
+
+          {/* Right: living node-network animation built from the logo mark */}
+          <div className="relative hidden lg:block">
+            <HeroNetwork className="w-full max-w-[520px] aspect-square mx-auto text-foreground/70" />
           </div>
         </div>
       </div>
