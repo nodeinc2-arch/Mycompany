@@ -127,14 +127,20 @@ export function Header() {
             </Link>
           </div>
 
-          <button className="md:hidden p-2" onClick={() => setIsOpen(!isOpen)} aria-label="Toggle menu">
+          <button
+            className="md:hidden p-2 rounded-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
+            onClick={() => setIsOpen(!isOpen)}
+            aria-label={isOpen ? "Close menu" : "Open menu"}
+            aria-expanded={isOpen}
+            aria-controls="mobile-menu"
+          >
             {isOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
           </button>
         </div>
 
         {isOpen && (
-          <div className="md:hidden py-6 border-t border-border/50">
-            <nav className="flex flex-col gap-4">
+          <div id="mobile-menu" className="md:hidden py-6 border-t border-border/50">
+            <nav className="flex flex-col gap-4" aria-label="Mobile">
               <Link href="#services" className="text-sm text-muted-foreground hover:text-foreground transition-colors">
                 {t.nav.services}
               </Link>

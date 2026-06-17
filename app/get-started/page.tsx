@@ -5,6 +5,7 @@ import { Header } from "@/components/header"
 import { Footer } from "@/components/footer"
 import { Globe, Bot, Calculator, ArrowRight, ArrowLeft, Check } from "lucide-react"
 import Link from "next/link"
+import { ProtectedEmail } from "@/components/protected-email"
 
 const services = [
   {
@@ -174,13 +175,11 @@ export default function GetStartedPage() {
                       Book a free consultation to explore how our {selectedServiceData.title.toLowerCase()} services can
                       help your business grow.
                     </p>
-                    <a
-                      href="mailto:nodeinc2@gmail.com"
-                      className="text-accent hover:underline text-sm font-medium inline-flex items-center gap-1"
-                    >
-                      nodeinc2@gmail.com
-                      <ArrowRight className="h-3 w-3" />
-                    </a>
+                    <ProtectedEmail
+                      label="Book a free consultation"
+                      subject="Free consultation request"
+                      className="text-accent hover:underline text-sm font-medium inline-flex items-center gap-1 cursor-pointer rounded-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
+                    />
                   </div>
                 </div>
               </div>

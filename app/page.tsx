@@ -11,17 +11,26 @@ import { Footer } from "@/components/footer"
 
 export default function Home() {
   return (
-    <main className="min-h-screen">
+    <div className="min-h-screen">
+      {/* Skip link for keyboard / screen-reader users */}
+      <a
+        href="#main-content"
+        className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[100] focus:rounded-md focus:bg-foreground focus:px-4 focus:py-2 focus:text-background focus:shadow-lg"
+      >
+        Skip to main content
+      </a>
       <Header />
-      <HeroSection />
-      <ServicePillars />
-      <MicroAISection />
-      <FinanceSection />
-      <PropTechSection />
-      <AboutSection />
-      <FounderNote />
-      <CTASection />
+      <main id="main-content" tabIndex={-1}>
+        <HeroSection />
+        <ServicePillars />
+        <MicroAISection />
+        <FinanceSection />
+        <PropTechSection />
+        <AboutSection />
+        <FounderNote />
+        <CTASection />
+      </main>
       <Footer />
-    </main>
+    </div>
   )
 }
