@@ -39,6 +39,7 @@ export const translations = {
       finance: 'Finance',
       innovation: 'Innovation',
       about: 'About',
+      insights: 'Insights',
       contact: 'Contact',
     },
     hero: {
@@ -198,6 +199,7 @@ export const translations = {
       finance: 'Finance',
       innovation: 'Innovation',
       about: 'À propos',
+      insights: 'Perspectives',
       contact: 'Contact',
     },
     hero: {
