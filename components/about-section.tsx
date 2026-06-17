@@ -9,11 +9,6 @@ const experiences = [
     description: "Building intelligent infrastructure for Canadian businesses",
   },
   {
-    title: "Software Engineer",
-    company: "Technology Sector",
-    description: "Experience in web development and AI solutions",
-  },
-  {
     title: "Business Operations",
     company: "Finance & Payroll",
     description: "Expertise in Canadian compliance and business systems",
