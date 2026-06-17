@@ -139,6 +139,11 @@ export function Footer() {
           <p className="text-sm text-muted-foreground">{t.footer.copyright}</p>
           <p className="text-sm text-muted-foreground">Built for Canadian Businesses</p>
         </div>
+
+        {/* Legal entity */}
+        <p className="mt-4 text-center text-xs text-muted-foreground/60">
+          {t.footer.legalEntity}
+        </p>
       </div>
     </footer>
   )
