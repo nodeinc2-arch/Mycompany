@@ -4,6 +4,7 @@ import { Header } from "@/components/header"
 import { Footer } from "@/components/footer"
 import { ArrowLeft, ArrowRight } from "lucide-react"
 import Link from "next/link"
+import { TestTimeComputeDiagram } from "@/components/test-time-compute-diagram"
 
 export default function TestTimeComputePage() {
   return (
@@ -69,6 +70,11 @@ export default function TestTimeComputePage() {
                     to think, the better it does on genuinely hard problems.
                   </p>
                 </div>
+              </section>
+
+              <section>
+                <h2 className="text-2xl font-medium text-foreground mb-4">One-shot vs. thinking longer, visualized</h2>
+                <TestTimeComputeDiagram className="text-foreground" />
               </section>
 
               <section>
