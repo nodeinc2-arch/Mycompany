@@ -4,6 +4,7 @@ import { Header } from "@/components/header"
 import { Footer } from "@/components/footer"
 import { ArrowLeft, ArrowRight } from "lucide-react"
 import Link from "next/link"
+import { LlmVsJepaDiagram } from "@/components/llm-vs-jepa-diagram"
 
 function Stat({ value, label }: { value: string; label: string }) {
   return (
@@ -158,6 +159,11 @@ export default function WorldModelsVsLLMsPage() {
                   planning over a dynamics model — except both the representation and the dynamics are{" "}
                   <em className="font-serif italic font-normal">learned jointly</em> instead of hand-designed.
                 </p>
+              </section>
+
+              <section>
+                <h2 className="text-2xl font-medium text-foreground mb-4">Two architectures, visualized</h2>
+                <LlmVsJepaDiagram className="text-foreground" />
               </section>
 
               <section>
