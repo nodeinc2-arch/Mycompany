@@ -54,7 +54,7 @@ export function Header() {
               {t.nav.about}
             </Link>
             <Link
-              href="/how-ai-evolved"
+              href="/insights"
               className="text-sm text-muted-foreground hover:text-foreground transition-colors duration-300"
             >
               {t.nav.insights}
