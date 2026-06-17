@@ -53,6 +53,12 @@ export function Header() {
             >
               {t.nav.about}
             </Link>
+            <Link
+              href="/how-ai-evolved"
+              className="text-sm text-muted-foreground hover:text-foreground transition-colors duration-300"
+            >
+              {t.nav.insights}
+            </Link>
           </nav>
 
           <div className="hidden md:flex items-center gap-4">
@@ -158,6 +164,9 @@ export function Header() {
               </Link>
               <Link href="#about" className="text-sm text-muted-foreground hover:text-foreground transition-colors">
                 {t.nav.about}
+              </Link>
+              <Link href="/how-ai-evolved" className="text-sm text-muted-foreground hover:text-foreground transition-colors">
+                {t.nav.insights}
               </Link>
               <div className="flex items-center gap-4 pt-4">
                 <Link
