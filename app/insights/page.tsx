@@ -14,6 +14,13 @@ const posts = [
       "Why LeCun raised over $1B to argue the future of AI is learned world models (JEPA) — not bigger generative LLMs.",
   },
   {
+    href: "/insights/test-time-compute",
+    tag: "AI Frontier",
+    title: "Test-time compute: why AI now thinks before it answers",
+    excerpt:
+      "The next scaling frontier isn't bigger models — it's letting them reason longer at inference. What that means for local AI.",
+  },
+  {
     href: "/how-ai-evolved",
     tag: "Explainer",
     title: "How AI evolved: from CNNs to modern LLMs & VLA",

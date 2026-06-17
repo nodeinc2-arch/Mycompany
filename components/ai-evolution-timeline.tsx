@@ -153,6 +153,87 @@ function path(a: Node, b: Node) {
   return `M ${a.x + 30} ${a.y} C ${midX} ${a.y}, ${midX} ${b.y}, ${b.x - 30} ${b.y}`
 }
 
+/**
+ * MilestoneIcon — a tiny glyph drawn at (cx, cy) representing each milestone.
+ * Hand-rolled SVG so it scales crisply and inherits `color`. ~14px box.
+ */
+function MilestoneIcon({ id, cx, cy, color }: { id: string; cx: number; cy: number; color: string }) {
+  const s = 7 // half-size
+  const common = { stroke: color, strokeWidth: 1.4, fill: "none", strokeLinecap: "round" as const, strokeLinejoin: "round" as const }
+  switch (id) {
+    case "cnn": // pixel grid
+      return (
+        <g {...common}>
+          <rect x={cx - s} y={cy - s} width={s * 2} height={s * 2} rx="1" />
+          <line x1={cx} y1={cy - s} x2={cx} y2={cy + s} />
+          <line x1={cx - s} y1={cy} x2={cx + s} y2={cy} />
+        </g>
+      )
+    case "lenet": // stacked layers
+      return (
+        <g {...common}>
+          <rect x={cx - s} y={cy - s + 1} width={s * 2} height={3.5} rx="1" />
+          <rect x={cx - s} y={cy - 1.5} width={s * 2} height={3.5} rx="1" />
+          <rect x={cx - s} y={cy + s - 4.5} width={s * 2} height={3.5} rx="1" />
+        </g>
+      )
+    case "alexnet": // deep net nodes
+      return (
+        <g {...common}>
+          <circle cx={cx - s + 1} cy={cy} r="1.6" fill={color} stroke="none" />
+          <circle cx={cx} cy={cy - 3} r="1.6" fill={color} stroke="none" />
+          <circle cx={cx} cy={cy + 3} r="1.6" fill={color} stroke="none" />
+          <circle cx={cx + s - 1} cy={cy} r="1.6" fill={color} stroke="none" />
+          <line x1={cx - s + 1} y1={cy} x2={cx} y2={cy - 3} />
+          <line x1={cx - s + 1} y1={cy} x2={cx} y2={cy + 3} />
+          <line x1={cx} y1={cy - 3} x2={cx + s - 1} y2={cy} />
+          <line x1={cx} y1={cy + 3} x2={cx + s - 1} y2={cy} />
+        </g>
+      )
+    case "pixel": // image / mountains
+      return (
+        <g {...common}>
+          <rect x={cx - s} y={cy - s} width={s * 2} height={s * 2} rx="1.5" />
+          <circle cx={cx - 2.5} cy={cy - 2.5} r="1.3" fill={color} stroke="none" />
+          <path d={`M ${cx - s} ${cy + s} L ${cx - 1} ${cy} L ${cx + s} ${cy + s}`} />
+        </g>
+      )
+    case "diffusion": // sparkle / denoise
+      return (
+        <g {...common}>
+          <path d={`M ${cx} ${cy - s} L ${cx} ${cy + s} M ${cx - s} ${cy} L ${cx + s} ${cy}`} />
+          <path d={`M ${cx - 4} ${cy - 4} L ${cx + 4} ${cy + 4} M ${cx + 4} ${cy - 4} L ${cx - 4} ${cy + 4}`} opacity="0.6" />
+        </g>
+      )
+    case "vla": // robot / eye-action
+      return (
+        <g {...common}>
+          <rect x={cx - s} y={cy - 4} width={s * 2} height={8} rx="2" />
+          <circle cx={cx - 2.5} cy={cy} r="1.2" fill={color} stroke="none" />
+          <circle cx={cx + 2.5} cy={cy} r="1.2" fill={color} stroke="none" />
+          <line x1={cx} y1={cy - 4} x2={cx} y2={cy - s} />
+        </g>
+      )
+    case "gpt1":
+    case "gpt23": // chat / token bubble
+      return (
+        <g {...common}>
+          <path d={`M ${cx - s} ${cy - 4} h ${s * 2} a2 2 0 0 1 2 2 v 3 a2 2 0 0 1 -2 2 h -${s * 2 - 3} l -3 3 v -3 a2 2 0 0 1 -2 -2 v -3 a2 2 0 0 1 2 -2 z`} />
+        </g>
+      )
+    case "llm": // brain / network
+      return (
+        <g {...common}>
+          <circle cx={cx} cy={cy} r={s - 1} />
+          <path d={`M ${cx} ${cy - s + 1} v ${s * 2 - 2} M ${cx - s + 1} ${cy} h ${s * 2 - 2}`} opacity="0.7" />
+          <circle cx={cx} cy={cy} r="1.4" fill={color} stroke="none" />
+        </g>
+      )
+    default:
+      return <circle cx={cx} cy={cy} r="3" fill={color} stroke="none" />
+  }
+}
+
 export function AiEvolutionTimeline({ className = "" }: { className?: string }) {
   const [selected, setSelected] = useState<string>("cnn")
   const sel = BY_ID[selected]
@@ -222,7 +303,7 @@ export function AiEvolutionTimeline({ className = "" }: { className?: string }) 
                 stroke={n.era === "gen" ? "var(--accent)" : "currentColor"}
                 strokeWidth={isSel ? 2 : 1}
               />
-              <circle cx={n.x} cy={n.y} r={isSel ? 5 : 4} fill={n.era === "gen" ? "var(--accent)" : "currentColor"} />
+              <MilestoneIcon id={n.id} cx={n.x} cy={n.y} color={n.era === "gen" ? "var(--accent)" : "currentColor"} />
               <text x={n.x} y={n.y - 26} textAnchor="middle" fill="currentColor" fontSize="11" fontWeight="600">
                 {n.label}
               </text>

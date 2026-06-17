@@ -199,6 +199,16 @@ export default function WorldModelsVsLLMsPage() {
                           jepa: "Aims to BE the world model — predicting likely/possible futures, enabling fast skill acquisition from few trials.",
                         },
                         {
+                          k: "Code",
+                          llm: "A natural strength. Code is discrete, structured text with a sharp 'correct next token' — LLMs autocomplete, refactor, and explain code extremely well.",
+                          jepa: "Not its domain. JEPA targets continuous perception/control, not symbolic token sequences like source code.",
+                        },
+                        {
+                          k: "Math & reasoning",
+                          llm: "Strong and improving — especially with chain-of-thought and test-time compute — though purely statistical, so it can still slip on novel multi-step proofs.",
+                          jepa: "Not designed for symbolic math; its 'reasoning' is physical prediction (what happens next in the world), not algebraic derivation.",
+                        },
+                        {
                           k: "Scaling outlook (LeCun's bet)",
                           llm: "Scales impressively for language, but diminishing returns for embodied, reliable agents without explicit world modeling.",
                           jepa: "Large-scale self-supervised world models become the backbone for safe autonomous systems — with LLMs as an interface layer, not the core.",
@@ -213,6 +223,21 @@ export default function WorldModelsVsLLMsPage() {
                     </tbody>
                   </table>
                 </div>
+
+                <div className="grid sm:grid-cols-2 gap-4 mt-6">
+                  <div className="rounded-2xl border border-border/50 bg-secondary/20 p-5">
+                    <p className="text-foreground font-medium mb-1">LLMs are best at…</p>
+                    <p className="text-sm">Language, code, math &amp; reasoning, knowledge — anything that lives in discrete tokens. The strongest tools we have for text and symbols.</p>
+                  </div>
+                  <div className="rounded-2xl border border-accent/20 bg-accent/5 p-5">
+                    <p className="text-foreground font-medium mb-1">JEPA world models are best at…</p>
+                    <p className="text-sm">Perception, physics, and control — understanding video/sensor data and predicting the consequences of actions in the real world.</p>
+                  </div>
+                </div>
+                <p className="text-sm text-muted-foreground/80 mt-4">
+                  The likely future isn't one winning — it's both: LLMs as the language/reasoning interface, world models
+                  as the grounded core for agents that act in the physical world.
+                </p>
               </section>
 
               <section>
