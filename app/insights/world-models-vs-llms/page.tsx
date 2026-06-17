@@ -5,6 +5,7 @@ import { Footer } from "@/components/footer"
 import { ArrowLeft, ArrowRight } from "lucide-react"
 import Link from "next/link"
 import { LlmVsJepaDiagram } from "@/components/llm-vs-jepa-diagram"
+import { JepaLineage } from "@/components/jepa-lineage"
 
 function Stat({ value, label }: { value: string; label: string }) {
   return (
@@ -123,6 +124,15 @@ export default function WorldModelsVsLLMsPage() {
                     <li>• DINO v3 even learns patch-level embeddings that cleanly segment objects <em className="font-serif italic">without labels</em>.</li>
                   </ul>
                 </div>
+              </section>
+
+              <section>
+                <h2 className="text-2xl font-medium text-foreground mb-4">The road to JEPA</h2>
+                <p className="mb-5">
+                  JEPA didn't appear from nowhere — it's the culmination of a decade of joint-embedding research. Here's
+                  the lineage, from the original Siamese networks to today's LeJEPA:
+                </p>
+                <JepaLineage className="text-foreground" />
               </section>
 
               <section>
