@@ -102,13 +102,23 @@ export function Footer() {
                 </Link>
               </li>
               <li>
+                <Link href="/mission" className="text-muted-foreground hover:text-foreground transition-colors duration-300">
+                  {t.footer.mission}
+                </Link>
+              </li>
+              <li>
+                <Link href="/insights" className="text-muted-foreground hover:text-foreground transition-colors duration-300">
+                  {t.footer.insights}
+                </Link>
+              </li>
+              <li>
                 <Link href="/contact" className="text-muted-foreground hover:text-foreground transition-colors duration-300">
                   {t.footer.contact}
                 </Link>
               </li>
               <li>
-                <Link href="#" className="text-muted-foreground hover:text-foreground transition-colors duration-300">
-                  Privacy Policy
+                <Link href="/privacy" className="text-muted-foreground hover:text-foreground transition-colors duration-300">
+                  {t.footer.privacy}
                 </Link>
               </li>
             </ul>
