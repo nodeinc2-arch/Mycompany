@@ -3,8 +3,8 @@ export type Language = 'en' | 'fr'
 export const translations = {
   en: {
     seo: {
-      title: 'Node2 | Building Canada\'s Next IT Technology Layer',
-      description: 'Node2 builds intelligent IT infrastructure for Canadian businesses — AI-integrated web platforms, custom local LLMs, and finance automation. Engineered in Canada.',
+      title: 'Node2 | AI-Native Payroll Auditing & Private Local AI in Canada',
+      description: 'Node2 builds AI-native finance & payroll auditing, custom local LLMs, and AI-integrated web platforms for Canadian businesses. AI runs privately on your own infrastructure — never the cloud. PIPEDA-compliant, engineered in Canada.',
       keywords: [
         'Canadian IT company',
         'Canadian software development',
@@ -168,8 +168,8 @@ export const translations = {
   },
   fr: {
     seo: {
-      title: 'Node2 | Construire la prochaine couche technologique du Canada',
-      description: 'Node2 conçoit l\'infrastructure informatique intelligente pour les entreprises canadiennes — plateformes web avec IA intégrée, LLM locaux sur mesure et automatisation financière. Conçu au Canada.',
+      title: 'Node2 | Audit de paie à IA native et IA locale privée au Canada',
+      description: 'Node2 conçoit l\'audit de paie à IA native, des LLM locaux sur mesure et des plateformes web avec IA intégrée pour les entreprises canadiennes. L\'IA s\'exécute en privé sur votre propre infrastructure — jamais le cloud. Conforme à la PIPEDA, conçu au Canada.',
       keywords: [
         'entreprise informatique canadienne',
         'développement logiciel canadien',
