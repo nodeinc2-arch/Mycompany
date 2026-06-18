@@ -29,9 +29,9 @@ export async function generateMetadata(): Promise<Metadata> {
       url: "/insights/world-models-vs-llms",
       type: "article",
       siteName: "Node2",
-      images: [{ url: "/logo-for-dark-bg.jpg", width: 1200, height: 630, alt: title }],
+      images: [{ url: "/og.png", width: 1200, height: 630, alt: title }],
     },
-    twitter: { card: "summary_large_image", title, description, images: ["/logo-for-dark-bg.jpg"] },
+    twitter: { card: "summary_large_image", title, description, images: ["/og.png"] },
   }
 }
 
