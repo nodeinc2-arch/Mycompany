@@ -1,6 +1,6 @@
 "use client"
 
-import { CheckCircle2, ShieldCheck, Layers } from "lucide-react"
+import { CheckCircle2, ShieldCheck, Layers, Lock, CloudOff } from "lucide-react"
 import { useLanguage } from "@/lib/LanguageContext"
 import { translations } from "@/lib/translations"
 
@@ -42,7 +42,7 @@ export function FinanceSection() {
             </p>
 
             {/* auditing-layer mini visual */}
-            <div className="flex items-center gap-3 rounded-2xl bg-accent-foreground/10 p-4 mb-8">
+            <div className="flex items-center gap-3 rounded-2xl bg-accent-foreground/10 p-4 mb-4">
               <Layers className="h-5 w-5 shrink-0" />
               <div className="flex items-center gap-2 text-sm font-medium overflow-x-auto">
                 <span className="px-2.5 py-1 rounded-lg bg-accent-foreground/15 whitespace-nowrap">Payroll A</span>
@@ -51,6 +51,16 @@ export function FinanceSection() {
                 <span className="opacity-60">→</span>
                 <span className="px-2.5 py-1 rounded-lg bg-accent-foreground text-accent whitespace-nowrap">AI Auditing Layer</span>
               </div>
+            </div>
+
+            {/* privacy / no-cloud callout */}
+            <div className="rounded-2xl border border-accent-foreground/25 bg-accent-foreground/10 p-5 mb-8">
+              <div className="flex items-center gap-2 mb-2">
+                <Lock className="h-4 w-4 shrink-0" />
+                <CloudOff className="h-4 w-4 shrink-0" />
+                <h3 className="text-sm font-semibold">{t.finance.privacyTitle}</h3>
+              </div>
+              <p className="text-sm text-accent-foreground/85 leading-relaxed">{t.finance.privacyNote}</p>
             </div>
 
             <div className="flex flex-wrap gap-2">
