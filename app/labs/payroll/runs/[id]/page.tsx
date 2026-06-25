@@ -1,7 +1,8 @@
 import Link from "next/link"
 import { notFound } from "next/navigation"
-import { samplePayRuns, sampleEmployees } from "@/lib/labs/payroll/sample-data"
-import { estimateGrossToNet, type ProvinceCode } from "@/lib/labs/payroll/tax-rules-ca"
+import { samplePayRuns } from "@/lib/labs/payroll/sample-data"
+import { buildRunDraft } from "@/lib/labs/payroll/pay-run"
+import { Play } from "lucide-react"
 
 const money = (n: number) =>
   n.toLocaleString("en-CA", { style: "currency", currency: "CAD", minimumFractionDigits: 2 })
@@ -11,26 +12,17 @@ export default async function RunDetailPage({ params }: { params: Promise<{ id: 
   const run = samplePayRuns.find((r) => r.id === id)
   if (!run) notFound()
 
-  const lines = sampleEmployees.map((emp) => {
-    const calc = estimateGrossToNet({
-      grossPerPeriod: emp.grossPerPeriod,
-      periodsPerYear: emp.periodsPerYear,
-      province: emp.province as ProvinceCode,
-    })
-    return { emp, calc }
-  })
-
-  const totals = lines.reduce(
-    (acc, l) => ({
-      gross: acc.gross + l.calc.gross,
-      cpp: acc.cpp + l.calc.cpp,
-      ei: acc.ei + l.calc.ei,
-      federal: acc.federal + l.calc.federalTax,
-      provincial: acc.provincial + l.calc.provincialTaxEstimate,
-      net: acc.net + l.calc.net,
-    }),
-    { gross: 0, cpp: 0, ei: 0, federal: 0, provincial: 0, net: 0 },
-  )
+  // One source of truth: the shared pay-run engine computes the same lines the
+  // run wizard uses, so a historical run and a fresh run never drift.
+  const draft = buildRunDraft(run.periodEnd, undefined, [], run.status)
+  const totals = {
+    gross: draft.totals.gross,
+    cpp: draft.totals.cpp,
+    ei: draft.totals.ei,
+    federal: draft.totals.federalTax,
+    provincial: draft.totals.provincialTax,
+    net: draft.totals.net,
+  }
 
   const statusStyles: Record<string, string> = {
     draft: "bg-yellow-500/15 text-yellow-300 border-yellow-500/30",
@@ -51,9 +43,17 @@ export default async function RunDetailPage({ params }: { params: Promise<{ id: 
           <h1 className="text-3xl sm:text-4xl font-medium tracking-tight text-foreground mb-2 font-mono">{run.id}</h1>
           <p className="text-muted-foreground">Period end {run.periodEnd} · {run.employees} employees</p>
         </div>
-        <span className={`px-3 py-1 text-xs uppercase tracking-wider rounded-full border ${statusStyles[run.status]}`}>
-          {run.status}
-        </span>
+        <div className="flex items-center gap-3">
+          <span className={`px-3 py-1 text-xs uppercase tracking-wider rounded-full border ${statusStyles[run.status]}`}>
+            {run.status}
+          </span>
+          <Link
+            href="/labs/payroll/runs/new"
+            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-accent text-accent-foreground text-sm hover:bg-accent/90"
+          >
+            <Play className="h-3.5 w-3.5" /> Run payroll
+          </Link>
+        </div>
       </div>
 
       <div className="grid sm:grid-cols-4 gap-3 mb-8">
@@ -82,18 +82,18 @@ export default async function RunDetailPage({ params }: { params: Promise<{ id: 
               </tr>
             </thead>
             <tbody>
-              {lines.map(({ emp, calc }) => (
-                <tr key={emp.id} className="border-t border-border/40">
+              {draft.lines.map((l) => (
+                <tr key={l.employeeId} className="border-t border-border/40">
                   <td className="px-6 py-3">
-                    <div className="font-medium text-foreground">{emp.name}</div>
-                    <div className="text-[11px] font-mono text-muted-foreground">{emp.id} · {emp.province}</div>
+                    <div className="font-medium text-foreground">{l.name}</div>
+                    <div className="text-[11px] font-mono text-muted-foreground">{l.employeeId} · {l.province}</div>
                   </td>
-                  <td className="px-6 py-3 text-right text-foreground">{money(calc.gross)}</td>
-                  <td className="px-6 py-3 text-right text-muted-foreground">{money(calc.cpp)}</td>
-                  <td className="px-6 py-3 text-right text-muted-foreground">{money(calc.ei)}</td>
-                  <td className="px-6 py-3 text-right text-muted-foreground">{money(calc.federalTax)}</td>
-                  <td className="px-6 py-3 text-right text-muted-foreground">{money(calc.provincialTaxEstimate)}</td>
-                  <td className="px-6 py-3 text-right font-medium text-foreground">{money(calc.net)}</td>
+                  <td className="px-6 py-3 text-right text-foreground">{money(l.gross)}</td>
+                  <td className="px-6 py-3 text-right text-muted-foreground">{money(l.cpp)}</td>
+                  <td className="px-6 py-3 text-right text-muted-foreground">{money(l.ei)}</td>
+                  <td className="px-6 py-3 text-right text-muted-foreground">{money(l.federalTax)}</td>
+                  <td className="px-6 py-3 text-right text-muted-foreground">{money(l.provincialTax)}</td>
+                  <td className="px-6 py-3 text-right font-medium text-foreground">{money(l.net)}</td>
                 </tr>
               ))}
             </tbody>
