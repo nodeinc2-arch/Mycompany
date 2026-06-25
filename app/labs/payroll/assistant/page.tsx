@@ -1,21 +1,31 @@
 "use client"
 
 import { useEffect, useState } from "react"
-import { Send, Cpu, Brain, Sparkles, Loader2, Server, ChevronDown } from "lucide-react"
+import { Send, Cpu, Brain, Sparkles, Loader2, Server, ChevronDown, BookOpen, Wrench } from "lucide-react"
 import { aiTools } from "@/lib/labs/payroll/ai-tools"
 
 type AgentStep = { tool: string; args: Record<string, unknown>; result: unknown }
-type AgentAnswer = { answer: string; steps: AgentStep[]; engine: "ollama" | "fallback"; model?: string }
+type Citation = { id: string; source: string; score: number; text: string }
+type AgentAnswer = {
+  answer: string
+  steps: AgentStep[]
+  engine: "ollama" | "fallback"
+  model?: string
+  citations?: Citation[]
+  grounding?: "tools" | "rag"
+}
 
 type Message =
   | { role: "user"; text: string }
   | { role: "assistant"; payload: AgentAnswer }
 
+// Mix of compute questions (→ tools) and knowledge questions (→ RAG).
 const starters = [
   "How much PD7A do we owe CRA for period end 2026-05-15?",
-  "Summarise the payroll run for 2026-05-15",
-  "Any anomalies in the run ending 2026-05-15?",
   "What's the net pay for Marie?",
+  "When are T4 slips due?",
+  "What does Box 24 mean on the T4?",
+  "How fast do I have to issue an ROE?",
   "Generate a T4 for Aanya",
 ]
 
@@ -102,9 +112,16 @@ export default function AssistantPage() {
                     <div className="flex items-center gap-2 text-[10px] uppercase tracking-widest text-muted-foreground mb-2">
                       {m.payload.engine === "ollama" ? <Brain className="h-3 w-3" /> : <Cpu className="h-3 w-3" />}
                       <span>{m.payload.engine === "ollama" ? `local model${m.payload.model ? ` · ${m.payload.model}` : ""}` : "deterministic"}</span>
+                      {m.payload.grounding && (
+                        <span className="inline-flex items-center gap-1 normal-case tracking-normal px-1.5 py-0.5 rounded-full bg-accent/15 text-accent border border-accent/30">
+                          {m.payload.grounding === "rag" ? <BookOpen className="h-2.5 w-2.5" /> : <Wrench className="h-2.5 w-2.5" />}
+                          {m.payload.grounding === "rag" ? "retrieved" : "computed"}
+                        </span>
+                      )}
                     </div>
                     <p className="leading-relaxed">{m.payload.answer}</p>
                     {m.payload.steps.length > 0 && <ToolSteps steps={m.payload.steps} />}
+                    {m.payload.citations && m.payload.citations.length > 0 && <Citations citations={m.payload.citations} />}
                   </div>
                 </div>
               ),
@@ -172,6 +189,31 @@ export default function AssistantPage() {
           </div>
         </aside>
       </div>
+    </div>
+  )
+}
+
+function Citations({ citations }: { citations: Citation[] }) {
+  const [open, setOpen] = useState(false)
+  return (
+    <div className="mt-3 pt-3 border-t border-border/40">
+      <button
+        onClick={() => setOpen((o) => !o)}
+        className="inline-flex items-center gap-1 text-[10px] uppercase tracking-widest text-muted-foreground hover:text-foreground"
+      >
+        <ChevronDown className={`h-3 w-3 transition-transform ${open ? "rotate-180" : ""}`} />
+        {citations.length} source{citations.length === 1 ? "" : "s"} · retrieved
+      </button>
+      {open && (
+        <ol className="mt-2 space-y-2">
+          {citations.map((c, i) => (
+            <li key={c.id} className="rounded-lg border border-border/40 bg-background/50 p-2">
+              <p className="text-[10px] text-accent mb-1">[{i + 1}] {c.source} · score {c.score.toFixed(3)}</p>
+              <p className="text-[11px] text-muted-foreground leading-relaxed">{c.text}</p>
+            </li>
+          ))}
+        </ol>
+      )}
     </div>
   )
 }

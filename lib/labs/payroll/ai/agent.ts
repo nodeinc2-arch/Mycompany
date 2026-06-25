@@ -8,8 +8,11 @@
 
 import { ollamaAvailable, ollamaChat, type ChatMessage } from "./ollama"
 import { microAiTools, runTool, knownPeriods } from "./tool-runner"
+import { retrieve, buildContext, type Retrieved } from "./rag"
 
 export type AgentStep = { tool: string; args: Record<string, unknown>; result: unknown }
+
+export type Citation = { id: string; source: string; score: number; text: string }
 
 export type AgentAnswer = {
   answer: string
@@ -17,6 +20,10 @@ export type AgentAnswer = {
   /** "ollama" when a local model drove the turn, "fallback" otherwise. */
   engine: "ollama" | "fallback"
   model?: string
+  /** Set when the RAG knowledge path answered: which facts were retrieved. */
+  citations?: Citation[]
+  /** "tools" (function-calling) or "rag" (retrieval) — how the answer was grounded. */
+  grounding?: "tools" | "rag"
 }
 
 const SYSTEM_PROMPT = `You are Pay.ca's payroll Micro AI, running locally for a Canadian small business.
@@ -29,8 +36,68 @@ Rules:
 
 const MAX_TURNS = 4
 
+// Knowledge questions (definitions, deadlines, "what/when/why") are lookups → RAG.
+// Numeric questions ("how much", "net pay", a date/amount) → tool-calling.
+// We detect knowledge intent up front; everything else goes to the tool agent.
+function isKnowledgeQuestion(q: string): boolean {
+  const s = q.toLowerCase()
+  // A concrete period date or "$" / "how much" signals a computation, not a lookup.
+  if (/\$|\d{4}-\d{2}-\d{2}|how much|net pay|take[- ]home|summari|anomal/.test(s)) return false
+  return /\b(what|when|why|how (do|long|fast|often)|deadline|due|mean|meaning|explain|difference|rule|require|who|which box|box \d)/.test(s)
+}
+
+const RAG_SYSTEM_PROMPT = `You are Pay.ca's payroll Micro AI answering a Canadian payroll/CRA knowledge question.
+Answer ONLY from the numbered context facts provided. If the context doesn't cover it, say so.
+Be concise (1-3 sentences). Cite the facts you used like [1], [2]. Do not invent rules or numbers.`
+
+async function ragAnswer(question: string, modelAvailable: boolean): Promise<AgentAnswer> {
+  const { mode, hits } = await retrieve(question, 3)
+  const citations = toCitations(hits)
+
+  if (hits.length === 0) {
+    return {
+      answer: "I don't have a fact covering that in my payroll knowledge base. Try rephrasing, or ask about T4, ROE, PD7A, TD1, CPP/EI, or vacation pay.",
+      steps: [],
+      engine: modelAvailable ? "ollama" : "fallback",
+      grounding: "rag",
+      citations: [],
+    }
+  }
+
+  if (modelAvailable) {
+    try {
+      const context = buildContext(hits)
+      const { message } = await ollamaChat([
+        { role: "system", content: RAG_SYSTEM_PROMPT },
+        { role: "user", content: `Context:\n${context}\n\nQuestion: ${question}` },
+      ])
+      const text = message.content?.trim()
+      if (text) {
+        return { answer: text, steps: [], engine: "ollama", grounding: "rag", citations }
+      }
+    } catch {
+      // fall through to deterministic render
+    }
+  }
+
+  // Deterministic render: lead with the top fact, note retrieval mode.
+  const top = hits[0].fact
+  const answer = `${top.text} ${hits.length > 1 ? `(See also ${hits.slice(1).map((_, i) => `[${i + 2}]`).join(", ")}.)` : ""}`.trim()
+  return { answer, steps: [], engine: "fallback", grounding: "rag", citations, model: mode }
+}
+
+function toCitations(hits: Retrieved[]): Citation[] {
+  return hits.map((h) => ({ id: h.fact.id, source: h.fact.source, score: h.score, text: h.fact.text }))
+}
+
 export async function answerPayrollQuestion(question: string): Promise<AgentAnswer> {
   const available = await ollamaAvailable()
+
+  // Route knowledge lookups to RAG; numeric/operational questions to tools.
+  if (isKnowledgeQuestion(question)) {
+    return ragAnswer(question, available)
+  }
+
   if (!available) return fallbackAnswer(question)
 
   const messages: ChatMessage[] = [
@@ -46,7 +113,7 @@ export async function answerPayrollQuestion(question: string): Promise<AgentAnsw
 
       const calls = message.tool_calls ?? []
       if (calls.length === 0) {
-        return { answer: message.content?.trim() || "(no answer)", steps, engine: "ollama" }
+        return { answer: message.content?.trim() || "(no answer)", steps, engine: "ollama", grounding: "tools" }
       }
 
       for (const call of calls) {
@@ -61,7 +128,7 @@ export async function answerPayrollQuestion(question: string): Promise<AgentAnsw
       }
     }
     // Ran out of turns — narrate what we have.
-    return { answer: "I gathered the figures above but need a more specific question to summarise.", steps, engine: "ollama" }
+    return { answer: "I gathered the figures above but need a more specific question to summarise.", steps, engine: "ollama", grounding: "tools" }
   } catch {
     // Mid-turn transport failure — degrade gracefully.
     const fb = fallbackAnswer(question)
@@ -137,5 +204,5 @@ export function fallbackAnswer(question: string): AgentAnswer {
       : "Try asking about net pay, a PD7A remittance, run anomalies, a run summary, or a T4."
   }
 
-  return { answer, steps, engine: "fallback" }
+  return { answer, steps, engine: "fallback", grounding: "tools" }
 }
