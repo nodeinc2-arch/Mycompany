@@ -1,10 +1,11 @@
 "use client"
 
-import { useState } from "react"
+import { useRef, useState } from "react"
 import Link from "next/link"
 import { migrationSources, type MigrationSource } from "@/lib/labs/payroll/migration"
+import { targetSchema, targetByKey, type ColumnMapping } from "@/lib/labs/payroll/csv-mapper"
 import { Button } from "@/components/ui/button"
-import { Sparkles, Check, ArrowRight, Upload, Loader2 } from "lucide-react"
+import { Sparkles, Check, ArrowRight, Upload, Loader2, AlertTriangle, ShieldAlert, FileSpreadsheet } from "lucide-react"
 
 type Step = "source" | "connect" | "preview" | "confirm" | "done"
 
@@ -14,6 +15,18 @@ type PreviewResp = {
   estimatedMinutes: number
 }
 
+type RowIssue = { rowIndex: number; field: string; severity: "error" | "warning"; message: string }
+
+type CsvParseResp = {
+  headers: string[]
+  mappings: ColumnMapping[]
+  validation: { records: Record<string, string | number | null>[]; issues: RowIssue[]; validRows: number; totalRows: number }
+  unmatchedHeaders: string[]
+  missingRequired: string[]
+  piiDetected: string[]
+  records: Record<string, string | number | null>[]
+}
+
 type CommitResp = { job_id: string; expected_completion: string }
 
 export default function MigratePage() {
@@ -21,12 +34,70 @@ export default function MigratePage() {
   const [source, setSource] = useState<MigrationSource | null>(null)
   const [loadingPreview, setLoadingPreview] = useState(false)
   const [preview, setPreview] = useState<PreviewResp | null>(null)
+  const [csvResult, setCsvResult] = useState<CsvParseResp | null>(null)
+  const [csvFileName, setCsvFileName] = useState<string | null>(null)
+  const [csvError, setCsvError] = useState<string | null>(null)
   const [commitState, setCommitState] = useState<CommitResp | null>(null)
   const [committing, setCommitting] = useState(false)
 
+  const isCsv = source?.authMethod === "CSV export"
+
   function pickSource(s: MigrationSource) {
     setSource(s)
+    setCsvResult(null)
+    setCsvFileName(null)
+    setCsvError(null)
     setStep("connect")
+  }
+
+  async function parseCsvFile(file: File) {
+    setCsvError(null)
+    setCsvFileName(file.name)
+    setLoadingPreview(true)
+    try {
+      const text = await file.text()
+      const res = await fetch("/api/labs/payroll/migrate/parse", {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify({ csv: text }),
+      })
+      const data = (await res.json()) as CsvParseResp & { error?: string }
+      if (data.error) {
+        setCsvError(
+          data.error === "no_header_row"
+            ? "Couldn't find a header row. Make sure the first line names your columns."
+            : data.error === "file_too_large"
+            ? "That file is too large for the scaffold (2MB max)."
+            : "Couldn't read that file as CSV.",
+        )
+        return
+      }
+      setCsvResult(data)
+      setStep("preview")
+    } catch {
+      setCsvError("Something went wrong reading the file.")
+    } finally {
+      setLoadingPreview(false)
+    }
+  }
+
+  /** User overrides a column's target field in the mapping table. */
+  function remapColumn(sourceIndex: number, targetKey: string | null) {
+    setCsvResult((prev) => {
+      if (!prev) return prev
+      const mappings = prev.mappings.map((m) => {
+        if (m.sourceIndex === sourceIndex) {
+          const field = targetKey ? targetByKey(targetKey) : null
+          return { ...m, targetKey, confidence: targetKey ? 1 : 0, pii: !!field?.pii }
+        }
+        // Free the target if another column had claimed it (keep mapping 1:1).
+        if (targetKey && m.targetKey === targetKey) return { ...m, targetKey: null, confidence: 0, pii: false }
+        return m
+      })
+      const matchedKeys = new Set(mappings.filter((m) => m.targetKey).map((m) => m.targetKey!))
+      const missingRequired = targetSchema.filter((f) => f.required && !matchedKeys.has(f.key)).map((f) => f.label)
+      return { ...prev, mappings, missingRequired }
+    })
   }
 
   async function runPreview() {
@@ -66,9 +137,14 @@ export default function MigratePage() {
   function reset() {
     setSource(null)
     setPreview(null)
+    setCsvResult(null)
+    setCsvFileName(null)
+    setCsvError(null)
     setCommitState(null)
     setStep("source")
   }
+
+  const csvBlocked = !!csvResult && (csvResult.missingRequired.length > 0 || csvResult.validation.validRows === 0)
 
   return (
     <div className="px-4 sm:px-6 lg:px-8 py-10 lg:py-14 max-w-6xl mx-auto">
@@ -88,14 +164,42 @@ export default function MigratePage() {
       {step === "source" && <SourcePicker onPick={pickSource} />}
 
       {step === "connect" && source && (
-        <ConnectStep source={source} loading={loadingPreview} onBack={reset} onNext={runPreview} />
+        <ConnectStep
+          source={source}
+          loading={loadingPreview}
+          csvError={csvError}
+          onBack={reset}
+          onNext={runPreview}
+          onFile={parseCsvFile}
+        />
       )}
 
-      {step === "preview" && source && preview && (
+      {step === "preview" && source && isCsv && csvResult && (
+        <CsvMappingStep
+          fileName={csvFileName ?? "upload.csv"}
+          result={csvResult}
+          onRemap={remapColumn}
+          onBack={() => setStep("connect")}
+          onNext={() => setStep("confirm")}
+          blocked={csvBlocked}
+        />
+      )}
+
+      {step === "preview" && source && !isCsv && preview && (
         <PreviewStep source={source} preview={preview} onBack={() => setStep("connect")} onNext={() => setStep("confirm")} />
       )}
 
-      {step === "confirm" && source && preview && (
+      {step === "confirm" && source && isCsv && csvResult && (
+        <CsvConfirmStep
+          fileName={csvFileName ?? "upload.csv"}
+          result={csvResult}
+          committing={committing}
+          onBack={() => setStep("preview")}
+          onConfirm={commit}
+        />
+      )}
+
+      {step === "confirm" && source && !isCsv && preview && (
         <ConfirmStep
           source={source}
           preview={preview}
@@ -183,15 +287,27 @@ function SourcePicker({ onPick }: { onPick: (s: MigrationSource) => void }) {
 function ConnectStep({
   source,
   loading,
+  csvError,
   onBack,
   onNext,
+  onFile,
 }: {
   source: MigrationSource
   loading: boolean
+  csvError: string | null
   onBack: () => void
   onNext: () => void
+  onFile: (file: File) => void
 }) {
   const isCsv = source.authMethod === "CSV export"
+  const fileInputRef = useRef<HTMLInputElement>(null)
+  const [dragOver, setDragOver] = useState(false)
+
+  function handleFiles(files: FileList | null) {
+    const file = files?.[0]
+    if (file) onFile(file)
+  }
+
   return (
     <div className="rounded-2xl border border-border/50 bg-card p-6 max-w-2xl">
       <div className="flex items-center gap-3 mb-4">
@@ -208,10 +324,52 @@ function ConnectStep({
       </div>
 
       {isCsv ? (
-        <div className="border-2 border-dashed border-border rounded-xl p-8 text-center mb-6">
-          <Upload className="h-6 w-6 mx-auto text-muted-foreground mb-2" />
-          <p className="text-sm text-foreground mb-1">Drop your payroll register here</p>
-          <p className="text-xs text-muted-foreground">CSV or .xlsx · scaffold accepts no real upload</p>
+        <div className="mb-6">
+          <div
+            role="button"
+            tabIndex={0}
+            onClick={() => fileInputRef.current?.click()}
+            onKeyDown={(e) => (e.key === "Enter" || e.key === " ") && fileInputRef.current?.click()}
+            onDragOver={(e) => {
+              e.preventDefault()
+              setDragOver(true)
+            }}
+            onDragLeave={() => setDragOver(false)}
+            onDrop={(e) => {
+              e.preventDefault()
+              setDragOver(false)
+              handleFiles(e.dataTransfer.files)
+            }}
+            className={`border-2 border-dashed rounded-xl p-8 text-center cursor-pointer transition-colors ${
+              dragOver ? "border-accent bg-accent/5" : "border-border hover:border-accent/50"
+            }`}
+          >
+            {loading ? (
+              <Loader2 className="h-6 w-6 mx-auto text-accent mb-2 animate-spin" />
+            ) : (
+              <Upload className="h-6 w-6 mx-auto text-muted-foreground mb-2" />
+            )}
+            <p className="text-sm text-foreground mb-1">
+              {loading ? "Reading & mapping…" : "Drop your payroll register, or click to choose"}
+            </p>
+            <p className="text-xs text-muted-foreground">CSV · parsed and mapped locally, nothing is uploaded to a server store</p>
+            <input
+              ref={fileInputRef}
+              type="file"
+              accept=".csv,text/csv"
+              className="hidden"
+              onChange={(e) => handleFiles(e.target.files)}
+            />
+          </div>
+          {csvError && (
+            <div className="mt-3 rounded-lg border border-red-500/30 bg-red-500/10 text-red-200 text-[11px] px-3 py-2 flex items-start gap-2">
+              <AlertTriangle className="h-3.5 w-3.5 mt-0.5 shrink-0" />
+              <span>{csvError}</span>
+            </div>
+          )}
+          <p className="mt-3 text-[11px] text-muted-foreground">
+            No sample handy? A register with headers like <span className="font-mono">Employee Name, Prov, SIN, Gross YTD, CPP, EI</span> maps cleanly.
+          </p>
         </div>
       ) : (
         <div className="rounded-xl border border-border/60 bg-background/60 p-5 mb-6 text-sm">
@@ -233,9 +391,11 @@ function ConnectStep({
         <button onClick={onBack} className="text-sm text-muted-foreground hover:text-foreground">
           ← Pick a different source
         </button>
-        <Button onClick={onNext} disabled={loading} className="bg-foreground text-background hover:bg-foreground/90 rounded-full">
-          {loading ? <Loader2 className="h-4 w-4 animate-spin" /> : <>Continue <ArrowRight className="h-4 w-4 ml-1" /></>}
-        </Button>
+        {!isCsv && (
+          <Button onClick={onNext} disabled={loading} className="bg-foreground text-background hover:bg-foreground/90 rounded-full">
+            {loading ? <Loader2 className="h-4 w-4 animate-spin" /> : <>Continue <ArrowRight className="h-4 w-4 ml-1" /></>}
+          </Button>
+        )}
       </div>
     </div>
   )
@@ -301,6 +461,234 @@ function PreviewStep({
         </button>
         <Button onClick={onNext} className="bg-foreground text-background hover:bg-foreground/90 rounded-full">
           Looks right — confirm <ArrowRight className="h-4 w-4 ml-1" />
+        </Button>
+      </div>
+    </div>
+  )
+}
+
+function confidenceLabel(c: number): { text: string; cls: string } {
+  if (c >= 0.85) return { text: `${Math.round(c * 100)}%`, cls: "text-emerald-300 border-emerald-500/40 bg-emerald-500/10" }
+  if (c >= 0.6) return { text: `${Math.round(c * 100)}%`, cls: "text-yellow-200 border-yellow-500/40 bg-yellow-500/10" }
+  return { text: `${Math.round(c * 100)}%`, cls: "text-orange-200 border-orange-500/40 bg-orange-500/10" }
+}
+
+function CsvMappingStep({
+  fileName,
+  result,
+  onRemap,
+  onBack,
+  onNext,
+  blocked,
+}: {
+  fileName: string
+  result: CsvParseResp
+  onRemap: (sourceIndex: number, targetKey: string | null) => void
+  onBack: () => void
+  onNext: () => void
+  blocked: boolean
+}) {
+  const { mappings, validation, missingRequired, piiDetected } = result
+  const errorCount = validation.issues.filter((i) => i.severity === "error").length
+  const warnCount = validation.issues.filter((i) => i.severity === "warning").length
+  const claimedKeys = new Set(mappings.filter((m) => m.targetKey).map((m) => m.targetKey!))
+
+  return (
+    <div className="space-y-4">
+      <div className="rounded-2xl border border-border/50 bg-card p-5">
+        <div className="flex items-center justify-between mb-1">
+          <div className="flex items-center gap-2">
+            <FileSpreadsheet className="h-4 w-4 text-accent" />
+            <h2 className="font-medium text-foreground">{fileName}</h2>
+          </div>
+          <span className="px-2 py-0.5 text-[10px] uppercase tracking-wider rounded-full bg-secondary text-muted-foreground border border-border">
+            {mappings.length} columns · {validation.totalRows} rows
+          </span>
+        </div>
+        <p className="text-xs text-muted-foreground inline-flex items-center gap-1.5">
+          <Sparkles className="h-3 w-3 text-accent" />
+          Headers auto-mapped to Pay.ca fields. Override anything that looks off — confidence below 85% is worth a glance.
+        </p>
+      </div>
+
+      {missingRequired.length > 0 && (
+        <div className="rounded-xl border border-red-500/40 bg-red-500/10 p-4 flex items-start gap-2">
+          <AlertTriangle className="h-4 w-4 mt-0.5 text-red-300 shrink-0" />
+          <div className="text-sm text-red-100">
+            <span className="font-medium">Required field{missingRequired.length > 1 ? "s" : ""} not mapped: </span>
+            {missingRequired.join(", ")}. Map a column to each before importing.
+          </div>
+        </div>
+      )}
+
+      {piiDetected.length > 0 && (
+        <div className="rounded-xl border border-purple-500/40 bg-purple-500/10 p-4 flex items-start gap-2">
+          <ShieldAlert className="h-4 w-4 mt-0.5 text-purple-300 shrink-0" />
+          <div className="text-sm text-purple-100">
+            <span className="font-medium">PII detected: </span>
+            {piiDetected.map((k) => targetByKey(k)?.label ?? k).join(", ")}. Stored encrypted; access is audit-logged.
+          </div>
+        </div>
+      )}
+
+      {/* Mapping table */}
+      <div className="rounded-2xl border border-border/50 bg-card overflow-hidden">
+        <div className="px-5 py-3 border-b border-border/50 text-xs uppercase tracking-widest text-muted-foreground">
+          Column mapping
+        </div>
+        <div className="overflow-x-auto">
+          <table className="w-full text-sm">
+            <thead className="text-[10px] uppercase tracking-widest text-muted-foreground bg-secondary/40">
+              <tr>
+                <th className="text-left font-medium px-5 py-2">Source column</th>
+                <th className="text-left font-medium px-5 py-2">Maps to</th>
+                <th className="text-left font-medium px-5 py-2">Confidence</th>
+              </tr>
+            </thead>
+            <tbody>
+              {mappings.map((m) => {
+                const conf = confidenceLabel(m.confidence)
+                return (
+                  <tr key={m.sourceIndex} className="border-t border-border/40">
+                    <td className="px-5 py-3 font-mono text-foreground/90 align-middle">
+                      <span className="inline-flex items-center gap-2">
+                        {m.sourceHeader || <span className="text-muted-foreground italic">(blank)</span>}
+                        {m.pii && (
+                          <span className="px-1.5 py-0.5 text-[9px] rounded bg-purple-500/15 text-purple-300 border border-purple-500/30">
+                            PII
+                          </span>
+                        )}
+                      </span>
+                    </td>
+                    <td className="px-5 py-3">
+                      <select
+                        value={m.targetKey ?? ""}
+                        onChange={(e) => onRemap(m.sourceIndex, e.target.value || null)}
+                        className="bg-background border border-border/60 rounded-lg px-2.5 py-1.5 text-xs text-foreground focus:outline-none focus:border-accent"
+                      >
+                        <option value="">— ignore this column —</option>
+                        {targetSchema.map((f) => {
+                          const takenElsewhere = claimedKeys.has(f.key) && m.targetKey !== f.key
+                          return (
+                            <option key={f.key} value={f.key} disabled={takenElsewhere}>
+                              {f.label}
+                              {f.required ? " *" : ""}
+                              {takenElsewhere ? " (mapped)" : ""}
+                            </option>
+                          )
+                        })}
+                      </select>
+                    </td>
+                    <td className="px-5 py-3">
+                      {m.targetKey ? (
+                        <span className={`px-2 py-0.5 text-[10px] rounded-full border ${conf.cls}`}>{conf.text}</span>
+                      ) : (
+                        <span className="text-[10px] text-muted-foreground">—</span>
+                      )}
+                    </td>
+                  </tr>
+                )
+              })}
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      {/* Validation summary */}
+      <div className="grid sm:grid-cols-3 gap-3">
+        <div className="rounded-xl border border-emerald-500/30 bg-emerald-500/5 p-4">
+          <p className="text-[10px] uppercase tracking-widest text-muted-foreground">Valid rows</p>
+          <p className="text-2xl font-medium text-emerald-300">{validation.validRows}/{validation.totalRows}</p>
+        </div>
+        <div className="rounded-xl border border-red-500/30 bg-red-500/5 p-4">
+          <p className="text-[10px] uppercase tracking-widest text-muted-foreground">Errors</p>
+          <p className="text-2xl font-medium text-red-300">{errorCount}</p>
+        </div>
+        <div className="rounded-xl border border-yellow-500/30 bg-yellow-500/5 p-4">
+          <p className="text-[10px] uppercase tracking-widest text-muted-foreground">Warnings</p>
+          <p className="text-2xl font-medium text-yellow-200">{warnCount}</p>
+        </div>
+      </div>
+
+      {validation.issues.length > 0 && (
+        <div className="rounded-2xl border border-border/50 bg-card overflow-hidden">
+          <div className="px-5 py-3 border-b border-border/50 text-xs uppercase tracking-widest text-muted-foreground">
+            Row issues ({validation.issues.length})
+          </div>
+          <ul className="divide-y divide-border/40 max-h-64 overflow-y-auto">
+            {validation.issues.slice(0, 50).map((iss, i) => (
+              <li key={i} className="px-5 py-2.5 text-xs flex items-start gap-2">
+                {iss.severity === "error" ? (
+                  <AlertTriangle className="h-3.5 w-3.5 mt-0.5 text-red-300 shrink-0" />
+                ) : (
+                  <AlertTriangle className="h-3.5 w-3.5 mt-0.5 text-yellow-300 shrink-0" />
+                )}
+                <span className="text-muted-foreground">
+                  <span className="font-mono text-foreground/80">Row {iss.rowIndex + 2}</span> · {targetByKey(iss.field)?.label ?? iss.field}: {iss.message}
+                </span>
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
+
+      <div className="flex items-center justify-between">
+        <button onClick={onBack} className="text-sm text-muted-foreground hover:text-foreground">
+          ← Back
+        </button>
+        <Button
+          onClick={onNext}
+          disabled={blocked}
+          className="bg-foreground text-background hover:bg-foreground/90 rounded-full disabled:opacity-50"
+        >
+          {blocked ? "Resolve required fields to continue" : <>Looks right — confirm <ArrowRight className="h-4 w-4 ml-1" /></>}
+        </Button>
+      </div>
+    </div>
+  )
+}
+
+function CsvConfirmStep({
+  fileName,
+  result,
+  committing,
+  onBack,
+  onConfirm,
+}: {
+  fileName: string
+  result: CsvParseResp
+  committing: boolean
+  onBack: () => void
+  onConfirm: () => void
+}) {
+  const { validation, mappings } = result
+  const mappedFields = mappings.filter((m) => m.targetKey).length
+  const warnCount = validation.issues.filter((i) => i.severity === "warning").length
+
+  return (
+    <div className="rounded-2xl border border-border/50 bg-card p-6 max-w-2xl">
+      <h2 className="font-medium text-foreground mb-1">Confirm import</h2>
+      <p className="text-sm text-muted-foreground mb-5">
+        About to import <strong className="text-foreground">{validation.validRows}</strong> valid employee record
+        {validation.validRows === 1 ? "" : "s"} from <strong className="text-foreground">{fileName}</strong> across{" "}
+        <strong className="text-foreground">{mappedFields}</strong> mapped fields.
+      </p>
+      <ul className="text-sm text-foreground/90 space-y-2 mb-6">
+        <li className="flex items-center gap-2"><Check className="h-4 w-4 text-emerald-400" /> Every row validated against CRA-shaped types</li>
+        <li className="flex items-center gap-2"><Check className="h-4 w-4 text-emerald-400" /> Provinces normalised, SINs checksum-verified</li>
+        {warnCount > 0 ? (
+          <li className="flex items-center gap-2"><AlertTriangle className="h-4 w-4 text-yellow-400" /> {warnCount} warning{warnCount === 1 ? "" : "s"} acknowledged — review post-import</li>
+        ) : (
+          <li className="flex items-center gap-2"><Check className="h-4 w-4 text-emerald-400" /> No warnings outstanding</li>
+        )}
+        <li className="flex items-center gap-2"><Check className="h-4 w-4 text-emerald-400" /> Snapshot archived; rollback available for 30 days</li>
+      </ul>
+      <div className="flex items-center justify-between">
+        <button onClick={onBack} className="text-sm text-muted-foreground hover:text-foreground">
+          ← Back
+        </button>
+        <Button onClick={onConfirm} disabled={committing} className="bg-accent text-accent-foreground hover:bg-accent/90 rounded-full">
+          {committing ? <Loader2 className="h-4 w-4 animate-spin" /> : "Start import"}
         </Button>
       </div>
     </div>
