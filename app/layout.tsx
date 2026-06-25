@@ -7,6 +7,9 @@ import "./globals.css"
 import { LanguageProvider } from "@/lib/LanguageContext"
 import { translations, type Language } from "@/lib/translations"
 import { ChatWidget } from "@/components/chat-widget"
+import { ThemeProvider } from "@/components/theme-provider"
+import { AccessibilityProvider } from "@/components/accessibility-provider"
+import { A11yToolbar } from "@/components/a11y-toolbar"
 
 const _inter = Inter({ subsets: ["latin"] })
 const _geistMono = Geist_Mono({ subsets: ["latin"] })
@@ -209,7 +212,7 @@ export default async function RootLayout({
   }
 
   return (
-    <html lang={lang === "fr" ? "fr-CA" : "en-CA"}>
+    <html lang={lang === "fr" ? "fr-CA" : "en-CA"} suppressHydrationWarning>
       <head>
         <Script
           src={`https://www.googletagmanager.com/gtag/js?id=${GA_MEASUREMENT_ID}`}
@@ -231,10 +234,15 @@ export default async function RootLayout({
         />
       </head>
       <body className={`font-sans antialiased`}>
-        <LanguageProvider initialLanguage={lang}>
-          {children}
-          <ChatWidget />
-        </LanguageProvider>
+        <ThemeProvider attribute="class" defaultTheme="dark" enableSystem disableTransitionOnChange>
+          <AccessibilityProvider>
+            <LanguageProvider initialLanguage={lang}>
+              {children}
+              <ChatWidget />
+              <A11yToolbar />
+            </LanguageProvider>
+          </AccessibilityProvider>
+        </ThemeProvider>
       </body>
     </html>
   )
