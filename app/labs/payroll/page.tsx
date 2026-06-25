@@ -1,7 +1,8 @@
 "use client"
 
 import { useState } from "react"
-import { Leaf, Cpu, Brain, Server, ShieldCheck, DollarSign } from "lucide-react"
+import Link from "next/link"
+import { Leaf, Cpu, Brain, Server, ShieldCheck, DollarSign, Play, UserPlus, UserMinus, FileText, ArrowRight } from "lucide-react"
 import { integrations, type Integration } from "@/lib/labs/payroll/integrations"
 import { kpis } from "@/lib/labs/payroll/sample-data"
 import { IntegrationCard } from "@/components/labs/payroll/integration-card"
@@ -83,6 +84,34 @@ export default function PayrollLabsPage() {
               <p className="text-xs text-muted-foreground mt-1">{k.delta}</p>
             </div>
           ))}
+        </section>
+
+        {/* Lifecycle quick actions */}
+        <section>
+          <h2 className="text-sm font-medium text-accent uppercase tracking-widest mb-6">Run the payroll lifecycle</h2>
+          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-3">
+            {[
+              { href: "/labs/payroll/onboarding", icon: UserPlus, title: "Onboard", body: "TD1 intake → ready-to-pay" },
+              { href: "/labs/payroll/runs/new", icon: Play, title: "Run payroll", body: "Compute net, draft PD7A" },
+              { href: "/labs/payroll/termination", icon: UserMinus, title: "Terminate", body: "Final pay + ROE" },
+              { href: "/labs/payroll/year-end", icon: FileText, title: "Year-end", body: "T4 + T2200 slips" },
+            ].map((a) => (
+              <Link
+                key={a.href}
+                href={a.href}
+                className="group rounded-2xl border border-border/50 bg-card p-5 hover:border-accent/50 transition-all"
+              >
+                <div className="w-9 h-9 rounded-full bg-secondary flex items-center justify-center mb-3">
+                  <a.icon className="h-4 w-4 text-foreground" />
+                </div>
+                <h3 className="font-medium text-foreground mb-1 flex items-center gap-1">
+                  {a.title}
+                  <ArrowRight className="h-3.5 w-3.5 opacity-0 -translate-x-1 group-hover:opacity-100 group-hover:translate-x-0 transition-all" />
+                </h3>
+                <p className="text-sm text-muted-foreground leading-relaxed">{a.body}</p>
+              </Link>
+            ))}
+          </div>
         </section>
 
         {/* Feature strip */}

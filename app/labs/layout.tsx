@@ -8,7 +8,7 @@ export const metadata: Metadata = {
 }
 
 export default function LabsLayout({ children }: { children: React.ReactNode }) {
-  if (process.env.LABS_ENABLED !== "1") {
+  if (process.env.NODE_ENV === "production" && process.env.LABS_ENABLED !== "1") {
     notFound()
   }
 
