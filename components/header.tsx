@@ -14,6 +14,18 @@ export function Header() {
   const { language, setLanguage } = useLanguage()
   const t = translations[language]
 
+  // Single source of truth for primary nav — desktop and mobile render the same
+  // list, so they can never drift. Section anchors use "/#id" so they resolve
+  // from any page, not just the homepage.
+  const navLinks = [
+    { href: "/#services", label: t.nav.services },
+    { href: "/#micro-ai", label: t.nav.microAi },
+    { href: "/#finance", label: t.nav.finance },
+    { href: "/#innovation", label: t.nav.innovation },
+    { href: "/mission", label: t.nav.mission },
+    { href: "/insights", label: t.nav.insights },
+  ]
+
   return (
     <header className="fixed top-0 left-0 right-0 z-50 bg-background/90 backdrop-blur-md border-b border-border/50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -22,43 +34,16 @@ export function Header() {
             <Logo className="h-8 w-auto" />
           </Link>
 
-          <nav className="hidden md:flex items-center gap-10">
-            <Link
-              href="#services"
-              className="text-sm text-muted-foreground hover:text-foreground transition-colors duration-300"
-            >
-              {t.nav.services}
-            </Link>
-            <Link
-              href="#micro-ai"
-              className="text-sm text-muted-foreground hover:text-foreground transition-colors duration-300"
-            >
-              {t.nav.microAi}
-            </Link>
-            <Link
-              href="#finance"
-              className="text-sm text-muted-foreground hover:text-foreground transition-colors duration-300"
-            >
-              {t.nav.finance}
-            </Link>
-            <Link
-              href="#innovation"
-              className="text-sm text-muted-foreground hover:text-foreground transition-colors duration-300"
-            >
-              {t.nav.innovation}
-            </Link>
-            <Link
-              href="#about"
-              className="text-sm text-muted-foreground hover:text-foreground transition-colors duration-300"
-            >
-              {t.nav.about}
-            </Link>
-            <Link
-              href="/insights"
-              className="text-sm text-muted-foreground hover:text-foreground transition-colors duration-300"
-            >
-              {t.nav.insights}
-            </Link>
+          <nav className="hidden md:flex items-center gap-10" aria-label="Primary">
+            {navLinks.map((link) => (
+              <Link
+                key={link.href}
+                href={link.href}
+                className="text-sm text-muted-foreground hover:text-foreground transition-colors duration-300"
+              >
+                {link.label}
+              </Link>
+            ))}
           </nav>
 
           <div className="hidden md:flex items-center gap-4">
@@ -123,12 +108,18 @@ export function Header() {
               )}
             </div>
             
-            <Link href="/contact">
+            <Link
+              href="/contact"
+              className="text-sm text-muted-foreground hover:text-foreground transition-colors duration-300"
+            >
+              {t.nav.contact}
+            </Link>
+            <Link href="/get-started">
               <Button
                 size="sm"
                 className="bg-foreground text-background hover:bg-foreground/90 px-6 rounded-full transition-all duration-300"
               >
-                {t.nav.contact}
+                {t.nav.getStarted}
               </Button>
             </Link>
           </div>
@@ -147,26 +138,22 @@ export function Header() {
         {isOpen && (
           <div id="mobile-menu" className="md:hidden py-6 border-t border-border/50">
             <nav className="flex flex-col gap-4" aria-label="Mobile">
-              <Link href="#services" className="text-sm text-muted-foreground hover:text-foreground transition-colors">
-                {t.nav.services}
-              </Link>
-              <Link href="#micro-ai" className="text-sm text-muted-foreground hover:text-foreground transition-colors">
-                {t.nav.microAi}
-              </Link>
-              <Link href="#finance" className="text-sm text-muted-foreground hover:text-foreground transition-colors">
-                {t.nav.finance}
-              </Link>
+              {navLinks.map((link) => (
+                <Link
+                  key={link.href}
+                  href={link.href}
+                  onClick={() => setIsOpen(false)}
+                  className="text-sm text-muted-foreground hover:text-foreground transition-colors"
+                >
+                  {link.label}
+                </Link>
+              ))}
               <Link
-                href="#innovation"
+                href="/contact"
+                onClick={() => setIsOpen(false)}
                 className="text-sm text-muted-foreground hover:text-foreground transition-colors"
               >
-                {t.nav.innovation}
-              </Link>
-              <Link href="#about" className="text-sm text-muted-foreground hover:text-foreground transition-colors">
-                {t.nav.about}
-              </Link>
-              <Link href="/how-ai-evolved" className="text-sm text-muted-foreground hover:text-foreground transition-colors">
-                {t.nav.insights}
+                {t.nav.contact}
               </Link>
               <div className="flex items-center gap-4 pt-4">
                 <Link
@@ -229,9 +216,9 @@ export function Header() {
                   )}
                 </div>
               </div>
-              <Link href="/contact">
+              <Link href="/get-started" onClick={() => setIsOpen(false)}>
                 <Button size="sm" className="bg-foreground text-background hover:bg-foreground/90 mt-2 rounded-full w-full">
-                  {t.nav.contact}
+                  {t.nav.getStarted}
                 </Button>
               </Link>
             </nav>

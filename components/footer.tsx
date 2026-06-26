@@ -48,7 +48,7 @@ export function Footer() {
             <ul className="space-y-3">
               <li>
                 <Link
-                  href="#services"
+                  href="/#services"
                   className="text-muted-foreground hover:text-foreground transition-colors duration-300"
                 >
                   {t.footer.webDevelopment}
@@ -56,7 +56,7 @@ export function Footer() {
               </li>
               <li>
                 <Link
-                  href="#micro-ai"
+                  href="/#micro-ai"
                   className="text-muted-foreground hover:text-foreground transition-colors duration-300"
                 >
                   {t.footer.microAi}
@@ -64,10 +64,18 @@ export function Footer() {
               </li>
               <li>
                 <Link
-                  href="#finance"
+                  href="/#finance"
                   className="text-muted-foreground hover:text-foreground transition-colors duration-300"
                 >
                   {t.footer.finance}
+                </Link>
+              </li>
+              <li>
+                <Link
+                  href="/get-started"
+                  className="text-muted-foreground hover:text-foreground transition-colors duration-300"
+                >
+                  {t.nav.getStarted}
                 </Link>
               </li>
             </ul>
@@ -95,7 +103,7 @@ export function Footer() {
             <ul className="space-y-3">
               <li>
                 <Link
-                  href="#about"
+                  href="/#about"
                   className="text-muted-foreground hover:text-foreground transition-colors duration-300"
                 >
                   {t.footer.about}
@@ -109,6 +117,11 @@ export function Footer() {
               <li>
                 <Link href="/insights" className="text-muted-foreground hover:text-foreground transition-colors duration-300">
                   {t.footer.insights}
+                </Link>
+              </li>
+              <li>
+                <Link href="/how-ai-evolved" className="text-muted-foreground hover:text-foreground transition-colors duration-300">
+                  {t.nav.insights === 'Insights' ? 'How AI Evolved' : 'Évolution de l\'IA'}
                 </Link>
               </li>
               <li>
