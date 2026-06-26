@@ -26,8 +26,9 @@ export function HeroSection() {
             </p>
 
             <h1 className="text-5xl sm:text-6xl lg:text-6xl xl:text-7xl font-medium tracking-tight text-foreground leading-[1.05] mb-8">
-              The <em className="font-serif italic font-normal">{t.hero.intelligentWord}</em> infrastructure for growing{" "}
-              <span className="text-muted-foreground">{t.hero.canadianWord}</span>
+              {t.hero.title.split(t.hero.intelligentWord)[0]}
+              <em className="font-serif italic font-normal">{t.hero.intelligentWord}</em>
+              {t.hero.title.split(t.hero.intelligentWord)[1]}
             </h1>
 
             <p className="text-xl sm:text-2xl text-muted-foreground max-w-2xl leading-relaxed mb-12">
