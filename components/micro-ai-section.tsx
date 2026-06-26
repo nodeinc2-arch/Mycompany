@@ -18,7 +18,7 @@ export function MicroAISection() {
           <div className="lg:sticky lg:top-32">
             <p className="text-sm font-medium text-accent uppercase tracking-widest mb-4">{t.microAi.tagline}</p>
             <h2 className="text-4xl sm:text-5xl font-medium tracking-tight text-foreground mb-8 leading-tight">
-              Small, <em className="font-serif italic font-normal">{t.microAi.dedicatedWord}</em> AI agents.{" "}
+              {t.microAi.title.split(t.microAi.impactWord)[0]}
               <span className="text-muted-foreground">{t.microAi.impactWord}</span>
             </h2>
             <p className="text-lg text-muted-foreground leading-relaxed mb-6">
