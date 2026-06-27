@@ -9,6 +9,7 @@ import {
   Sparkles,
   Server,
   Plug,
+  Tag,
   Settings,
   ArrowRightLeft,
   Play,
@@ -35,6 +36,7 @@ const nav = [
   { href: "/labs/payroll/assistant", label: "AI assistant", icon: Sparkles, match: (p: string) => p.startsWith("/labs/payroll/assistant") },
   { href: "/labs/payroll/mcp", label: "MCP playground", icon: Server, match: (p: string) => p.startsWith("/labs/payroll/mcp") },
   { href: "/labs/payroll#integrations", label: "Integrations", icon: Plug, match: () => false },
+  { href: "/labs/payroll/pricing", label: "Pricing", icon: Tag, match: (p: string) => p.startsWith("/labs/payroll/pricing") },
   { href: "/labs/payroll/settings", label: "Settings", icon: Settings, match: (p: string) => p.startsWith("/labs/payroll/settings") },
 ]
 
