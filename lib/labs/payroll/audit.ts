@@ -22,6 +22,7 @@ export type AuditAction =
   | "bank.connected"
   | "bank.disconnected"
   | "rates.viewed"
+  | "rates.verified"
   | "report.exported"
 
 export type AuditSeverity = "info" | "notice" | "critical"
@@ -36,6 +37,7 @@ const SEVERITY: Record<AuditAction, AuditSeverity> = {
   "bank.connected": "critical",
   "bank.disconnected": "critical",
   "rates.viewed": "info",
+  "rates.verified": "notice",
   "report.exported": "notice",
 }
 
@@ -138,5 +140,6 @@ export const auditActionLabel: Record<AuditAction, string> = {
   "bank.connected": "Bank connected",
   "bank.disconnected": "Bank disconnected",
   "rates.viewed": "Tax rates viewed",
+  "rates.verified": "Tax rates verified",
   "report.exported": "Report exported",
 }
