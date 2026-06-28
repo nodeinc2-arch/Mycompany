@@ -48,8 +48,8 @@ sensitive personal information there is.
 ## 5. Commercial / SaaS
 - ⬜ 🔴 **Terms of Service** + **liability limitations** (payroll errors carry real financial consequences).
 - ⬜ **Cyber / E&O insurance.**
-- ⬜ Security posture: encryption at rest & in transit, access controls, **audit logs**, and eventually **SOC 2** (customer procurement will require it).
-- ⬜ **Authentication & multi-tenancy** — there is currently no auth; a demo company identity stands in. Real per-tenant isolation is required before any real data.
+- 🟡 Security posture: encryption at rest & in transit, access controls, and eventually **SOC 2** (procurement will require it). **Audit logging ✅** — append-only, tenant-scoped trail of sensitive actions (sign-in, run approved, payment released, bank connect/disconnect), exportable to CSV.
+- 🟡 **Authentication & multi-tenancy** — session + tenant (company) model landed (scaffold: no password/IdP, browser session). Real identity provider + per-tenant **data isolation** (a real DB) still required before any real data.
 
 ## 6. Repository & engineering security
 - 🔴 **Make the repo private** (admin-only; pending).
