@@ -2,6 +2,7 @@
 
 import Link from "next/link"
 import { usePathname } from "next/navigation"
+import { useSession } from "@/lib/labs/payroll/auth/session"
 import {
   LayoutDashboard,
   Users,
@@ -23,6 +24,8 @@ import {
   UserCircle,
   CalendarDays,
   FileSpreadsheet,
+  LogIn,
+  LogOut,
 } from "lucide-react"
 
 const nav = [
@@ -50,6 +53,7 @@ const nav = [
 
 export function Shell({ children }: { children: React.ReactNode }) {
   const pathname = usePathname()
+  const { tenant, ready, signOut } = useSession()
 
   return (
     <div className="flex min-h-[calc(100vh-2.5rem)]">
@@ -85,8 +89,38 @@ export function Shell({ children }: { children: React.ReactNode }) {
           })}
         </nav>
 
-        <div className="mt-auto pt-6 text-[10px] text-muted-foreground leading-relaxed px-2">
-          Scaffold build. No real credentials, no live CRA filings, no real money moved.
+        {/* Account / tenant */}
+        <div className="mt-auto pt-6">
+          {ready && tenant ? (
+            <div className="rounded-lg border border-border/50 bg-card/60 p-3">
+              <div className="flex items-center gap-2 mb-2">
+                <span className="w-7 h-7 rounded-md bg-accent/15 border border-accent/30 flex items-center justify-center text-accent text-xs font-semibold shrink-0">
+                  {tenant.companyName.charAt(0)}
+                </span>
+                <div className="min-w-0">
+                  <p className="text-xs font-medium text-foreground truncate">{tenant.companyName}</p>
+                  <p className="text-[10px] text-muted-foreground truncate">{tenant.ownerEmail}</p>
+                </div>
+              </div>
+              <div className="flex items-center justify-between text-[10px]">
+                <Link href="/labs/payroll/sign-in" className="text-muted-foreground hover:text-foreground">Switch</Link>
+                <button onClick={signOut} className="text-muted-foreground hover:text-foreground inline-flex items-center gap-1">
+                  <LogOut className="h-3 w-3" /> Sign out
+                </button>
+              </div>
+            </div>
+          ) : (
+            <Link
+              href="/labs/payroll/sign-in"
+              className="flex items-center gap-2 px-3 py-2 rounded-md text-sm border border-accent/30 bg-accent/5 text-foreground hover:bg-accent/10"
+            >
+              <LogIn className="h-4 w-4 text-accent" /> Sign in
+            </Link>
+          )}
+
+          <div className="pt-4 text-[10px] text-muted-foreground leading-relaxed px-1">
+            Scaffold build. No real credentials, no live CRA filings, no real money moved.
+          </div>
         </div>
       </aside>
 

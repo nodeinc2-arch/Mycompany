@@ -9,10 +9,11 @@
 
 import { useCallback, useEffect, useState } from "react"
 
-/** Demo company identity — stands in for an authenticated org/session. */
+/** Demo company identity — fallback when no session tenant is supplied. */
 export const DEMO_COMPANY_EMAIL = "owner@democorp.ca"
 
-const OVERRIDE_KEY = "pay-ca-entitlement-demo"
+/** Demo override is scoped per company so each tenant unlocks independently. */
+const overrideKey = (email: string) => `pay-ca-entitlement-demo:${email.toLowerCase()}`
 
 export type EntitlementState = {
   active: boolean
@@ -35,7 +36,7 @@ export function useEntitlement(email: string = DEMO_COMPANY_EMAIL) {
     // Demo override wins — lets the gate be exercised without Stripe.
     let override = false
     try {
-      override = localStorage.getItem(OVERRIDE_KEY) === "1"
+      override = localStorage.getItem(overrideKey(email)) === "1"
     } catch {
       /* ignore */
     }
@@ -70,14 +71,14 @@ export function useEntitlement(email: string = DEMO_COMPANY_EMAIL) {
   const setDemoActive = useCallback(
     (on: boolean) => {
       try {
-        if (on) localStorage.setItem(OVERRIDE_KEY, "1")
-        else localStorage.removeItem(OVERRIDE_KEY)
+        if (on) localStorage.setItem(overrideKey(email), "1")
+        else localStorage.removeItem(overrideKey(email))
       } catch {
         /* ignore */
       }
       refresh()
     },
-    [refresh],
+    [refresh, email],
   )
 
   return { ...state, refresh, setDemoActive }

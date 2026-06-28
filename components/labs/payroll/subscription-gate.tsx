@@ -1,14 +1,16 @@
 "use client"
 
 import Link from "next/link"
-import { Lock, ArrowRight, Sparkles } from "lucide-react"
-import { useEntitlement } from "@/lib/labs/payroll/use-entitlement"
+import { Lock, ArrowRight, Sparkles, LogIn } from "lucide-react"
+import { useEntitlement, DEMO_COMPANY_EMAIL } from "@/lib/labs/payroll/use-entitlement"
+import { useSession } from "@/lib/labs/payroll/auth/session"
 import { pricing, priceLabel } from "@/lib/labs/payroll/pricing"
 
-// Wraps a paid feature. While entitlement is loading, renders nothing visible
-// (avoids a flash). If the company has an active subscription, renders children.
-// Otherwise shows a "subscribe to continue" panel with a checkout CTA — and, in
-// the prototype, a one-click demo unlock so the gate can be walked through.
+// Wraps a paid feature. Requires a signed-in company (tenant); entitlement is
+// scoped to that tenant. While loading, renders nothing visible (avoids a
+// flash). Active subscription → children. No session → "sign in" prompt.
+// Otherwise a "subscribe to continue" panel (checkout CTA + prototype demo
+// unlock so the gate can be walked through).
 
 export function SubscriptionGate({
   feature,
@@ -17,13 +19,36 @@ export function SubscriptionGate({
   feature: string
   children: React.ReactNode
 }) {
-  const { active, ready, demo, setDemoActive } = useEntitlement()
+  const { tenant, ready: sessionReady } = useSession()
+  // Entitlement is keyed to the signed-in company's owner email.
+  const { active, ready, demo, setDemoActive } = useEntitlement(tenant?.ownerEmail ?? DEMO_COMPANY_EMAIL)
 
-  if (!ready) {
+  if (!sessionReady || !ready) {
     return (
       <div className="px-4 sm:px-6 lg:px-8 py-16 max-w-3xl mx-auto">
         <div className="rounded-2xl border border-border/50 bg-card p-6 text-sm text-muted-foreground">
           Checking your subscription…
+        </div>
+      </div>
+    )
+  }
+
+  // No company signed in — must pick one before any paid feature.
+  if (!tenant) {
+    return (
+      <div className="px-4 sm:px-6 lg:px-8 py-16 max-w-3xl mx-auto">
+        <div className="rounded-3xl border border-accent/30 bg-accent/5 p-8 sm:p-10 text-center">
+          <div className="w-12 h-12 rounded-full bg-accent/15 border border-accent/30 flex items-center justify-center mx-auto mb-5">
+            <LogIn className="h-5 w-5 text-accent" />
+          </div>
+          <h1 className="text-2xl font-medium text-foreground mb-2">Sign in to use {feature}</h1>
+          <p className="text-muted-foreground mb-7">{feature} is scoped to your company. Sign in to continue.</p>
+          <Link
+            href="/labs/payroll/sign-in"
+            className="inline-flex items-center gap-2 rounded-full bg-accent text-accent-foreground px-6 py-3 text-sm font-medium hover:bg-accent/90"
+          >
+            Sign in <ArrowRight className="h-4 w-4" />
+          </Link>
         </div>
       </div>
     )
