@@ -9,7 +9,7 @@ export const pricing = {
   /** One-time implementation: migration, bank connect, CRA setup, first run. */
   setupFee: 1500,
   /** Recurring platform fee. */
-  monthly: 99,
+  monthly: 249,
   currency: "CAD",
   /** Who the single plan is aimed at. */
   audience: "Canadian businesses, 5–250 employees",

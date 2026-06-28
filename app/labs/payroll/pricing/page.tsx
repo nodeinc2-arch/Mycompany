@@ -1,8 +1,15 @@
 import Link from "next/link"
-import { Check, ArrowRight, Sparkles } from "lucide-react"
+import { Check, ArrowRight, Sparkles, CheckCircle2, XCircle } from "lucide-react"
 import { pricing, priceLabel, includedGroups, pricingFaqs } from "@/lib/labs/payroll/pricing"
+import { CheckoutButton } from "@/components/labs/payroll/checkout-button"
 
-export default function PricingPage() {
+export default async function PricingPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ checkout?: string }>
+}) {
+  const { checkout } = await searchParams
+
   return (
     <div className="px-4 sm:px-6 lg:px-8 py-12 lg:py-16 max-w-5xl mx-auto">
       <div className="mb-2 text-xs text-muted-foreground">
@@ -10,6 +17,22 @@ export default function PricingPage() {
         <span className="mx-2">/</span>
         <span>Pricing</span>
       </div>
+
+      {checkout === "success" && (
+        <div className="mb-8 rounded-2xl border border-emerald-500/40 bg-emerald-500/5 p-4 flex items-start gap-3">
+          <CheckCircle2 className="h-5 w-5 text-emerald-400 mt-0.5 shrink-0" />
+          <p className="text-sm text-foreground">
+            Checkout complete — thanks! We&apos;ll reach out to schedule your implementation.
+            <span className="text-muted-foreground"> (Test mode — no funds captured.)</span>
+          </p>
+        </div>
+      )}
+      {checkout === "cancelled" && (
+        <div className="mb-8 rounded-2xl border border-border/60 bg-secondary/30 p-4 flex items-start gap-3">
+          <XCircle className="h-5 w-5 text-muted-foreground mt-0.5 shrink-0" />
+          <p className="text-sm text-muted-foreground">Checkout cancelled. No charge was made.</p>
+        </div>
+      )}
 
       {/* Hero */}
       <section className="text-center max-w-2xl mx-auto mb-12">
@@ -51,12 +74,7 @@ export default function PricingPage() {
             </div>
           </div>
 
-          <Link
-            href="/get-started"
-            className="inline-flex w-full sm:w-auto items-center justify-center gap-2 rounded-full bg-accent text-accent-foreground px-7 py-3 text-sm font-medium hover:bg-accent/90 transition-colors"
-          >
-            Get started <ArrowRight className="h-4 w-4" />
-          </Link>
+          <CheckoutButton className="inline-flex w-full sm:w-auto items-center justify-center gap-2 rounded-full bg-accent text-accent-foreground px-7 py-3 text-sm font-medium hover:bg-accent/90 transition-colors disabled:opacity-60" />
           <p className="text-xs text-muted-foreground mt-4">
             Month-to-month. {priceLabel(pricing.monthly)} billed monthly after a one-time implementation.
           </p>
@@ -110,12 +128,7 @@ export default function PricingPage() {
           Connect a bank, import your team, and run your first pay cycle with us alongside you.
         </p>
         <div className="flex flex-wrap items-center justify-center gap-3">
-          <Link
-            href="/get-started"
-            className="inline-flex items-center gap-2 rounded-full bg-accent text-accent-foreground px-7 py-3 text-sm font-medium hover:bg-accent/90"
-          >
-            Get started <ArrowRight className="h-4 w-4" />
-          </Link>
+          <CheckoutButton />
           <Link
             href="/contact"
             className="inline-flex items-center gap-2 rounded-full border border-border/60 px-7 py-3 text-sm font-medium text-foreground hover:bg-secondary/50"
