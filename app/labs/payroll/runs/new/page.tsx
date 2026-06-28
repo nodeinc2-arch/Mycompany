@@ -6,6 +6,7 @@ import { sampleEmployees } from "@/lib/labs/payroll/sample-data"
 import { suggestNextPeriodEnd, remittanceDueDate, type RunDraft, type RunOverride } from "@/lib/labs/payroll/pay-run"
 import { Button } from "@/components/ui/button"
 import { Check, ArrowRight, Loader2, Calendar, AlertTriangle, Sparkles, FileText } from "lucide-react"
+import { SubscriptionGate } from "@/components/labs/payroll/subscription-gate"
 
 type Step = "period" | "review" | "approve" | "done"
 
@@ -26,6 +27,14 @@ type SubmitResp = {
 const DEFAULT_PERIOD = suggestNextPeriodEnd("2026-05-15")
 
 export default function NewRunPage() {
+  return (
+    <SubscriptionGate feature="Run payroll">
+      <NewRunInner />
+    </SubscriptionGate>
+  )
+}
+
+function NewRunInner() {
   const [step, setStep] = useState<Step>("period")
   const [periodEnd, setPeriodEnd] = useState(DEFAULT_PERIOD)
   const [overrides, setOverrides] = useState<Record<string, RunOverride>>({})

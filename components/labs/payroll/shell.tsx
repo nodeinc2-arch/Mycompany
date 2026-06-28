@@ -19,10 +19,15 @@ import {
   UserMinus,
   FileText,
   Globe,
+  Building2,
+  UserCircle,
+  CalendarDays,
+  FileSpreadsheet,
 } from "lucide-react"
 
 const nav = [
   { href: "/labs/payroll", label: "Overview", icon: LayoutDashboard, match: (p: string) => p === "/labs/payroll" },
+  { href: "/labs/payroll/get-started", label: "Get started", icon: Building2, match: (p: string) => p.startsWith("/labs/payroll/get-started") },
   { href: "/labs/payroll/migrate", label: "Migrate from…", icon: ArrowRightLeft, match: (p: string) => p.startsWith("/labs/payroll/migrate") },
   { href: "/labs/payroll/employees", label: "Employees", icon: Users, match: (p: string) => p.startsWith("/labs/payroll/employees") },
   { href: "/labs/payroll/onboarding", label: "Onboarding", icon: UserPlus, match: (p: string) => p.startsWith("/labs/payroll/onboarding") },
@@ -30,6 +35,9 @@ const nav = [
   { href: "/labs/payroll/runs/RUN-2026-10", label: "Pay runs", icon: PlayCircle, match: (p: string) => p.startsWith("/labs/payroll/runs") && p !== "/labs/payroll/runs/new" },
   { href: "/labs/payroll/banking", label: "Connect bank", icon: Landmark, match: (p: string) => p.startsWith("/labs/payroll/banking") },
   { href: "/labs/payroll/payments", label: "Pay employees", icon: Banknote, match: (p: string) => p.startsWith("/labs/payroll/payments") },
+  { href: "/labs/payroll/calendar", label: "Calendar", icon: CalendarDays, match: (p: string) => p.startsWith("/labs/payroll/calendar") },
+  { href: "/labs/payroll/reports", label: "Reports", icon: FileSpreadsheet, match: (p: string) => p.startsWith("/labs/payroll/reports") },
+  { href: "/labs/payroll/portal", label: "Employee portal", icon: UserCircle, match: (p: string) => p.startsWith("/labs/payroll/portal") },
   { href: "/labs/payroll/termination", label: "Termination", icon: UserMinus, match: (p: string) => p.startsWith("/labs/payroll/termination") },
   { href: "/labs/payroll/year-end", label: "Year-end", icon: FileText, match: (p: string) => p.startsWith("/labs/payroll/year-end") },
   { href: "/labs/payroll/tax-rules", label: "Tax rules", icon: Globe, match: (p: string) => p.startsWith("/labs/payroll/tax-rules") },

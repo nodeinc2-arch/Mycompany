@@ -23,6 +23,7 @@ import {
 } from "@/lib/labs/payroll/banking"
 import { connectedBankToFunding } from "@/lib/labs/payroll/bank-connection"
 import { useBankConnection } from "@/lib/labs/payroll/use-bank-connection"
+import { SubscriptionGate } from "@/components/labs/payroll/subscription-gate"
 import { samplePayRuns } from "@/lib/labs/payroll/sample-data"
 
 const money = (n: number) =>
@@ -32,6 +33,14 @@ const money = (n: number) =>
 const targetRun = samplePayRuns.find((r) => r.status === "draft") ?? samplePayRuns[0]
 
 export default function PaymentsPage() {
+  return (
+    <SubscriptionGate feature="Pay employees">
+      <PaymentsInner />
+    </SubscriptionGate>
+  )
+}
+
+function PaymentsInner() {
   // A bank must be connected first — it is the funding source for the batch.
   const { bank, hydrated, isConnected } = useBankConnection()
 
@@ -145,7 +154,7 @@ export default function PaymentsPage() {
 
       {/* Totals */}
       <div className="grid sm:grid-cols-3 gap-3 mb-8">
-        <Kpi label="Employee deposits" value={money(batch.totals.eftTotal)} note={`${batch.totals.payableCount} payable · ${batch.totals.heldCount} held`} />
+        <Kpi label="Employee deposits" value={money(batch.totals.eftTotal)} note={`${batch.totals.payableCount} EFT · ${batch.totals.chequeCount} cheque · ${batch.totals.heldCount} held`} />
         <Kpi label="CRA remittance" value={money(batch.totals.remittanceTotal)} note={`PD7A due ${batch.remittance.dueDate}`} />
         <Kpi label="Total outflow" value={money(batch.totals.grandTotal)} accent />
       </div>
@@ -201,6 +210,10 @@ export default function PaymentsPage() {
                     {c.method === "eft" ? (
                       <span className="inline-flex items-center gap-1 text-xs text-emerald-400">
                         <CheckCircle2 className="h-3.5 w-3.5" /> EFT
+                      </span>
+                    ) : c.method === "cheque" ? (
+                      <span className="inline-flex items-center gap-1 text-xs text-amber-400">
+                        <FileText className="h-3.5 w-3.5" /> Cheque
                       </span>
                     ) : (
                       <span className="inline-flex items-center gap-1 text-xs text-yellow-400" title={c.issues.join(" ")}>
