@@ -24,6 +24,7 @@ import {
 import { connectedBankToFunding } from "@/lib/labs/payroll/bank-connection"
 import { useBankConnection } from "@/lib/labs/payroll/use-bank-connection"
 import { SubscriptionGate } from "@/components/labs/payroll/subscription-gate"
+import { useAudit } from "@/lib/labs/payroll/use-audit"
 import { samplePayRuns } from "@/lib/labs/payroll/sample-data"
 
 const money = (n: number) =>
@@ -43,6 +44,7 @@ export default function PaymentsPage() {
 function PaymentsInner() {
   // A bank must be connected first — it is the funding source for the batch.
   const { bank, hydrated, isConnected } = useBankConnection()
+  const { log } = useAudit()
 
   // The batch is computed deterministically from the shared engines, funded by
   // the connected account. Recomputes if the connected bank changes.
@@ -84,6 +86,12 @@ function PaymentsInner() {
       reviewer: approval.reviewer,
       approvedAt: approval.approvedAt,
       cpa005: renderCpa005(batch, approval.reviewer, approval.approvedAt),
+    })
+    // Audit the released payment batch (critical event).
+    log("payment.released", {
+      target: batch.runId,
+      actor: approval.reviewer,
+      details: `${money(batch.totals.grandTotal)} total · ${batch.totals.payableCount} EFT`,
     })
   }
 

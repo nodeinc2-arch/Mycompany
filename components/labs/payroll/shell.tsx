@@ -24,6 +24,7 @@ import {
   UserCircle,
   CalendarDays,
   FileSpreadsheet,
+  ScrollText,
   LogIn,
   LogOut,
 } from "lucide-react"
@@ -44,6 +45,7 @@ const nav = [
   { href: "/labs/payroll/termination", label: "Termination", icon: UserMinus, match: (p: string) => p.startsWith("/labs/payroll/termination") },
   { href: "/labs/payroll/year-end", label: "Year-end", icon: FileText, match: (p: string) => p.startsWith("/labs/payroll/year-end") },
   { href: "/labs/payroll/tax-rules", label: "Tax rules", icon: Globe, match: (p: string) => p.startsWith("/labs/payroll/tax-rules") },
+  { href: "/labs/payroll/audit", label: "Audit log", icon: ScrollText, match: (p: string) => p.startsWith("/labs/payroll/audit") },
   { href: "/labs/payroll/assistant", label: "AI assistant", icon: Sparkles, match: (p: string) => p.startsWith("/labs/payroll/assistant") },
   { href: "/labs/payroll/mcp", label: "MCP playground", icon: Server, match: (p: string) => p.startsWith("/labs/payroll/mcp") },
   { href: "/labs/payroll#integrations", label: "Integrations", icon: Plug, match: () => false },

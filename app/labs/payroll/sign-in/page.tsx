@@ -4,6 +4,7 @@ import { useRouter } from "next/navigation"
 import Link from "next/link"
 import { Building2, ArrowRight, LogIn, CheckCircle2 } from "lucide-react"
 import { useSession, demoTenants } from "@/lib/labs/payroll/auth/session"
+import { getTenantById } from "@/lib/labs/payroll/auth/tenant"
 
 // Scaffold sign-in: pick a demo company to act as. No password / no IdP — this
 // is the seam where real auth (Auth.js / Clerk / WorkOS) plugs in later.
@@ -14,6 +15,15 @@ export default function SignInPage() {
 
   const choose = (id: string) => {
     signInAs(id)
+    // Audit the sign-in (best-effort; the tenant is the one just chosen).
+    const t = getTenantById(id)
+    if (t) {
+      void fetch("/api/labs/payroll/audit", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ tenantId: t.id, actor: t.ownerEmail, action: "auth.signin" }),
+      }).catch(() => {})
+    }
     router.push("/labs/payroll")
   }
 

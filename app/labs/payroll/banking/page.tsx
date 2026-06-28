@@ -11,14 +11,16 @@ import {
   Unlink,
   ArrowRight,
 } from "lucide-react"
-import { connectableBanks } from "@/lib/labs/payroll/bank-connection"
+import { connectableBanks, getConnectableBank } from "@/lib/labs/payroll/bank-connection"
 import { useBankConnection } from "@/lib/labs/payroll/use-bank-connection"
+import { useAudit } from "@/lib/labs/payroll/use-audit"
 
 const money = (n: number) =>
   n.toLocaleString("en-CA", { style: "currency", currency: "CAD", minimumFractionDigits: 0 })
 
 export default function BankingPage() {
   const { bank, hydrated, isConnected, connect, disconnect } = useBankConnection()
+  const { log } = useAudit()
   // Tracks which bank is mid-"OAuth" so we can show a connecting spinner.
   const [connecting, setConnecting] = useState<string | null>(null)
 
@@ -28,7 +30,13 @@ export default function BankingPage() {
     setTimeout(() => {
       connect(id)
       setConnecting(null)
+      log("bank.connected", { target: getConnectableBank(id)?.name ?? id })
     }, 900)
+  }
+
+  const handleDisconnect = () => {
+    log("bank.disconnected", { target: bank?.bankName })
+    disconnect()
   }
 
   return (
@@ -67,7 +75,7 @@ export default function BankingPage() {
               </div>
             </div>
             <button
-              onClick={disconnect}
+              onClick={handleDisconnect}
               className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-border/60 text-sm text-muted-foreground hover:text-foreground hover:border-border"
             >
               <Unlink className="h-3.5 w-3.5" /> Disconnect
