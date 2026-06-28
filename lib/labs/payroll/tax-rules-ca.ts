@@ -1,6 +1,14 @@
 // DEMO RATES — illustrative scaffold only. Do not use for real payroll.
 // Real CRA, CPP, EI, and provincial rates change yearly and must be loaded from
 // authoritative sources (CRA T4127 payroll deductions tables) before going live.
+//
+// As of the compliance pass, the gross-to-net calculation delegates to
+// ./compliance/calc (real progressive federal + provincial brackets and basic
+// personal amount credits). The legacy constants below are retained because
+// other modules import them (e.g. ei2026 for the employer EI multiplier) and
+// for the tax-rules page; the authoritative values live in ./compliance.
+
+import { computeWithholding } from "./compliance/calc"
 
 export type ProvinceCode =
   | "AB" | "BC" | "MB" | "NB" | "NL" | "NS" | "NT" | "NU" | "ON" | "PE" | "QC" | "SK" | "YT"
@@ -85,40 +93,27 @@ export type GrossToNetOutput = {
   notes: string[]
 }
 
-// Highly simplified illustrative calc — real CRA T4127 logic is far more involved.
+// Delegates to the compliance calc (real progressive provincial brackets +
+// basic personal amount credits + CPP2) and adapts to the legacy output shape
+// the pay-run/banking/reports layers already consume. Still an ESTIMATE, not
+// the full CRA T4127 formula, and rates are UNVERIFIED — see ./compliance.
 export function estimateGrossToNet(input: GrossToNetInput): GrossToNetOutput {
-  const annualGross = input.grossPerPeriod * input.periodsPerYear
-  const cppPensionable = Math.max(0, Math.min(annualGross, cpp2026.yearlyMaximumPensionableEarnings) - cpp2026.basicExemption)
-  const cppAnnual = cppPensionable * cpp2026.employeeRateBase
-  const isQuebec = input.province === "QC"
-  const eiAnnual = Math.min(annualGross, ei2026.maximumInsurableEarnings) * (isQuebec ? ei2026.quebecEmployeeRate : ei2026.employeeRate)
-
-  let remaining = annualGross
-  let federalTax = 0
-  let lastCap = 0
-  for (const bracket of federalBrackets2026) {
-    const cap = bracket.upTo ?? Number.POSITIVE_INFINITY
-    const taxable = Math.max(0, Math.min(remaining, cap - lastCap))
-    federalTax += taxable * bracket.rate
-    remaining -= taxable
-    lastCap = cap
-    if (remaining <= 0) break
-  }
-
-  const provincialTaxEstimate = annualGross * 0.095
-  const annualNet = annualGross - cppAnnual - eiAnnual - federalTax - provincialTaxEstimate
+  const w = computeWithholding({
+    grossPerPeriod: input.grossPerPeriod,
+    periodsPerYear: input.periodsPerYear,
+    province: input.province,
+  })
 
   return {
-    gross: input.grossPerPeriod,
-    cpp: cppAnnual / input.periodsPerYear,
-    ei: eiAnnual / input.periodsPerYear,
-    federalTax: federalTax / input.periodsPerYear,
-    provincialTaxEstimate: provincialTaxEstimate / input.periodsPerYear,
-    net: annualNet / input.periodsPerYear,
+    gross: w.gross,
+    cpp: w.cpp,
+    ei: w.ei,
+    federalTax: w.federalTax,
+    provincialTaxEstimate: w.provincialTax,
+    net: w.net,
     notes: [
-      "Demo calculation. Not CRA-certified.",
       `Province: ${input.province} — ${provincialTaxNote[input.province]}`,
-      isQuebec ? "Quebec employees use QPP/QPIP, not CPP/EI." : "ROC employees use CPP/EI.",
+      ...w.notes,
     ],
   }
 }
