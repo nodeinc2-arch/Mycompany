@@ -40,6 +40,9 @@ export async function POST(req: Request) {
       line_items: checkoutLineItems(),
       customer_email: body.email,
       allow_promotion_codes: true,
+      // Carry the email onto the subscription so its lifecycle events can be
+      // tied back to an entitlement record even without a customer lookup.
+      subscription_data: body.email ? { metadata: { customer_email: body.email } } : undefined,
       success_url: `${base}/labs/payroll/pricing?checkout=success&session_id={CHECKOUT_SESSION_ID}`,
       cancel_url: `${base}/labs/payroll/pricing?checkout=cancelled`,
     })
