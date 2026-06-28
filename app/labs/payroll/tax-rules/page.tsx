@@ -9,9 +9,24 @@ import {
   type CountryCode,
 } from "@/lib/labs/payroll/tax"
 import { Breadcrumb, Header } from "../onboarding/page"
-import { Globe } from "lucide-react"
+import { Globe, ShieldAlert, ExternalLink } from "lucide-react"
+import {
+  federalProvenance,
+  cppProvenance,
+  eiProvenance,
+  provincialProvenance,
+  anyNeedsVerification,
+  type RateProvenance,
+} from "@/lib/labs/payroll/compliance/rates-2026"
 
 const COUNTRIES: CountryCode[] = ["CA", "US", "MX"]
+
+const CA_PROVENANCE: { label: string; p: RateProvenance }[] = [
+  { label: "Federal income tax", p: federalProvenance },
+  { label: "CPP / CPP2", p: cppProvenance },
+  { label: "Employment Insurance", p: eiProvenance },
+  { label: "Provincial / territorial", p: provincialProvenance },
+]
 
 export default function TaxRulesPage() {
   const [country, setCountry] = useState<CountryCode>("CA")
@@ -47,6 +62,66 @@ export default function TaxRulesPage() {
         title="Multi-country tax rules"
         body="One engine, three countries. Canada (CPP/EI + provinces), United States (FICA/Medicare + states), and Mexico (ISR/IMSS, federal-only). Pick a jurisdiction to see its brackets and a live gross-to-net breakdown."
       />
+
+      {/* Compliance verification banner */}
+      {anyNeedsVerification() && (
+        <div className="rounded-2xl border border-amber-500/40 bg-amber-500/5 p-5 mb-6 flex items-start gap-3">
+          <ShieldAlert className="h-5 w-5 text-amber-400 mt-0.5 shrink-0" />
+          <div>
+            <p className="text-sm font-medium text-foreground mb-1">Rates not yet verified — do not use for real payroll</p>
+            <p className="text-sm text-muted-foreground">
+              Canadian rates use real progressive brackets and basic personal amount credits (a major
+              improvement over a flat estimate), but the values are best-effort and have not been verified
+              against the authoritative CRA T4127 / PDOC. This is also the simplified annual bracket method,
+              not the full CRA source-deduction formula (surtaxes, health premiums, and claim-code tables are
+              not modelled).
+            </p>
+          </div>
+        </div>
+      )}
+
+      {/* Canada rate provenance */}
+      {country === "CA" && (
+        <div className="rounded-2xl border border-border/50 bg-card overflow-hidden mb-6">
+          <div className="px-5 py-3 border-b border-border/50">
+            <h3 className="font-medium text-foreground">Canada — rate sources &amp; verification</h3>
+          </div>
+          <table className="w-full text-sm">
+            <thead className="text-[10px] uppercase tracking-widest text-muted-foreground bg-secondary/40">
+              <tr>
+                <th className="text-left font-medium px-5 py-2">Component</th>
+                <th className="text-left font-medium px-5 py-2">Effective</th>
+                <th className="text-left font-medium px-5 py-2">Status</th>
+                <th className="text-right font-medium px-5 py-2">Source</th>
+              </tr>
+            </thead>
+            <tbody>
+              {CA_PROVENANCE.map(({ label, p }) => (
+                <tr key={label} className="border-t border-border/40">
+                  <td className="px-5 py-2.5 text-foreground">{label}</td>
+                  <td className="px-5 py-2.5 text-muted-foreground">{p.effectiveDate}</td>
+                  <td className="px-5 py-2.5">
+                    {p.needsVerification ? (
+                      <span className="inline-flex items-center gap-1 text-[11px] px-2 py-0.5 rounded-full bg-amber-500/15 text-amber-400 border border-amber-500/30">
+                        Needs verification
+                      </span>
+                    ) : (
+                      <span className="inline-flex items-center gap-1 text-[11px] px-2 py-0.5 rounded-full bg-emerald-500/15 text-emerald-400 border border-emerald-500/30">
+                        Verified
+                      </span>
+                    )}
+                  </td>
+                  <td className="px-5 py-2.5 text-right">
+                    <a href={p.sourceUrl} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1 text-accent hover:underline">
+                      CRA <ExternalLink className="h-3 w-3" />
+                    </a>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      )}
 
       {/* Country switch */}
       <div className="flex items-center gap-2 mb-6">
