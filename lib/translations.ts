@@ -114,6 +114,13 @@ export const translations = {
         'PIPEDA-compliant data handling',
       ],
       tools: ['Workday', 'ADP', 'Ceridian', 'SAP', 'QuickBooks', 'Xero', 'Power BI', 'Local LLMs'],
+      product: {
+        badge: 'New · In development',
+        name: 'Pay.ca',
+        description: 'Our own AI-native payroll platform for Canadian businesses — connect your bank, run payroll, and pay employees by direct deposit with a human approval step before any money moves. CRA-first: CPP, EI, PD7A, T4 and ROE handled natively.',
+        cta: 'Explore Pay.ca',
+        href: '/labs/payroll',
+      },
     },
     propTech: {
       tagline: 'Innovation · PropTech AI',
@@ -281,6 +288,13 @@ export const translations = {
         'Gestion des données conforme à la PIPEDA',
       ],
       tools: ['Workday', 'ADP', 'Ceridian', 'SAP', 'QuickBooks', 'Xero', 'Power BI', 'Local LLMs'],
+      product: {
+        badge: 'Nouveau · En développement',
+        name: 'Pay.ca',
+        description: 'Notre propre plateforme de paie à IA native pour les entreprises canadiennes — connectez votre banque, faites la paie et payez les employés par dépôt direct, avec une étape d\'approbation humaine avant tout mouvement d\'argent. Conçue pour l\'ARC : RPC, AE, PD7A, T4 et RE traités nativement.',
+        cta: 'Découvrir Pay.ca',
+        href: '/labs/payroll',
+      },
     },
     propTech: {
       tagline: 'Innovation · IA PropTech',

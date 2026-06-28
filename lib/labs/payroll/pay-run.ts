@@ -7,7 +7,7 @@
 // into the shape the run detail page and the run wizard both consume.
 
 import { estimateGrossToNet, ei2026, type ProvinceCode } from "./tax-rules-ca"
-import { sampleEmployees, type Employee } from "./sample-data"
+import { sampleEmployees, type Employee, type BankAccount } from "./sample-data"
 
 export type RunStatus = "draft" | "review" | "submitted" | "paid"
 
@@ -30,6 +30,8 @@ export type RunLine = {
   employerEi: number
   /** Excluded from this run (e.g. on leave) — gross counts as 0. */
   excluded: boolean
+  /** Direct-deposit coords carried through for the banking/EFT layer. */
+  bank?: BankAccount
   notes: string[]
 }
 
@@ -119,6 +121,7 @@ export function buildRunDraft(
         employerCpp: 0,
         employerEi: 0,
         excluded: true,
+        bank: emp.bank,
         notes: ["Excluded from this run."],
       }
     }
@@ -154,6 +157,7 @@ export function buildRunDraft(
       employerCpp,
       employerEi,
       excluded: false,
+      bank: emp.bank,
       notes,
     }
   })

@@ -8,6 +8,14 @@ workers_dev = true
 directory = ".open-next/assets"
 binding = "ASSETS"
 
+# Durable store for Pay.ca billing entitlement. Create the namespace once with
+#   wrangler kv namespace create PAYCA_KV
+# then paste the returned id below. Until then, the app falls back to an
+# in-memory store (see lib/labs/payroll/entitlement.ts).
+[[kv_namespaces]]
+binding = "PAYCA_KV"
+id = "REPLACE_WITH_KV_NAMESPACE_ID"
+
 [[routes]]
 pattern = "www.node2.io"
 zone_name = "node2.io"

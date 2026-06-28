@@ -1,6 +1,7 @@
 "use client"
 
-import { CheckCircle2, ShieldCheck, Layers, Lock, CloudOff } from "lucide-react"
+import Link from "next/link"
+import { CheckCircle2, ShieldCheck, Layers, Lock, CloudOff, ArrowRight } from "lucide-react"
 import { useLanguage } from "@/lib/LanguageContext"
 import { translations } from "@/lib/translations"
 
@@ -9,6 +10,7 @@ export function FinanceSection() {
   const t = translations[language]
   const features = t.finance.features
   const tools = t.finance.tools
+  const product = t.finance.product
 
   return (
     <section
@@ -62,6 +64,27 @@ export function FinanceSection() {
               </div>
               <p className="text-sm text-accent-foreground/85 leading-relaxed">{t.finance.privacyNote}</p>
             </div>
+
+            {/* Pay.ca product callout */}
+            <Link
+              href={product.href}
+              className="group block rounded-2xl border border-accent-foreground/30 bg-accent-foreground text-accent p-5 mb-8 transition-all duration-300 hover:shadow-lg"
+            >
+              <div className="flex items-center justify-between gap-4 mb-2">
+                <div className="flex items-center gap-2">
+                  <span className="text-lg font-medium font-serif italic">{product.name}</span>
+                  <span className="px-2 py-0.5 text-[10px] font-medium uppercase tracking-widest rounded-full bg-accent/15 text-accent">
+                    {product.badge}
+                  </span>
+                </div>
+                <ArrowRight className="h-4 w-4 shrink-0 -translate-x-1 opacity-70 group-hover:translate-x-0 group-hover:opacity-100 transition-all" />
+              </div>
+              <p className="text-sm leading-relaxed text-accent/80">{product.description}</p>
+              <span className="mt-3 inline-flex items-center gap-1.5 text-sm font-medium">
+                {product.cta}
+                <ArrowRight className="h-3.5 w-3.5" />
+              </span>
+            </Link>
 
             <div className="flex flex-wrap gap-2">
               {tools.map((tool) => (
