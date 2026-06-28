@@ -76,6 +76,9 @@ export default function TaxRulesPage() {
               not the full CRA source-deduction formula (surtaxes, health premiums, and claim-code tables are
               not modelled).
             </p>
+            <a href="/labs/payroll/compliance" className="inline-flex items-center gap-1 text-sm text-accent hover:underline mt-2">
+              Verify rates against CRA →
+            </a>
           </div>
         </div>
       )}

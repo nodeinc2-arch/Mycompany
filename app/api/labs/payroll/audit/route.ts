@@ -10,7 +10,8 @@ export const runtime = "nodejs"
 
 const ALLOWED: AuditAction[] = [
   "auth.signin", "auth.signout", "run.calculated", "run.approved",
-  "payment.released", "bank.connected", "bank.disconnected", "rates.viewed", "report.exported",
+  "payment.released", "bank.connected", "bank.disconnected",
+  "rates.viewed", "rates.verified", "report.exported",
 ]
 
 export async function GET(req: Request) {
