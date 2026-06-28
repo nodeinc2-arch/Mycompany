@@ -32,6 +32,8 @@ export type RunLine = {
   excluded: boolean
   /** Direct-deposit coords carried through for the banking/EFT layer. */
   bank?: BankAccount
+  /** Digital direct deposit vs. paper cheque, carried for the payment layer. */
+  paymentMethod: Employee["paymentMethod"]
   notes: string[]
 }
 
@@ -122,6 +124,7 @@ export function buildRunDraft(
         employerEi: 0,
         excluded: true,
         bank: emp.bank,
+        paymentMethod: emp.paymentMethod,
         notes: ["Excluded from this run."],
       }
     }
@@ -158,6 +161,7 @@ export function buildRunDraft(
       employerEi,
       excluded: false,
       bank: emp.bank,
+      paymentMethod: emp.paymentMethod,
       notes,
     }
   })
