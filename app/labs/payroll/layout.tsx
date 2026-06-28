@@ -1,5 +1,10 @@
 import { Shell } from "@/components/labs/payroll/shell"
+import { SessionProvider } from "@/lib/labs/payroll/auth/session"
 
 export default function PayrollLabsLayout({ children }: { children: React.ReactNode }) {
-  return <Shell>{children}</Shell>
+  return (
+    <SessionProvider>
+      <Shell>{children}</Shell>
+    </SessionProvider>
+  )
 }
