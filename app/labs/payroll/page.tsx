@@ -3,6 +3,7 @@
 import { useState } from "react"
 import Link from "next/link"
 import { Leaf, Cpu, Brain, Server, ShieldCheck, DollarSign, Play, UserPlus, UserMinus, FileText, ArrowRight } from "lucide-react"
+import { pricing, priceLabel } from "@/lib/labs/payroll/pricing"
 import { integrations, type Integration } from "@/lib/labs/payroll/integrations"
 import { kpis } from "@/lib/labs/payroll/sample-data"
 import { IntegrationCard } from "@/components/labs/payroll/integration-card"
@@ -183,6 +184,23 @@ export default function PayrollLabsPage() {
               </tbody>
             </table>
           </div>
+        </section>
+
+        {/* Pricing CTA */}
+        <section className="rounded-3xl border border-accent/30 bg-accent/5 p-8 sm:p-10 flex flex-col sm:flex-row items-start sm:items-center gap-6 justify-between">
+          <div>
+            <h2 className="text-sm font-medium text-accent uppercase tracking-widest mb-2">Pricing</h2>
+            <p className="text-2xl font-medium text-foreground mb-1">{pricing.tagline}</p>
+            <p className="text-muted-foreground">
+              {priceLabel(pricing.monthly)}/mo flat + {priceLabel(pricing.setupFee)} one-time setup · everything included · {pricing.audience}.
+            </p>
+          </div>
+          <Link
+            href="/labs/payroll/pricing"
+            className="shrink-0 inline-flex items-center gap-2 rounded-full bg-accent text-accent-foreground px-6 py-3 text-sm font-medium hover:bg-accent/90"
+          >
+            See pricing <ArrowRight className="h-4 w-4" />
+          </Link>
         </section>
 
         <footer className="pt-8 border-t border-border/50 text-xs text-muted-foreground flex flex-col sm:flex-row gap-2 justify-between">

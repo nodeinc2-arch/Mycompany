@@ -2,7 +2,7 @@ import Link from "next/link"
 import { notFound } from "next/navigation"
 import { samplePayRuns } from "@/lib/labs/payroll/sample-data"
 import { buildRunDraft } from "@/lib/labs/payroll/pay-run"
-import { Play } from "lucide-react"
+import { Play, Banknote } from "lucide-react"
 
 const money = (n: number) =>
   n.toLocaleString("en-CA", { style: "currency", currency: "CAD", minimumFractionDigits: 2 })
@@ -47,6 +47,12 @@ export default async function RunDetailPage({ params }: { params: Promise<{ id: 
           <span className={`px-3 py-1 text-xs uppercase tracking-wider rounded-full border ${statusStyles[run.status]}`}>
             {run.status}
           </span>
+          <Link
+            href="/labs/payroll/payments"
+            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-accent/40 text-foreground text-sm hover:bg-accent/10"
+          >
+            <Banknote className="h-3.5 w-3.5" /> Pay employees
+          </Link>
           <Link
             href="/labs/payroll/runs/new"
             className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-accent text-accent-foreground text-sm hover:bg-accent/90"
