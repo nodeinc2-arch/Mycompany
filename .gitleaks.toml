@@ -1,0 +1,21 @@
+# gitleaks configuration for the Node2 / Pay.ca repo.
+# Extends the default ruleset (covers Stripe, AWS, GitHub, private keys, etc.)
+# and allowlists known-safe placeholders so the scan stays signal, not noise.
+
+[extend]
+useDefault = true
+
+[allowlist]
+description = "Known-safe paths and placeholder values"
+paths = [
+  '''\.env\.example$''',
+  '''docs/stripe-setup\.md$''',   # documents key NAMES and sk_test_/whsec_ prefixes, no real values
+  '''pnpm-lock\.yaml$''',
+]
+# Placeholder strings that look key-ish but are illustrative, not real secrets.
+regexes = [
+  '''sk_test_\.\.\.''',
+  '''whsec_\.\.\.''',
+  '''price_\.\.\.''',
+  '''REPLACE_WITH_KV_NAMESPACE_ID''',
+]
