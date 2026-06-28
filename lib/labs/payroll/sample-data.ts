@@ -13,6 +13,13 @@ export type BankAccount = {
   account: string
 }
 
+/**
+ * How an employee is paid. "direct_deposit" (digital EFT) is the default and
+ * what the bank/EFT engine pays; "cheque" (paper paycheck) employees are
+ * excluded from the EFT batch and listed for manual cheque printing instead.
+ */
+export type PaymentMethod = "direct_deposit" | "cheque"
+
 export type Employee = {
   id: string
   name: string
@@ -21,16 +28,18 @@ export type Employee = {
   payType: "salary" | "hourly"
   grossPerPeriod: number
   periodsPerYear: number
-  /** Direct-deposit destination. Undefined = not yet on file (blocks payment). */
+  /** Direct-deposit destination. Undefined = not yet on file (blocks EFT). */
   bank?: BankAccount
+  /** Digital direct deposit vs. paper cheque. Defaults to direct_deposit. */
+  paymentMethod: PaymentMethod
 }
 
 export const sampleEmployees: Employee[] = [
-  { id: "EMP-001", name: "Aanya Patel", role: "Senior Engineer", province: "ON", payType: "salary", grossPerPeriod: 4615.38, periodsPerYear: 26, bank: { transit: "00412", institution: "003", account: "1004587" } },
-  { id: "EMP-002", name: "Liam O'Connor", role: "Product Designer", province: "BC", payType: "salary", grossPerPeriod: 3461.54, periodsPerYear: 26, bank: { transit: "09183", institution: "004", account: "2298013" } },
-  { id: "EMP-003", name: "Marie Tremblay", role: "Customer Success", province: "QC", payType: "salary", grossPerPeriod: 2769.23, periodsPerYear: 26, bank: { transit: "30005", institution: "815", account: "5530127" } },
-  { id: "EMP-004", name: "Daniel Cohen", role: "Account Executive", province: "ON", payType: "hourly", grossPerPeriod: 2200.0, periodsPerYear: 26 },
-  { id: "EMP-005", name: "Priya Nair", role: "Founding Engineer", province: "ON", payType: "salary", grossPerPeriod: 5384.62, periodsPerYear: 26, bank: { transit: "00412", institution: "003", account: "1009921" } },
+  { id: "EMP-001", name: "Aanya Patel", role: "Senior Engineer", province: "ON", payType: "salary", grossPerPeriod: 4615.38, periodsPerYear: 26, paymentMethod: "direct_deposit", bank: { transit: "00412", institution: "003", account: "1004587" } },
+  { id: "EMP-002", name: "Liam O'Connor", role: "Product Designer", province: "BC", payType: "salary", grossPerPeriod: 3461.54, periodsPerYear: 26, paymentMethod: "direct_deposit", bank: { transit: "09183", institution: "004", account: "2298013" } },
+  { id: "EMP-003", name: "Marie Tremblay", role: "Customer Success", province: "QC", payType: "salary", grossPerPeriod: 2769.23, periodsPerYear: 26, paymentMethod: "direct_deposit", bank: { transit: "30005", institution: "815", account: "5530127" } },
+  { id: "EMP-004", name: "Daniel Cohen", role: "Account Executive", province: "ON", payType: "hourly", grossPerPeriod: 2200.0, periodsPerYear: 26, paymentMethod: "cheque" },
+  { id: "EMP-005", name: "Priya Nair", role: "Founding Engineer", province: "ON", payType: "salary", grossPerPeriod: 5384.62, periodsPerYear: 26, paymentMethod: "direct_deposit", bank: { transit: "00412", institution: "003", account: "1009921" } },
 ]
 
 /**

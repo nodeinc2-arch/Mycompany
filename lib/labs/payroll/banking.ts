@@ -68,6 +68,9 @@ export type PaymentBatch = {
     grandTotal: number
     payableCount: number
     heldCount: number
+    chequeCount: number
+    /** Sum of cheque (paper) net amounts, paid outside the EFT file. */
+    chequeTotal: number
   }
   reconciliation: Reconciliation
   /** Hard problems that must clear before release is even offered. */
@@ -117,6 +120,19 @@ export function buildPaymentBatch(
   const credits: EftCredit[] = draft.lines
     .filter((l) => !l.excluded)
     .map((l) => {
+      // Cheque (paper paycheck) employees are paid outside the EFT file — they
+      // aren't a blocker, just listed for manual cheque printing. Direct-deposit
+      // employees must have valid coords or they're held.
+      if (l.paymentMethod === "cheque") {
+        return {
+          employeeId: l.employeeId,
+          name: l.name,
+          amount: round2(l.net),
+          method: "cheque" as PaymentMethod,
+          bank: l.bank,
+          issues: [],
+        }
+      }
       const issues = validateBankAccount(l.bank)
       const method: PaymentMethod = issues.length === 0 ? "eft" : "hold"
       return {
@@ -130,10 +146,14 @@ export function buildPaymentBatch(
     })
 
   const payable = credits.filter((c) => c.method === "eft")
-  const held = credits.filter((c) => c.method !== "eft")
+  const cheques = credits.filter((c) => c.method === "cheque")
+  const held = credits.filter((c) => c.method === "hold")
 
   for (const c of held) {
     blockers.push(`${c.name}: cannot pay by EFT — ${c.issues.join(" ")}`)
+  }
+  for (const c of cheques) {
+    warnings.push(`${c.name}: paid by cheque (${money(c.amount)}) — print and issue manually.`)
   }
   for (const c of payable) {
     if (c.amount <= 0) warnings.push(`${c.name}: net deposit is ${money(c.amount)} — confirm before release.`)
@@ -179,6 +199,8 @@ export function buildPaymentBatch(
       grandTotal,
       payableCount: payable.length,
       heldCount: held.length,
+      chequeCount: cheques.length,
+      chequeTotal: round2(cheques.reduce((a, c) => a + c.amount, 0)),
     },
     reconciliation,
     blockers,
