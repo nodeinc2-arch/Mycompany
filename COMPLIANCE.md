@@ -24,7 +24,7 @@ sensitive personal information there is.
 
 ## 2. Tax & payroll compliance
 - 🟡 **Source deductions accuracy** — real federal + provincial brackets, basic personal amount credits, CPP/CPP2, EI are implemented, BUT:
-  - 🔴 rate values are **unverified** — must be checked against **CRA T4127 / PDOC**.
+  - 🔴 rate values are **unverified** — must be checked against **CRA T4127 / PDOC**. A **verification harness** (`/labs/payroll/compliance`) now lets a reviewer diff official figures against ours field-by-field and mark each component verified (recorded + audited). Tooling ✅; the actual confirmation is still pending a human + the real source.
   - ⬜ implement the **full CRA T4127 source-deduction formula** (cumulative averaging, claim-code tables), replacing the simplified annual method.
   - ⬜ surtaxes (ON, PE), **Ontario Health Premium**, QC federal abatement.
 - ⬜ 🔴 **CRA remittance (PD7A)** — real filing, not a draft.
