@@ -7,6 +7,13 @@ import Link from "next/link"
 
 const posts = [
   {
+    href: "/insights/how-llms-work",
+    tag: "Explainer",
+    title: "How LLMs actually work: tokens, attention & next-token prediction",
+    excerpt:
+      "A plain-language look under the hood of large language models — and why understanding it explains both their power and their limits.",
+  },
+  {
     href: "/insights/world-models-vs-llms",
     tag: "AI Frontier",
     title: "World models vs. LLMs: Yann LeCun's billion-dollar bet",
