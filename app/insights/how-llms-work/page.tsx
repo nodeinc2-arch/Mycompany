@@ -4,6 +4,7 @@ import { Header } from "@/components/header"
 import { Footer } from "@/components/footer"
 import { ArrowLeft, ArrowRight } from "lucide-react"
 import Link from "next/link"
+import { HowLlmsWorkDiagram } from "@/components/how-llms-work-diagram"
 
 export default function HowLlmsWorkPage() {
   return (
@@ -79,10 +80,11 @@ export default function HowLlmsWorkPage() {
                   picks one, appends it to the text, and runs the whole thing again — token by token — until the answer is
                   complete. "Writing a paragraph" is really thousands of next-token predictions in a row.
                 </p>
-                <div className="rounded-xl border border-border/50 bg-card p-5 font-mono text-sm my-4">
-                  <p className="text-muted-foreground mb-2">"The capital of Canada is" →</p>
-                  <p className="text-foreground">Ottawa <span className="text-accent">(0.91)</span> · Toronto <span className="text-muted-foreground">(0.05)</span> · Montreal <span className="text-muted-foreground">(0.02)</span> · …</p>
-                </div>
+              </section>
+
+              <section>
+                <h2 className="text-2xl font-medium text-foreground mb-4">The whole pipeline, visualized</h2>
+                <HowLlmsWorkDiagram className="text-foreground" />
               </section>
 
               <section>
