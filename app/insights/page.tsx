@@ -7,6 +7,13 @@ import Link from "next/link"
 
 const posts = [
   {
+    href: "/insights/multimodal-vla",
+    tag: "Explainer",
+    title: "Multimodal AI & VLA: models that see, read, and act",
+    excerpt:
+      "How AI takes in images and screens — not just text — and how vision-language-action models go from understanding a scene to acting in it.",
+  },
+  {
     href: "/insights/rag",
     tag: "Explainer",
     title: "RAG: how AI answers from your data, not its memory",
