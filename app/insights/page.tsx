@@ -7,6 +7,13 @@ import Link from "next/link"
 
 const posts = [
   {
+    href: "/insights/ai-agents",
+    tag: "Explainer",
+    title: "AI agents: from a model that talks to one that does the work",
+    excerpt:
+      "How tool calling and a plan-act-observe loop turn a chatbot into an agent that gets things done — and how to keep it safe.",
+  },
+  {
     href: "/insights/multimodal-vla",
     tag: "Explainer",
     title: "Multimodal AI & VLA: models that see, read, and act",
