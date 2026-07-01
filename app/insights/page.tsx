@@ -7,6 +7,13 @@ import Link from "next/link"
 
 const posts = [
   {
+    href: "/insights/rag",
+    tag: "Explainer",
+    title: "RAG: how AI answers from your data, not its memory",
+    excerpt:
+      "Retrieval-augmented generation, explained — how models ground answers in your own documents with embeddings, vector search, and citations.",
+  },
+  {
     href: "/insights/how-llms-work",
     tag: "Explainer",
     title: "How LLMs actually work: tokens, attention & next-token prediction",
