@@ -13,14 +13,18 @@ binding = "ASSETS"
 # product link in the homepage finance section to resolve instead of 404.
 LABS_ENABLED = "1"
 
-# Durable store for Pay.ca billing entitlement. Create the namespace with
-#   wrangler kv namespace create PAYCA_KV
-# then uncomment the block below and paste the returned id. Until then, the app
-# falls back to a non-durable in-memory store (see lib/labs/payroll/entitlement.ts).
-# Left commented because an invalid/placeholder id would fail the deploy.
-# [[kv_namespaces]]
-# binding = "PAYCA_KV"
-# id = "REPLACE_WITH_KV_NAMESPACE_ID"
+# Durable, relational store for Pay.ca (audit log, billing entitlement,
+# tenants). Create the database and apply migrations with:
+#   wrangler d1 create PAYCA_DB      # prints database_id
+#   pnpm db:migrate                  # applies migrations/ locally
+#   pnpm db:migrate:remote           # applies to the deployed DB
+# then uncomment the block below and paste the returned database_id. Until then,
+# the app falls back to a non-durable in-memory store (see lib/labs/payroll/db.ts
+# and docs/d1-setup.md). Left commented because a placeholder id fails the deploy.
+# [[d1_databases]]
+# binding = "PAYCA_DB"
+# database_name = "payca"
+# database_id = "REPLACE_WITH_D1_DATABASE_ID"
 
 [[routes]]
 pattern = "www.node2.io"
