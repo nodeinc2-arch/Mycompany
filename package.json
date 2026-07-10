@@ -9,7 +9,9 @@
     "start": "next start",
     "preview": "opennextjs-cloudflare build && opennextjs-cloudflare preview",
     "deploy": "opennextjs-cloudflare build && opennextjs-cloudflare deploy",
-    "cf-typegen": "wrangler types --env-interface CloudflareEnv cloudflare-env.d.ts"
+    "cf-typegen": "wrangler types --env-interface CloudflareEnv cloudflare-env.d.ts",
+    "db:migrate": "wrangler d1 migrations apply PAYCA_DB --local",
+    "db:migrate:remote": "wrangler d1 migrations apply PAYCA_DB --remote"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.10.0",
