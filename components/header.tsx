@@ -7,6 +7,7 @@ import { Logo } from "@/components/logo"
 import { Menu, X, Linkedin, Github, Globe } from "lucide-react"
 import { useLanguage } from "@/lib/LanguageContext"
 import { translations } from "@/lib/translations"
+import { primaryNav } from "@/lib/site-nav"
 
 export function Header() {
   const [isOpen, setIsOpen] = useState(false)
@@ -14,17 +15,10 @@ export function Header() {
   const { language, setLanguage } = useLanguage()
   const t = translations[language]
 
-  // Single source of truth for primary nav — desktop and mobile render the same
-  // list, so they can never drift. Section anchors use "/#id" so they resolve
-  // from any page, not just the homepage.
-  const navLinks = [
-    { href: "/#services", label: t.nav.services },
-    { href: "/#micro-ai", label: t.nav.microAi },
-    { href: "/#finance", label: t.nav.finance },
-    { href: "/#innovation", label: t.nav.innovation },
-    { href: "/mission", label: t.nav.mission },
-    { href: "/insights", label: t.nav.insights },
-  ]
+  // Primary nav comes from the shared IA registry (lib/site-nav.ts), so the
+  // header, footer, and sitemap can never drift. Desktop and mobile render the
+  // same list.
+  const navLinks = primaryNav(language)
 
   return (
     <header className="fixed top-0 left-0 right-0 z-50 bg-background/90 backdrop-blur-md border-b border-border/50">
