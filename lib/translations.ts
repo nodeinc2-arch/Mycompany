@@ -39,6 +39,7 @@ export const translations = {
       finance: 'Finance',
       innovation: 'Innovation',
       about: 'About',
+      solutions: 'Solutions',
       mission: 'Mission',
       insights: 'Insights',
       getStarted: 'Get Started',
@@ -142,6 +143,7 @@ export const translations = {
     footer: {
       description: 'A Canadian IT company building web platforms, private on-premise AI, and payroll and finance tooling for teams that care where their data lives.',
       company: 'Company',
+      solutions: 'Solutions',
       services: 'Services',
       about: 'About',
       mission: 'Mission & Goals',
@@ -213,6 +215,7 @@ export const translations = {
       finance: 'Finance',
       innovation: 'Innovation',
       about: 'À propos',
+      solutions: 'Solutions',
       mission: 'Mission',
       insights: 'Perspectives',
       getStarted: 'Commencer',
@@ -316,6 +319,7 @@ export const translations = {
     footer: {
       description: 'Une entreprise informatique canadienne qui conçoit des plateformes web, de l\'IA privée sur site, et des outils de paie et de finance pour les équipes qui se soucient de l\'endroit où vivent leurs données.',
       company: 'Entreprise',
+      solutions: 'Solutions',
       services: 'Services',
       about: 'À propos',
       mission: 'Mission et objectifs',

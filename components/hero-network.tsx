@@ -15,13 +15,13 @@ export function HeroNetwork({ className = "" }: { className?: string }) {
     { id: "hub", x: 110, y: 200, r: 9, primary: true, delay: 0 },
     { id: "s1", x: 250, y: 110, r: 6, primary: true, delay: 0.6 },
     { id: "s2", x: 250, y: 290, r: 6, primary: true, delay: 1.1 },
-    { id: "n1", x: 60, y: 90, r: 4, delay: 0.3 },
-    { id: "n2", x: 70, y: 320, r: 4, delay: 0.9 },
-    { id: "n3", x: 330, y: 180, r: 5, delay: 1.4 },
-    { id: "n4", x: 320, y: 60, r: 3.5, delay: 1.7 },
-    { id: "n5", x: 350, y: 320, r: 4, delay: 2.0 },
-    { id: "n6", x: 180, y: 50, r: 3.5, delay: 0.5 },
-    { id: "n7", x: 190, y: 350, r: 3.5, delay: 1.3 },
+    { id: "n1", x: 60, y: 90, r: 4, primary: false, delay: 0.3 },
+    { id: "n2", x: 70, y: 320, r: 4, primary: false, delay: 0.9 },
+    { id: "n3", x: 330, y: 180, r: 5, primary: false, delay: 1.4 },
+    { id: "n4", x: 320, y: 60, r: 3.5, primary: false, delay: 1.7 },
+    { id: "n5", x: 350, y: 320, r: 4, primary: false, delay: 2.0 },
+    { id: "n6", x: 180, y: 50, r: 3.5, primary: false, delay: 0.5 },
+    { id: "n7", x: 190, y: 350, r: 3.5, primary: false, delay: 1.3 },
   ] as const
 
   const byId = Object.fromEntries(nodes.map((n) => [n.id, n]))

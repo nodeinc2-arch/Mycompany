@@ -5,15 +5,26 @@ import { Logo } from "@/components/logo"
 import { Linkedin, Github, MapPin } from "lucide-react"
 import { useLanguage } from "@/lib/LanguageContext"
 import { translations } from "@/lib/translations"
+import { footerGroups } from "@/lib/site-nav"
+
+// Links that leave the site open in a new tab.
+function isExternal(href: string) {
+  return href.startsWith("http")
+}
 
 export function Footer() {
   const { language } = useLanguage()
   const t = translations[language]
 
+  // Footer columns come from the shared IA registry (lib/site-nav.ts), which is
+  // built from the same translations plus the solutions and insights registries
+  // — so a new solution or article shows up here automatically.
+  const groups = footerGroups(language)
+
   return (
     <footer className="py-16 px-4 sm:px-6 lg:px-8 border-t border-border/50">
       <div className="max-w-7xl mx-auto">
-        <div className="grid md:grid-cols-5 gap-12 mb-16">
+        <div className="grid md:grid-cols-6 gap-12 mb-16">
           <div className="md:col-span-2">
             <Link href="/" className="text-foreground inline-block mb-6">
               <Logo className="h-8 w-auto" />
@@ -43,99 +54,24 @@ export function Footer() {
             </div>
           </div>
 
-          <div>
-            <h4 className="text-sm font-medium text-accent uppercase tracking-widest mb-6">{t.footer.services}</h4>
-            <ul className="space-y-3">
-              <li>
-                <Link
-                  href="/#services"
-                  className="text-muted-foreground hover:text-foreground transition-colors duration-300"
-                >
-                  {t.footer.webDevelopment}
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/#micro-ai"
-                  className="text-muted-foreground hover:text-foreground transition-colors duration-300"
-                >
-                  {t.footer.microAi}
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/#finance"
-                  className="text-muted-foreground hover:text-foreground transition-colors duration-300"
-                >
-                  {t.footer.finance}
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/get-started"
-                  className="text-muted-foreground hover:text-foreground transition-colors duration-300"
-                >
-                  {t.nav.getStarted}
-                </Link>
-              </li>
-            </ul>
-          </div>
-
-          <div>
-            <h4 className="text-sm font-medium text-accent uppercase tracking-widest mb-6">{t.footer.innovation}</h4>
-            <ul className="space-y-3">
-              <li>
-                <Link
-                  href="https://www.buildingsync.app"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-muted-foreground hover:text-foreground transition-colors duration-300"
-                >
-                  {t.footer.buildingSync}
-                </Link>
-                <p className="text-xs text-muted-foreground/70 mt-1">{t.footer.buildingSyncNote}</p>
-              </li>
-            </ul>
-          </div>
-
-          <div>
-            <h4 className="text-sm font-medium text-accent uppercase tracking-widest mb-6">{t.footer.company}</h4>
-            <ul className="space-y-3">
-              <li>
-                <Link
-                  href="/#about"
-                  className="text-muted-foreground hover:text-foreground transition-colors duration-300"
-                >
-                  {t.footer.about}
-                </Link>
-              </li>
-              <li>
-                <Link href="/mission" className="text-muted-foreground hover:text-foreground transition-colors duration-300">
-                  {t.footer.mission}
-                </Link>
-              </li>
-              <li>
-                <Link href="/insights" className="text-muted-foreground hover:text-foreground transition-colors duration-300">
-                  {t.footer.insights}
-                </Link>
-              </li>
-              <li>
-                <Link href="/how-ai-evolved" className="text-muted-foreground hover:text-foreground transition-colors duration-300">
-                  {t.nav.insights === 'Insights' ? 'How AI Evolved' : 'Évolution de l\'IA'}
-                </Link>
-              </li>
-              <li>
-                <Link href="/contact" className="text-muted-foreground hover:text-foreground transition-colors duration-300">
-                  {t.footer.contact}
-                </Link>
-              </li>
-              <li>
-                <Link href="/privacy" className="text-muted-foreground hover:text-foreground transition-colors duration-300">
-                  {t.footer.privacy}
-                </Link>
-              </li>
-            </ul>
-          </div>
+          {groups.map((group) => (
+            <div key={group.heading}>
+              <h4 className="text-sm font-medium text-accent uppercase tracking-widest mb-6">{group.heading}</h4>
+              <ul className="space-y-3">
+                {group.links.map((link) => (
+                  <li key={link.href}>
+                    <Link
+                      href={link.href}
+                      {...(isExternal(link.href) ? { target: "_blank", rel: "noopener noreferrer" } : {})}
+                      className="text-muted-foreground hover:text-foreground transition-colors duration-300"
+                    >
+                      {link.label}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))}
         </div>
 
         <div className="pt-8 border-t border-border/50 mb-8">
