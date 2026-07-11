@@ -7,15 +7,17 @@ import {
   type VerifyComponent,
 } from "@/lib/labs/payroll/compliance/verify"
 import { recordAudit } from "@/lib/labs/payroll/audit"
+import { getServerTenantId } from "@/lib/labs/payroll/auth/server-session"
 
 export const runtime = "nodejs"
 
 // Rate verification status.
 //   GET  → all verification records + durability flag
-//   POST { component, verifiedBy, sourceRef, tenantId? } → mark a component
-//         verified (also writes a rates.verified audit event when tenant known)
+//   POST { component, verifiedBy, sourceRef } → mark a component verified
+//         (also writes a rates.verified audit event for the signed-in tenant)
 // LABS_ENABLED-gated. Does NOT itself certify rates — it records that a human
-// confirmed a component against an official source.
+// confirmed a component against an official source. The audited tenant comes
+// from the server session, not the request body.
 
 export async function GET() {
   if (process.env.LABS_ENABLED !== "1") {
@@ -33,7 +35,6 @@ export async function POST(req: Request) {
     component?: VerifyComponent
     verifiedBy?: string
     sourceRef?: string
-    tenantId?: string
   }
   if (!body.component || !allComponents().includes(body.component) || !body.verifiedBy || !body.sourceRef) {
     return NextResponse.json({ error: "invalid_request" }, { status: 400 })
@@ -47,11 +48,12 @@ export async function POST(req: Request) {
   }
   await setVerification(record)
 
-  // Best-effort audit trail of the verification.
-  if (body.tenantId) {
+  // Best-effort audit trail, scoped to the signed-in tenant (server-trusted).
+  const tenantId = await getServerTenantId(req)
+  if (tenantId) {
     try {
       await recordAudit({
-        tenantId: body.tenantId,
+        tenantId,
         actor: body.verifiedBy,
         action: "rates.verified",
         target: body.component,

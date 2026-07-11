@@ -87,11 +87,12 @@ function PaymentsInner() {
       approvedAt: approval.approvedAt,
       cpa005: renderCpa005(batch, approval.reviewer, approval.approvedAt),
     })
-    // Audit the released payment batch (critical event).
+    // Audit the released payment batch (critical event). The actor is the
+    // server-trusted session identity; the human reviewer who approved the
+    // release is recorded as context in details.
     log("payment.released", {
       target: batch.runId,
-      actor: approval.reviewer,
-      details: `${money(batch.totals.grandTotal)} total · ${batch.totals.payableCount} EFT`,
+      details: `${money(batch.totals.grandTotal)} total · ${batch.totals.payableCount} EFT · approved by ${approval.reviewer}`,
     })
   }
 
