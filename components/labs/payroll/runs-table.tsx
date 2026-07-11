@@ -1,4 +1,13 @@
-import { samplePayRuns } from "@/lib/labs/payroll/sample-data"
+"use client"
+
+// Recent pay runs for the signed-in tenant. Fetches the tenant-scoped history
+// from /api/labs/payroll/runs (server-trusted; falls back to the sample set
+// when signed out) rather than importing a static array, so submitted runs
+// actually appear here. Client component because the dashboard it lives on is
+// a client component.
+
+import { useEffect, useState } from "react"
+import type { PayRun } from "@/lib/labs/payroll/sample-data"
 
 const statusStyles: Record<string, string> = {
   draft: "bg-yellow-500/15 text-yellow-300 border-yellow-500/30",
@@ -11,11 +20,33 @@ const money = (n: number) =>
   n.toLocaleString("en-CA", { style: "currency", currency: "CAD", minimumFractionDigits: 2 })
 
 export function RunsTable() {
+  const [runs, setRuns] = useState<PayRun[]>([])
+  const [scoped, setScoped] = useState(false)
+  const [durable, setDurable] = useState(false)
+
+  useEffect(() => {
+    let alive = true
+    void fetch("/api/labs/payroll/runs")
+      .then((r) => (r.ok ? r.json() : { runs: [] }))
+      .then((data: { runs?: PayRun[]; scoped?: boolean; durable?: boolean }) => {
+        if (!alive) return
+        setRuns(data.runs ?? [])
+        setScoped(!!data.scoped)
+        setDurable(!!data.durable)
+      })
+      .catch(() => {})
+    return () => {
+      alive = false
+    }
+  }, [])
+
   return (
     <div className="rounded-2xl border border-border/50 bg-card overflow-hidden">
       <div className="px-6 py-4 border-b border-border/50 flex items-center justify-between">
         <h3 className="font-medium text-foreground">Recent pay runs</h3>
-        <span className="text-xs text-muted-foreground">Mock data · 2026 cycle</span>
+        <span className="text-xs text-muted-foreground">
+          {scoped ? (durable ? "Your runs · durable" : "Your runs · in-memory") : "Sample data · 2026 cycle"}
+        </span>
       </div>
       <div className="overflow-x-auto">
         <table className="w-full text-sm">
@@ -30,7 +61,7 @@ export function RunsTable() {
             </tr>
           </thead>
           <tbody>
-            {samplePayRuns.map((run) => (
+            {runs.map((run) => (
               <tr key={run.id} className="border-t border-border/40 hover:bg-secondary/30 transition-colors">
                 <td className="px-6 py-3 font-mono text-xs text-foreground">{run.id}</td>
                 <td className="px-6 py-3 text-muted-foreground">{run.periodEnd}</td>
@@ -44,6 +75,13 @@ export function RunsTable() {
                 <td className="px-6 py-3 text-right text-foreground">{money(run.remittanceTotal)}</td>
               </tr>
             ))}
+            {runs.length === 0 && (
+              <tr>
+                <td colSpan={6} className="px-6 py-8 text-center text-sm text-muted-foreground">
+                  No pay runs yet. Run payroll to see it here.
+                </td>
+              </tr>
+            )}
           </tbody>
         </table>
       </div>
