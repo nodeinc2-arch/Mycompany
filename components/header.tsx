@@ -4,7 +4,7 @@ import { useState } from "react"
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import { Logo } from "@/components/logo"
-import { Menu, X, Linkedin, Github, Globe } from "lucide-react"
+import { Menu, X, Linkedin, Github, Globe, LogIn } from "lucide-react"
 import { useLanguage } from "@/lib/LanguageContext"
 import { translations } from "@/lib/translations"
 import { primaryNav } from "@/lib/site-nav"
@@ -108,6 +108,13 @@ export function Header() {
             >
               {t.nav.contact}
             </Link>
+            <Link
+              href="/labs/payroll/sign-in"
+              className="text-sm text-muted-foreground hover:text-foreground transition-colors duration-300 inline-flex items-center gap-1.5"
+            >
+              <LogIn className="h-4 w-4" />
+              {t.nav.signIn}
+            </Link>
             <Link href="/get-started">
               <Button
                 size="sm"
@@ -148,6 +155,14 @@ export function Header() {
                 className="text-sm text-muted-foreground hover:text-foreground transition-colors"
               >
                 {t.nav.contact}
+              </Link>
+              <Link
+                href="/labs/payroll/sign-in"
+                onClick={() => setIsOpen(false)}
+                className="text-sm text-muted-foreground hover:text-foreground transition-colors inline-flex items-center gap-1.5"
+              >
+                <LogIn className="h-4 w-4" />
+                {t.nav.signIn}
               </Link>
               <div className="flex items-center gap-4 pt-4">
                 <Link
