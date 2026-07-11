@@ -70,7 +70,7 @@ export default function ComplianceVerifyPage() {
 
       {!durable && (
         <div className="rounded-xl border border-amber-500/30 bg-amber-500/5 p-3 mb-6 text-xs text-muted-foreground">
-          Non-durable store — KV is not bound, so verification status resets on restart/deploy. Create PAYCA_KV to persist.
+          Non-durable store — the durable database (D1) is not bound, so verification status resets on restart/deploy. See docs/d1-setup.md to persist.
         </div>
       )}
 
@@ -81,7 +81,6 @@ export default function ComplianceVerifyPage() {
             component={c}
             record={records[c]}
             reviewer={tenant?.ownerEmail ?? ""}
-            tenantId={tenant?.id}
             onVerified={load}
           />
         ))}
@@ -99,13 +98,11 @@ function ComponentCard({
   component,
   record,
   reviewer,
-  tenantId,
   onVerified,
 }: {
   component: VerifyComponent
   record?: VerificationRecord
   reviewer: string
-  tenantId?: string
   onVerified: () => void
 }) {
   const fields = useMemo(() => fieldsFor(component), [component])
@@ -133,7 +130,7 @@ function ComponentCard({
       const res = await fetch("/api/labs/payroll/compliance/verify", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ component, verifiedBy: reviewer, sourceRef, tenantId }),
+        body: JSON.stringify({ component, verifiedBy: reviewer, sourceRef }),
       })
       if (res.ok) onVerified()
     } finally {
