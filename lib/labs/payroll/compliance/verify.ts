@@ -8,11 +8,11 @@
 //   3. persists which components a reviewer has confirmed (KV + fallback),
 //   4. drives the live "verified vs unverified" state off that record.
 //
-// Storage mirrors entitlement/audit: KV (binding PAYCA_KV) when bound, else a
-// process-level map. Verification is global to the deployment (rates are global,
-// not per-tenant).
+// Storage mirrors entitlement/audit: Cloudflare D1 (binding PAYCA_DB) when
+// bound, else a process-level map. Verification is global to the deployment
+// (rates are global, not per-tenant), so there's no tenant scoping here.
 
-import { getCloudflareContext } from "@opennextjs/cloudflare"
+import { d1 } from "../db"
 import {
   federalBrackets,
   federalBasicPersonalAmount,
@@ -117,47 +117,58 @@ export function allMatch(diffs: FieldDiff[]): boolean {
   return diffs.length > 0 && diffs.every((d) => d.match)
 }
 
-// ---- Persistence ---------------------------------------------------------
-
-const KEY = "rate-verification"
+// ---- Persistence (Cloudflare D1, else in-memory) -------------------------
 
 const memory = new Map<string, VerificationRecord>()
 
-type KVish = { get: (k: string) => Promise<string | null>; put: (k: string, v: string) => Promise<void> }
+/** Row shape in D1 (snake_case → VerificationRecord). */
+type VerificationRow = {
+  component: VerifyComponent
+  verified_by: string
+  verified_at: string
+  source_ref: string
+}
 
-function kv(): KVish | null {
-  try {
-    const env = getCloudflareContext().env as unknown as { PAYCA_KV?: KVish }
-    return env.PAYCA_KV ?? null
-  } catch {
-    return null
+function rowToRecord(r: VerificationRow): VerificationRecord {
+  return {
+    component: r.component,
+    verifiedBy: r.verified_by,
+    verifiedAt: r.verified_at,
+    sourceRef: r.source_ref,
   }
 }
 
-async function readAll(): Promise<Record<string, VerificationRecord>> {
-  const store = kv()
-  if (store) {
-    const raw = await store.get(KEY)
-    return raw ? (JSON.parse(raw) as Record<string, VerificationRecord>) : {}
+export async function getVerifications(): Promise<Record<string, VerificationRecord>> {
+  const db = d1()
+  if (db) {
+    const { results } = await db
+      .prepare("SELECT component, verified_by, verified_at, source_ref FROM rate_verifications")
+      .all<VerificationRow>()
+    return Object.fromEntries(results.map((r) => [r.component, rowToRecord(r)]))
   }
   return Object.fromEntries(memory)
 }
 
-export async function getVerifications(): Promise<Record<string, VerificationRecord>> {
-  return readAll()
-}
-
 export async function setVerification(rec: VerificationRecord): Promise<void> {
-  const store = kv()
-  if (store) {
-    const all = await readAll()
-    all[rec.component] = rec
-    await store.put(KEY, JSON.stringify(all))
+  const db = d1()
+  if (db) {
+    // Upsert on the component PK so re-verifying updates in place.
+    await db
+      .prepare(
+        `INSERT INTO rate_verifications (component, verified_by, verified_at, source_ref)
+         VALUES (?, ?, ?, ?)
+         ON CONFLICT(component) DO UPDATE SET
+           verified_by = excluded.verified_by,
+           verified_at = excluded.verified_at,
+           source_ref = excluded.source_ref`,
+      )
+      .bind(rec.component, rec.verifiedBy, rec.verifiedAt, rec.sourceRef)
+      .run()
   } else {
     memory.set(rec.component, rec)
   }
 }
 
 export function isVerificationDurable(): boolean {
-  return kv() !== null
+  return d1() !== null
 }

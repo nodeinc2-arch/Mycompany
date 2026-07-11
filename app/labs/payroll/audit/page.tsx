@@ -101,7 +101,7 @@ export default function AuditPage() {
         <>
           {!durable && (
             <div className="rounded-xl border border-amber-500/30 bg-amber-500/5 p-3 mb-4 text-xs text-muted-foreground">
-              Non-durable store — KV is not bound, so this log resets on restart/deploy. Create the PAYCA_KV namespace to persist.
+              Non-durable store — the durable database (D1) is not bound, so this log resets on restart/deploy. See docs/d1-setup.md to persist.
             </div>
           )}
           <div className="rounded-2xl border border-border/50 bg-card overflow-hidden">
