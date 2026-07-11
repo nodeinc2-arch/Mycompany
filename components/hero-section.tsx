@@ -7,6 +7,7 @@ import { useLanguage } from "@/lib/LanguageContext"
 import { translations } from "@/lib/translations"
 import { HeroVisual } from "@/components/hero-visual"
 import { ContactCta } from "@/components/contact-cta"
+import { Parallax } from "@/components/parallax"
 
 export function HeroSection() {
   const { language } = useLanguage()
@@ -59,10 +60,11 @@ export function HeroSection() {
             <ContactCta className="mt-10" />
           </div>
 
-          {/* Right: alternating hero visuals — node-network ⇄ pendulum wave */}
-          <div className="relative hidden lg:block">
+          {/* Right: alternating hero visuals — node-network ⇄ pendulum wave.
+              Subtle parallax drift as the hero scrolls out of view. */}
+          <Parallax speed={0.18} className="relative hidden lg:block">
             <HeroVisual />
-          </div>
+          </Parallax>
         </div>
       </div>
     </section>
