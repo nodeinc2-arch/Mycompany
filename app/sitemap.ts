@@ -27,6 +27,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { path: "/solutions", changeFrequency: "monthly", priority: 0.7 },
     { path: "/contact", changeFrequency: "yearly", priority: 0.7 },
     { path: "/mission", changeFrequency: "monthly", priority: 0.7 },
+    { path: "/whats-built", changeFrequency: "weekly", priority: 0.6 },
     { path: "/insights", changeFrequency: "weekly", priority: 0.6 },
 
     // Tier 3 — legal
