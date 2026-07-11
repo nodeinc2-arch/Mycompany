@@ -263,6 +263,38 @@ export function regionNeedsReview(code: "CA" | ProvinceCode): boolean {
   return blockingObligations(code).length > 0
 }
 
+/**
+ * Compliance summary for a pay run touching a set of provinces. Federal
+ * obligations apply to every run; each distinct province adds its own. Used to
+ * gate the run flow: `cleared` is false whenever any region still has open
+ * (needs-legal-review / not-started) obligations — i.e. always today, so runs
+ * stay in DEMO mode until the legal work lands.
+ */
+export type RunComplianceSummary = {
+  cleared: boolean
+  regions: {
+    code: "CA" | ProvinceCode
+    name: string
+    blocking: Obligation[]
+  }[]
+  /** Flat list of every blocking obligation across the run, de-duped by key+code. */
+  blockingCount: number
+}
+
+export function runComplianceSummary(provinces: ProvinceCode[]): RunComplianceSummary {
+  const codes: ("CA" | ProvinceCode)[] = ["CA", ...Array.from(new Set(provinces))]
+  const regions = codes.map((code) => {
+    const j = getJurisdiction(code)
+    // Only that region's own blockers here (federal listed once, under "CA").
+    const blocking = (j?.obligations ?? []).filter(
+      (o) => o.status === "needs-legal-review" || o.status === "not-started",
+    )
+    return { code, name: j?.name ?? String(code), blocking }
+  })
+  const blockingCount = regions.reduce((n, r) => n + r.blocking.length, 0)
+  return { cleared: blockingCount === 0, regions, blockingCount }
+}
+
 export const obligationStatusLabel: Record<ObligationStatus, string> = {
   modelled: "Modelled",
   partial: "Partial",

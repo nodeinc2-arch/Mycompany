@@ -4,8 +4,9 @@ import { useEffect, useMemo, useState } from "react"
 import Link from "next/link"
 import { sampleEmployees } from "@/lib/labs/payroll/sample-data"
 import { suggestNextPeriodEnd, remittanceDueDate, type RunDraft, type RunOverride } from "@/lib/labs/payroll/pay-run"
+import type { RunComplianceSummary } from "@/lib/labs/payroll/compliance/jurisdictions"
 import { Button } from "@/components/ui/button"
-import { Check, ArrowRight, Loader2, Calendar, AlertTriangle, Sparkles, FileText } from "lucide-react"
+import { Check, ArrowRight, Loader2, Calendar, AlertTriangle, Sparkles, FileText, Scale } from "lucide-react"
 import { SubscriptionGate } from "@/components/labs/payroll/subscription-gate"
 
 type Step = "period" | "review" | "approve" | "done"
@@ -39,6 +40,7 @@ function NewRunInner() {
   const [periodEnd, setPeriodEnd] = useState(DEFAULT_PERIOD)
   const [overrides, setOverrides] = useState<Record<string, RunOverride>>({})
   const [draft, setDraft] = useState<RunDraft | null>(null)
+  const [compliance, setCompliance] = useState<RunComplianceSummary | null>(null)
   const [loading, setLoading] = useState(false)
   const [submitting, setSubmitting] = useState(false)
   const [result, setResult] = useState<SubmitResp | null>(null)
@@ -53,9 +55,10 @@ function NewRunInner() {
         headers: { "content-type": "application/json" },
         body: JSON.stringify({ period_end: periodEnd, overrides: overrideList }),
       })
-      const data = (await res.json()) as { draft?: RunDraft; error?: string }
+      const data = (await res.json()) as { draft?: RunDraft; compliance?: RunComplianceSummary; error?: string }
       if (data.draft) {
         setDraft(data.draft)
+        setCompliance(data.compliance ?? null)
         setStep(toStep)
       }
     } finally {
@@ -73,8 +76,11 @@ function NewRunInner() {
         headers: { "content-type": "application/json" },
         body: JSON.stringify({ period_end: periodEnd, overrides: overrideList }),
       })
-      const data = (await res.json()) as { draft?: RunDraft }
-      if (!cancelled && data.draft) setDraft(data.draft)
+      const data = (await res.json()) as { draft?: RunDraft; compliance?: RunComplianceSummary }
+      if (!cancelled && data.draft) {
+        setDraft(data.draft)
+        setCompliance(data.compliance ?? null)
+      }
     })()
     return () => {
       cancelled = true
@@ -152,6 +158,7 @@ function NewRunInner() {
       {step === "review" && draft && (
         <ReviewStep
           draft={draft}
+          compliance={compliance}
           overrides={overrides}
           onGross={setGross}
           onToggle={toggleExclude}
@@ -239,6 +246,7 @@ function PeriodStep({
 
 function ReviewStep({
   draft,
+  compliance,
   overrides,
   onGross,
   onToggle,
@@ -247,6 +255,7 @@ function ReviewStep({
   loading,
 }: {
   draft: RunDraft
+  compliance: RunComplianceSummary | null
   overrides: Record<string, RunOverride>
   onGross: (id: string, v: string) => void
   onToggle: (id: string, excluded: boolean) => void
@@ -256,6 +265,8 @@ function ReviewStep({
 }) {
   return (
     <div className="space-y-4">
+      {compliance && !compliance.cleared && <ComplianceBanner compliance={compliance} />}
+
       <div className="grid sm:grid-cols-4 gap-3">
         <Kpi label="Gross" value={money(draft.totals.gross)} />
         <Kpi label="Net deposit" value={money(draft.totals.net)} accent />
@@ -438,6 +449,40 @@ function Row({ label, value, bold }: { label: string; value: string; bold?: bool
     <div className="flex justify-between py-2">
       <dt className="text-muted-foreground">{label}</dt>
       <dd className={bold ? "text-foreground font-medium" : "text-foreground"}>{value}</dd>
+    </div>
+  )
+}
+
+function ComplianceBanner({ compliance }: { compliance: RunComplianceSummary }) {
+  // Only regions with open obligations, so the banner stays focused.
+  const blocked = compliance.regions.filter((r) => r.blocking.length > 0)
+  return (
+    <div className="rounded-2xl border border-red-500/30 bg-red-500/5 p-5">
+      <div className="flex items-center gap-2 mb-2">
+        <Scale className="h-4 w-4 text-red-400" />
+        <h2 className="font-medium text-foreground">Not cleared for real payroll — DEMO only</h2>
+      </div>
+      <p className="text-sm text-muted-foreground mb-4">
+        This run touches regions with open compliance obligations. You can preview the math, but no real
+        payroll should run until each item below is closed with a payroll compliance advisor.{" "}
+        <Link href="/labs/payroll/jurisdictions" className="text-accent hover:underline">
+          See jurisdictions →
+        </Link>
+      </p>
+      <div className="space-y-3">
+        {blocked.map((r) => (
+          <div key={r.code}>
+            <p className="text-xs font-medium text-foreground mb-1">
+              {r.name} <span className="text-muted-foreground">({r.code})</span>
+            </p>
+            <ul className="text-[11px] text-muted-foreground space-y-0.5 list-disc list-inside">
+              {r.blocking.map((o) => (
+                <li key={o.key}>{o.label}</li>
+              ))}
+            </ul>
+          </div>
+        ))}
+      </div>
     </div>
   )
 }
