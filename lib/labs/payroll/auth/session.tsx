@@ -1,78 +1,71 @@
 "use client"
 
-// Session provider for Pay.ca — the single source of "who is signed in".
+// Session provider for Pay.ca — the client-side view of "who is signed in".
 //
-// SCAFFOLD: the session is just a tenant id persisted to localStorage; sign-in
-// picks a demo company (no password, no real identity provider). This is the
-// ONE place to replace when wiring real auth — swap the body of
-// SessionProvider for an Auth.js/Clerk/WorkOS session and keep the
-// `useSession()` contract (tenant, signIn, signOut) so the rest of the app is
-// unaffected.
+// The AUTHORITY is the server: a signed httpOnly cookie set by
+// /api/labs/payroll/auth/session (see lib/.../server-session.ts). This provider
+// mirrors that server state for the UI. Sign-in/out POST/DELETE to that route
+// so the cookie is the single source of truth the API routes trust; this
+// context just reflects it. SCAFFOLD: sign-in still picks a demo company (no
+// password) — a real IdP replaces the POST body, not this contract.
 
 import { createContext, useCallback, useContext, useEffect, useState } from "react"
-import { demoTenants, getTenantByEmail, getTenantById, type Tenant } from "./tenant"
-
-const STORAGE_KEY = "pay-ca-session"
+import { demoTenants, type Tenant } from "./tenant"
 
 type SessionValue = {
   tenant: Tenant | null
-  /** True once we've read localStorage — avoids flashing a signed-out state. */
+  /** True once we've hydrated from the server — avoids flashing signed-out. */
   ready: boolean
-  /** Sign in as a tenant by owner email (demo). Returns the tenant or null. */
-  signIn: (email: string) => Tenant | null
-  /** Sign in directly by tenant id (used by the company picker). */
-  signInAs: (tenantId: string) => Tenant | null
-  signOut: () => void
+  /** Sign in as a tenant by id (demo company picker). Sets the server cookie. */
+  signInAs: (tenantId: string) => Promise<Tenant | null>
+  signOut: () => Promise<void>
 }
 
 const SessionContext = createContext<SessionValue | null>(null)
+
+const SESSION_URL = "/api/labs/payroll/auth/session"
 
 export function SessionProvider({ children }: { children: React.ReactNode }) {
   const [tenant, setTenant] = useState<Tenant | null>(null)
   const [ready, setReady] = useState(false)
 
+  // Hydrate from the server session (the trusted cookie), not localStorage.
   useEffect(() => {
-    try {
-      const id = localStorage.getItem(STORAGE_KEY)
-      if (id) setTenant(getTenantById(id) ?? null)
-    } catch {
-      /* ignore */
+    let alive = true
+    void fetch(SESSION_URL)
+      .then((r) => (r.ok ? r.json() : { tenant: null }))
+      .then((data: { tenant: Tenant | null }) => {
+        if (alive) setTenant(data.tenant ?? null)
+      })
+      .catch(() => {})
+      .finally(() => {
+        if (alive) setReady(true)
+      })
+    return () => {
+      alive = false
     }
-    setReady(true)
   }, [])
 
-  const persist = useCallback((t: Tenant | null) => {
+  const signInAs = useCallback(async (tenantId: string): Promise<Tenant | null> => {
+    const res = await fetch(SESSION_URL, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ tenantId }),
+    }).catch(() => null)
+    if (!res || !res.ok) return null
+    const data = (await res.json().catch(() => ({}))) as { tenant?: Tenant }
+    const t = data.tenant ?? null
     setTenant(t)
-    try {
-      if (t) localStorage.setItem(STORAGE_KEY, t.id)
-      else localStorage.removeItem(STORAGE_KEY)
-    } catch {
-      /* ignore */
-    }
+    return t
   }, [])
 
-  const signIn = useCallback(
-    (email: string) => {
-      const t = getTenantByEmail(email) ?? null
-      if (t) persist(t)
-      return t
-    },
-    [persist],
-  )
-
-  const signInAs = useCallback(
-    (tenantId: string) => {
-      const t = getTenantById(tenantId) ?? null
-      if (t) persist(t)
-      return t
-    },
-    [persist],
-  )
-
-  const signOut = useCallback(() => persist(null), [persist])
+  const signOut = useCallback(async () => {
+    await fetch(SESSION_URL, { method: "DELETE" }).catch(() => {})
+    setTenant(null)
+  }, [])
 
   return (
-    <SessionContext.Provider value={{ tenant, ready, signIn, signInAs, signOut }}>
+    <SessionContext.Provider value={{ tenant, ready, signInAs, signOut }}>
       {children}
     </SessionContext.Provider>
   )
