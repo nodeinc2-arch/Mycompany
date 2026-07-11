@@ -23,18 +23,20 @@ export interface NavGroup {
 }
 
 /**
- * Primary header nav. Kept flat and short; the "Solutions" entry points at the
- * hub, whose sub-pages come from the solutions registry.
+ * Primary header nav. Kept deliberately short (5 items — standard practice) so
+ * the header stays uncluttered. "Solutions" points at the hub (sub-pages come
+ * from the solutions registry); the homepage-section links (Finance,
+ * Innovation) live in the footer rather than the header, where they'd crowd it
+ * and don't resolve as cleanly from sub-pages.
  */
 export function primaryNav(language: Language): NavLink[] {
   const t = translations[language].nav
   return [
     { href: "/#services", label: t.services },
     { href: "/solutions", label: t.solutions },
-    { href: "/#finance", label: t.finance },
-    { href: "/#innovation", label: t.innovation },
-    { href: "/mission", label: t.mission },
+    { href: "/whats-built", label: t.whatsBuilt },
     { href: "/insights", label: t.insights },
+    { href: "/mission", label: t.mission },
   ]
 }
 
@@ -73,6 +75,7 @@ export function footerGroups(language: Language): NavGroup[] {
       links: [
         { href: "/#about", label: f.about },
         { href: "/mission", label: f.mission },
+        { href: "/whats-built", label: t.nav.whatsBuilt },
         { href: "/insights", label: f.insights },
         // "How AI evolved" is the one insights post that lives outside /insights.
         ...INSIGHT_POSTS.filter((p) => !p.internal).map((p) => ({ href: p.href, label: p.title.split(":")[0] })),
