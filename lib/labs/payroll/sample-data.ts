@@ -20,6 +20,19 @@ export type BankAccount = {
  */
 export type PaymentMethod = "direct_deposit" | "cheque"
 
+/**
+ * A dated life event on an employee's file. Purely narrative texture that makes
+ * each employee a coherent "story" — and, not by accident, each event maps to a
+ * real payroll surface: a raise → pay change, WFH → T2200 at year-end, a leave
+ * → held pay / ROE, a resignation → termination + ROE. Optional, so nothing
+ * downstream depends on it.
+ */
+export type EmployeeLifeEvent = {
+  date: string
+  kind: "hired" | "raise" | "address_change" | "leave" | "return" | "role_change" | "resignation"
+  note: string
+}
+
 export type Employee = {
   id: string
   name: string
@@ -32,14 +45,75 @@ export type Employee = {
   bank?: BankAccount
   /** Digital direct deposit vs. paper cheque. Defaults to direct_deposit. */
   paymentMethod: PaymentMethod
+  /** ISO hire date — anchors tenure and the start of the story. */
+  startDate?: string
+  /** One-line human summary of who this person is on the team. */
+  story?: string
+  /** Dated events on the file, oldest first. */
+  lifeEvents?: EmployeeLifeEvent[]
+  /** Set when the employee claims a home office — drives the T2200 at year-end. */
+  worksFromHome?: boolean
 }
 
 export const sampleEmployees: Employee[] = [
-  { id: "EMP-001", name: "Aanya Patel", role: "Senior Engineer", province: "ON", payType: "salary", grossPerPeriod: 4615.38, periodsPerYear: 26, paymentMethod: "direct_deposit", bank: { transit: "00412", institution: "003", account: "1004587" } },
-  { id: "EMP-002", name: "Liam O'Connor", role: "Product Designer", province: "BC", payType: "salary", grossPerPeriod: 3461.54, periodsPerYear: 26, paymentMethod: "direct_deposit", bank: { transit: "09183", institution: "004", account: "2298013" } },
-  { id: "EMP-003", name: "Marie Tremblay", role: "Customer Success", province: "QC", payType: "salary", grossPerPeriod: 2769.23, periodsPerYear: 26, paymentMethod: "direct_deposit", bank: { transit: "30005", institution: "815", account: "5530127" } },
-  { id: "EMP-004", name: "Daniel Cohen", role: "Account Executive", province: "ON", payType: "hourly", grossPerPeriod: 2200.0, periodsPerYear: 26, paymentMethod: "cheque" },
-  { id: "EMP-005", name: "Priya Nair", role: "Founding Engineer", province: "ON", payType: "salary", grossPerPeriod: 5384.62, periodsPerYear: 26, paymentMethod: "direct_deposit", bank: { transit: "00412", institution: "003", account: "1009921" } },
+  {
+    id: "EMP-001", name: "Aanya Patel", role: "Senior Engineer", province: "ON",
+    payType: "salary", grossPerPeriod: 4615.38, periodsPerYear: 26,
+    paymentMethod: "direct_deposit", bank: { transit: "00412", institution: "003", account: "1004587" },
+    startDate: "2022-03-14", worksFromHome: true,
+    story: "Early engineering hire, now a tech lead. Recently promoted with a raise, and claims a home office — a clean T2200 case at year-end.",
+    lifeEvents: [
+      { date: "2022-03-14", kind: "hired", note: "Joined as Intermediate Engineer, $95k." },
+      { date: "2024-01-01", kind: "role_change", note: "Promoted to Senior Engineer." },
+      { date: "2026-01-01", kind: "raise", note: "Merit raise to $120k ($4,615.38/period)." },
+    ],
+  },
+  {
+    id: "EMP-002", name: "Liam O'Connor", role: "Product Designer", province: "BC",
+    payType: "salary", grossPerPeriod: 3461.54, periodsPerYear: 26,
+    paymentMethod: "direct_deposit", bank: { transit: "09183", institution: "004", account: "2298013" },
+    startDate: "2023-09-05",
+    story: "BC-based designer, currently on parental leave — his pay is held this cycle, and a return-to-work date is pending. Exercises the held-pay and ROE (leave) paths.",
+    lifeEvents: [
+      { date: "2023-09-05", kind: "hired", note: "Joined as Product Designer, Vancouver." },
+      { date: "2025-04-01", kind: "address_change", note: "Moved within BC; banking unchanged." },
+      { date: "2026-05-20", kind: "leave", note: "Started parental leave — pay held pending ROE." },
+    ],
+  },
+  {
+    id: "EMP-003", name: "Marie Tremblay", role: "Customer Success", province: "QC",
+    payType: "salary", grossPerPeriod: 2769.23, periodsPerYear: 26,
+    paymentMethod: "direct_deposit", bank: { transit: "30005", institution: "815", account: "5530127" },
+    startDate: "2021-11-22",
+    story: "Québec employee — the QPP/QPIP + Revenu Québec case. Her file is why the run flow flags Quebec as needing legal review before real payroll.",
+    lifeEvents: [
+      { date: "2021-11-22", kind: "hired", note: "Joined as Customer Success, Montréal." },
+      { date: "2025-07-01", kind: "raise", note: "Cost-of-living adjustment to $72k." },
+    ],
+  },
+  {
+    id: "EMP-004", name: "Daniel Cohen", role: "Account Executive", province: "ON",
+    payType: "hourly", grossPerPeriod: 2200.0, periodsPerYear: 26,
+    paymentMethod: "cheque",
+    startDate: "2025-02-03",
+    story: "Hourly AE, paid by paper cheque — no bank on file, so he's excluded from the EFT batch and printed separately. Also resigning at end of quarter: the termination + ROE story.",
+    lifeEvents: [
+      { date: "2025-02-03", kind: "hired", note: "Joined as Account Executive, hourly + commission." },
+      { date: "2026-06-15", kind: "resignation", note: "Gave notice; last day 2026-06-30 (ROE reason E)." },
+    ],
+  },
+  {
+    id: "EMP-005", name: "Priya Nair", role: "Founding Engineer", province: "ON",
+    payType: "salary", grossPerPeriod: 5384.62, periodsPerYear: 26,
+    paymentMethod: "direct_deposit", bank: { transit: "00412", institution: "003", account: "1009921" },
+    startDate: "2020-06-01", worksFromHome: true,
+    story: "Highest earner and longest tenure — crosses the CPP2 ceiling, so her file exercises the second-tier CPP calculation. Home office on record for a T2200.",
+    lifeEvents: [
+      { date: "2020-06-01", kind: "hired", note: "Founding engineer, pre-seed." },
+      { date: "2023-01-01", kind: "raise", note: "Raised to $140k as the team scaled." },
+      { date: "2026-01-01", kind: "raise", note: "Raised to $140k+ ($5,384.62/period) — above the CPP2 threshold." },
+    ],
+  },
 ]
 
 /**

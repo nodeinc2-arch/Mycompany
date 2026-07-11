@@ -1,11 +1,34 @@
 import Link from "next/link"
-import { LogIn } from "lucide-react"
+import { LogIn, Home } from "lucide-react"
 import { estimateGrossToNet, type ProvinceCode } from "@/lib/labs/payroll/tax-rules-ca"
 import { listEmployees, isEmployeeStoreDurable } from "@/lib/labs/payroll/employees-store"
+import type { Employee, EmployeeLifeEvent } from "@/lib/labs/payroll/sample-data"
 import { getServerTenantIdFromCookies } from "@/lib/labs/payroll/auth/server-session"
 
 const money = (n: number) =>
   n.toLocaleString("en-CA", { style: "currency", currency: "CAD", minimumFractionDigits: 2 })
+
+/** Human tenure like "3 yr" / "8 mo" from an ISO hire date, as of today. */
+function tenure(startDate?: string): string | null {
+  if (!startDate) return null
+  const start = new Date(startDate + "T00:00:00Z")
+  if (Number.isNaN(start.getTime())) return null
+  const months = Math.max(0, Math.round((Date.now() - start.getTime()) / (1000 * 60 * 60 * 24 * 30.44)))
+  if (months < 12) return `${months} mo`
+  const years = Math.floor(months / 12)
+  const rem = months % 12
+  return rem === 0 ? `${years} yr` : `${years} yr ${rem} mo`
+}
+
+const eventLabel: Record<EmployeeLifeEvent["kind"], string> = {
+  hired: "Hired",
+  raise: "Raise",
+  address_change: "Address change",
+  leave: "Leave",
+  return: "Return",
+  role_change: "Role change",
+  resignation: "Resignation",
+}
 
 export default async function EmployeesPage() {
   // Employees are tenant-scoped and read from D1 for the SIGNED-IN company only.
@@ -43,6 +66,18 @@ export default async function EmployeesPage() {
         <Kpi label="Gross / period" value={money(totalGross)} note="Sum of bi-weekly gross" />
         <Kpi label="Net / period" value={money(totalNet)} note={`Remittance ${money(totalRemittance)}`} />
       </div>
+
+      {/* Persona cards — each employee's story, tenure, and file history. */}
+      {employees.some((e) => e.story) && (
+        <div className="mb-10">
+          <h2 className="text-sm font-medium text-foreground mb-3">Who&apos;s on the team</h2>
+          <div className="grid md:grid-cols-2 gap-3">
+            {employees.filter((e) => e.story).map((emp) => (
+              <StoryCard key={emp.id} emp={emp} />
+            ))}
+          </div>
+        </div>
+      )}
 
       <div className="rounded-2xl border border-border/50 bg-card overflow-hidden">
         <div className="overflow-x-auto">
@@ -86,6 +121,51 @@ export default async function EmployeesPage() {
         Tenant-scoped employee data{durable ? " (durable — Cloudflare D1)" : " (in-memory fallback — not durable until D1 is bound)"}.
         Net pay is a demo calculation against 2026 rules — not CRA-certified.
       </p>
+    </div>
+  )
+}
+
+function StoryCard({ emp }: { emp: Employee }) {
+  const t = tenure(emp.startDate)
+  const events = emp.lifeEvents ?? []
+  return (
+    <div className="rounded-2xl border border-border/50 bg-card p-5">
+      <div className="flex items-start justify-between gap-3 mb-2">
+        <div className="min-w-0">
+          <p className="font-medium text-foreground flex items-center gap-2">
+            {emp.name}
+            {emp.worksFromHome && (
+              <span className="inline-flex items-center gap-1 text-[10px] rounded-full border border-accent/30 bg-accent/5 px-1.5 py-0.5 text-accent">
+                <Home className="h-2.5 w-2.5" /> T2200
+              </span>
+            )}
+          </p>
+          <p className="text-[11px] text-muted-foreground">
+            {emp.role} · {emp.province}
+            {t && <> · {t} tenure</>}
+          </p>
+        </div>
+        <span className="text-[11px] font-mono text-muted-foreground shrink-0">{emp.id}</span>
+      </div>
+
+      {emp.story && <p className="text-sm text-muted-foreground mb-3">{emp.story}</p>}
+
+      {events.length > 0 && (
+        <details className="group">
+          <summary className="text-[11px] text-accent cursor-pointer hover:underline list-none">
+            File history ({events.length}) <span className="group-open:hidden">▸</span><span className="hidden group-open:inline">▾</span>
+          </summary>
+          <ol className="mt-2 border-l border-border/50 pl-3 space-y-1.5">
+            {events.map((e, i) => (
+              <li key={i} className="text-[11px]">
+                <span className="font-mono text-muted-foreground">{e.date}</span>{" "}
+                <span className="text-foreground">{eventLabel[e.kind]}</span>
+                <span className="text-muted-foreground"> — {e.note}</span>
+              </li>
+            ))}
+          </ol>
+        </details>
+      )}
     </div>
   )
 }
