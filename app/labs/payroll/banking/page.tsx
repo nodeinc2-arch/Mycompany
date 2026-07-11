@@ -11,32 +11,30 @@ import {
   Unlink,
   ArrowRight,
 } from "lucide-react"
-import { connectableBanks, getConnectableBank } from "@/lib/labs/payroll/bank-connection"
+import { connectableBanks } from "@/lib/labs/payroll/bank-connection"
 import { useBankConnection } from "@/lib/labs/payroll/use-bank-connection"
-import { useAudit } from "@/lib/labs/payroll/use-audit"
 
 const money = (n: number) =>
   n.toLocaleString("en-CA", { style: "currency", currency: "CAD", minimumFractionDigits: 0 })
 
 export default function BankingPage() {
   const { bank, hydrated, isConnected, connect, disconnect } = useBankConnection()
-  const { log } = useAudit()
   // Tracks which bank is mid-"OAuth" so we can show a connecting spinner.
   const [connecting, setConnecting] = useState<string | null>(null)
 
   const startConnect = (id: string) => {
     setConnecting(id)
-    // Simulate the aggregator round-trip (token exchange) before resolving.
-    setTimeout(() => {
-      connect(id)
+    // Simulate the aggregator round-trip (token exchange) before persisting.
+    // The connect route records the bank.connected audit event server-side.
+    setTimeout(async () => {
+      await connect(id)
       setConnecting(null)
-      log("bank.connected", { target: getConnectableBank(id)?.name ?? id })
     }, 900)
   }
 
   const handleDisconnect = () => {
-    log("bank.disconnected", { target: bank?.bankName })
-    disconnect()
+    // The disconnect route records the bank.disconnected audit event server-side.
+    void disconnect()
   }
 
   return (

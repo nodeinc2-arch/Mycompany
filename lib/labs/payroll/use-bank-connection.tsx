@@ -1,52 +1,52 @@
 "use client"
 
-// Client-side persistence for the connected payroll bank account.
+// Client hook for the connected payroll bank account.
 //
-// The scaffold has no datastore, so the connection lives in localStorage (same
-// approach as the a11y prefs). Both the banking connect page and the payments
-// page read through this hook, so connecting on one page funds the other and the
-// connection survives a refresh. DEMO only — what is stored is a mock account.
+// The connection is now persisted server-side and tenant-scoped (D1 via the
+// /api/labs/payroll/banks routes) instead of in browser localStorage, so it's
+// durable, shared across the signed-in company's devices, and can't leak
+// between tenants. Both the banking connect page and the payments page read
+// through this hook. DEMO only — what's stored is still a mock account.
 
 import { useCallback, useEffect, useState } from "react"
-import { connectBank, type ConnectedBank } from "./bank-connection"
+import type { ConnectedBank } from "./bank-connection"
 
-const STORAGE_KEY = "pay-ca-bank"
+const BANKS_URL = "/api/labs/payroll/banks"
 
 export function useBankConnection() {
   const [bank, setBank] = useState<ConnectedBank | null>(null)
-  // Guard against rendering "not connected" during SSR/first paint before we've
-  // read localStorage, which would otherwise flash the wrong gate state.
+  // Guard against rendering "not connected" before we've loaded the server
+  // connection, which would otherwise flash the wrong gate state.
   const [hydrated, setHydrated] = useState(false)
 
   useEffect(() => {
-    try {
-      const raw = localStorage.getItem(STORAGE_KEY)
-      if (raw) setBank(JSON.parse(raw) as ConnectedBank)
-    } catch {
-      /* ignore malformed storage */
+    let alive = true
+    void fetch(BANKS_URL)
+      .then((r) => (r.ok ? r.json() : { connected: null }))
+      .then((data: { connected?: ConnectedBank | null }) => {
+        if (alive) setBank(data.connected ?? null)
+      })
+      .catch(() => {})
+      .finally(() => {
+        if (alive) setHydrated(true)
+      })
+    return () => {
+      alive = false
     }
-    setHydrated(true)
   }, [])
 
-  const connect = useCallback((bankId: string): ConnectedBank | null => {
-    const connected = connectBank(bankId)
-    if (!connected) return null
+  const connect = useCallback(async (bankId: string): Promise<ConnectedBank | null> => {
+    const res = await fetch(`${BANKS_URL}/${bankId}/connect`, { method: "POST" }).catch(() => null)
+    if (!res || !res.ok) return null
+    const data = (await res.json().catch(() => ({}))) as { connected?: ConnectedBank }
+    const connected = data.connected ?? null
     setBank(connected)
-    try {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(connected))
-    } catch {
-      /* storage may be unavailable */
-    }
     return connected
   }, [])
 
-  const disconnect = useCallback(() => {
+  const disconnect = useCallback(async () => {
+    await fetch(BANKS_URL, { method: "DELETE" }).catch(() => {})
     setBank(null)
-    try {
-      localStorage.removeItem(STORAGE_KEY)
-    } catch {
-      /* ignore */
-    }
   }, [])
 
   return { bank, hydrated, isConnected: !!bank, connect, disconnect }
