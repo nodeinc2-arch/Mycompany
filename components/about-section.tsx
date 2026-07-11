@@ -1,6 +1,7 @@
 import Link from "next/link"
 import Image from "next/image"
 import { Linkedin, Github, MapPin, Briefcase, Sparkles } from "lucide-react"
+import { Parallax } from "@/components/parallax"
 
 const experiences = [
   {
@@ -52,21 +53,22 @@ export function AboutSection() {
               Meet <em className="font-serif italic font-normal">Shweta Sharma</em>
             </h2>
 
-            <div className="flex items-center gap-6 mb-8">
-              <div className="relative shrink-0">
-                <div className="absolute -inset-1 rounded-full bg-gradient-to-tr from-accent/40 to-transparent blur-sm" />
-                <div className="relative w-36 h-36 sm:w-44 sm:h-44 rounded-full overflow-hidden border-2 border-accent/30">
+            <div className="flex flex-col sm:flex-row sm:items-end gap-6 mb-8">
+              <Parallax speed={0.12} className="relative shrink-0">
+                <div className="absolute -inset-1.5 rounded-2xl bg-gradient-to-tr from-accent/40 to-transparent blur-md" />
+                <div className="relative w-full sm:w-72 aspect-[4/5] rounded-2xl overflow-hidden border border-accent/30 shadow-xl">
                   <Image
                     src="/shweta-sharma.jpeg"
                     alt="Shweta Sharma - Founder & CEO of Node2"
-                    width={176}
-                    height={176}
+                    width={640}
+                    height={800}
+                    priority
                     className="w-full h-full object-cover object-top"
                   />
                 </div>
-              </div>
-              <div>
-                <h3 className="text-lg font-medium text-foreground">Shweta Sharma</h3>
+              </Parallax>
+              <div className="sm:pb-2">
+                <h3 className="text-2xl font-medium text-foreground">Shweta Sharma</h3>
                 <p className="text-sm text-accent">Founder &amp; CEO · Payroll Specialist</p>
                 <div className="flex items-center gap-1 text-xs text-muted-foreground mt-1.5">
                   <MapPin className="h-3 w-3" />
