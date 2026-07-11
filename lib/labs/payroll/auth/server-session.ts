@@ -123,6 +123,17 @@ export async function getServerTenantId(req: Request): Promise<string | null> {
   return verifySession(readCookie(req))
 }
 
+/**
+ * Same, but for React Server Components / route handlers that don't have the
+ * Request in hand — reads the cookie via next/headers (imported lazily so this
+ * module stays usable from plain-Request contexts too).
+ */
+export async function getServerTenantIdFromCookies(): Promise<string | null> {
+  const { cookies } = await import("next/headers")
+  const store = await cookies()
+  return verifySession(store.get(COOKIE_NAME)?.value)
+}
+
 /** Cookie attributes for setting the session (sign-in). httpOnly + secure. */
 export function sessionCookie(token: string): string {
   const secure = process.env.NODE_ENV === "production" ? " Secure;" : ""

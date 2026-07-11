@@ -1,11 +1,21 @@
-import { sampleEmployees } from "@/lib/labs/payroll/sample-data"
+import Link from "next/link"
+import { LogIn } from "lucide-react"
 import { estimateGrossToNet, type ProvinceCode } from "@/lib/labs/payroll/tax-rules-ca"
+import { listEmployees, isEmployeeStoreDurable } from "@/lib/labs/payroll/employees-store"
+import { getServerTenantIdFromCookies } from "@/lib/labs/payroll/auth/server-session"
 
 const money = (n: number) =>
   n.toLocaleString("en-CA", { style: "currency", currency: "CAD", minimumFractionDigits: 2 })
 
-export default function EmployeesPage() {
-  const withCalcs = sampleEmployees.map((emp) => {
+export default async function EmployeesPage() {
+  // Employees are tenant-scoped and read from D1 for the SIGNED-IN company only.
+  const tenantId = await getServerTenantIdFromCookies()
+  if (!tenantId) return <SignedOut />
+
+  const employees = await listEmployees(tenantId)
+  const durable = isEmployeeStoreDurable()
+
+  const withCalcs = employees.map((emp) => {
     const calc = estimateGrossToNet({
       grossPerPeriod: emp.grossPerPeriod,
       periodsPerYear: emp.periodsPerYear,
@@ -73,9 +83,26 @@ export default function EmployeesPage() {
       </div>
 
       <p className="text-[10px] text-muted-foreground mt-4">
-        Demo calculation routed through the SLM tier of the MCP server. Provincial figures use a 9.5% blended estimate
-        — not CRA-certified.
+        Tenant-scoped employee data{durable ? " (durable — Cloudflare D1)" : " (in-memory fallback — not durable until D1 is bound)"}.
+        Net pay is a demo calculation against 2026 rules — not CRA-certified.
       </p>
+    </div>
+  )
+}
+
+function SignedOut() {
+  return (
+    <div className="px-4 sm:px-6 lg:px-8 py-16 max-w-md mx-auto text-center">
+      <h1 className="text-2xl font-medium text-foreground mb-2">Employees</h1>
+      <p className="text-muted-foreground mb-6">
+        Sign in to a company to view its employees. Payroll data is scoped to the company you sign in as.
+      </p>
+      <Link
+        href="/labs/payroll/sign-in"
+        className="inline-flex items-center gap-2 rounded-full bg-accent text-accent-foreground px-5 py-2 text-sm font-medium hover:bg-accent/90"
+      >
+        <LogIn className="h-4 w-4" /> Sign in
+      </Link>
     </div>
   )
 }
