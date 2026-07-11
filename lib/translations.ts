@@ -44,6 +44,7 @@ export const translations = {
       insights: 'Insights',
       getStarted: 'Get Started',
       contact: 'Contact',
+      signIn: 'Sign in',
     },
     hero: {
       tagline: 'Canadian software, built to keep your data home',
@@ -220,6 +221,7 @@ export const translations = {
       insights: 'Perspectives',
       getStarted: 'Commencer',
       contact: 'Contact',
+      signIn: 'Se connecter',
     },
     hero: {
       tagline: 'Des logiciels canadiens, pour garder vos données ici',
