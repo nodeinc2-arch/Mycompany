@@ -29,6 +29,14 @@ export interface Solution {
   overview: string
   /** 3–4 concrete capabilities. */
   features: SolutionFeature[]
+  /**
+   * If the product has a live, self-serve app, its URL. When set, the idea page
+   * shows a primary CTA into the product (e.g. pricing/checkout) instead of only
+   * routing to a consultation. Omit for concept-stage lines with no app yet.
+   */
+  appUrl?: string
+  /** Label for the appUrl CTA button. Defaults to "See pricing". */
+  appCta?: string
 }
 
 export const SOLUTIONS: Solution[] = [
@@ -48,6 +56,8 @@ export const SOLUTIONS: Solution[] = [
       { title: "Compliance built in", description: "Provincial brackets, credits, CPP2 and multi-country tax, verified against source rules." },
       { title: "Private by default", description: "Local AI (Ollama) so sensitive data never goes to a public cloud model." },
     ],
+    appUrl: "/labs/payroll/pricing",
+    appCta: "See pricing & get started",
   },
   {
     slug: "api",
