@@ -22,8 +22,8 @@ export default async function PricingPage({
         <div className="mb-8 rounded-2xl border border-emerald-500/40 bg-emerald-500/5 p-4 flex items-start gap-3">
           <CheckCircle2 className="h-5 w-5 text-emerald-400 mt-0.5 shrink-0" />
           <p className="text-sm text-foreground">
-            Checkout complete — thanks! We&apos;ll reach out to schedule your implementation.
-            <span className="text-muted-foreground"> (Test mode — no funds captured.)</span>
+            Thanks! Your onboarding is booked — we&apos;ll reach out within one business day to schedule
+            your implementation and first pay cycle.
           </p>
         </div>
       )}
@@ -42,7 +42,8 @@ export default async function PricingPage({
         </h1>
         <p className="text-lg text-muted-foreground leading-relaxed">
           Pay.ca runs your entire payroll — paying people, staying compliant with the CRA, and closing
-          out the year. One plan at market rate, for {pricing.audience}.
+          out the year. One plan at market rate, for {pricing.audience}. We onboard you personally:
+          book a guided setup and we run your first pay cycle with you.
         </p>
       </section>
 
@@ -74,9 +75,10 @@ export default async function PricingPage({
             </div>
           </div>
 
-          <CheckoutButton className="inline-flex w-full sm:w-auto items-center justify-center gap-2 rounded-full bg-accent text-accent-foreground px-7 py-3 text-sm font-medium hover:bg-accent/90 transition-colors disabled:opacity-60" />
+          <CheckoutButton label="Book your onboarding" className="inline-flex w-full sm:w-auto items-center justify-center gap-2 rounded-full bg-accent text-accent-foreground px-7 py-3 text-sm font-medium hover:bg-accent/90 transition-colors disabled:opacity-60" />
           <p className="text-xs text-muted-foreground mt-4">
-            Month-to-month. {priceLabel(pricing.monthly)} billed monthly after a one-time implementation.
+            Starts with the one-time {priceLabel(pricing.setupFee)} implementation. {priceLabel(pricing.monthly)}/mo,
+            month-to-month, begins once your first pay cycle is live.
           </p>
         </div>
       </section>
@@ -125,10 +127,11 @@ export default async function PricingPage({
       <section className="text-center rounded-3xl border border-border/50 bg-secondary/30 p-10">
         <h2 className="text-2xl font-medium text-foreground mb-3">Ready to run payroll on Pay.ca?</h2>
         <p className="text-muted-foreground mb-6 max-w-xl mx-auto">
-          Connect a bank, import your team, and run your first pay cycle with us alongside you.
+          Book your onboarding and we&apos;ll connect your bank, import your team, and run your first
+          pay cycle together — hands-on, start to finish.
         </p>
         <div className="flex flex-wrap items-center justify-center gap-3">
-          <CheckoutButton />
+          <CheckoutButton label="Book your onboarding" />
           <Link
             href="/contact"
             className="inline-flex items-center gap-2 rounded-full border border-border/60 px-7 py-3 text-sm font-medium text-foreground hover:bg-secondary/50"
