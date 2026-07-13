@@ -85,14 +85,27 @@ export default async function SolutionPage({ params }: { params: Promise<{ slug:
             <p className="text-sm font-medium text-accent uppercase tracking-widest mb-2">How it's offered</p>
             <p className="text-foreground font-medium mb-4">{solution.subscribe}</p>
             <p className="text-muted-foreground leading-relaxed mb-6">
-              Interested in {solution.name}? Tell us about your setup and we'll scope a subscription that fits.
+              Interested in {solution.name}? {solution.appUrl
+                ? "Start on the plan below, or tell us about your setup and we'll help you migrate."
+                : "Tell us about your setup and we'll scope a subscription that fits."}
             </p>
-            <Link href="/get-started">
-              <span className="inline-flex items-center gap-2 text-accent font-medium hover:underline underline-offset-4">
-                Get started
-                <ArrowRight className="h-4 w-4" />
-              </span>
-            </Link>
+            <div className="flex flex-wrap items-center gap-x-6 gap-y-3">
+              {solution.appUrl && (
+                <Link
+                  href={solution.appUrl}
+                  className="inline-flex items-center gap-2 rounded-full bg-accent text-accent-foreground px-6 py-3 text-sm font-medium hover:bg-accent/90 transition-colors"
+                >
+                  {solution.appCta ?? "See pricing"}
+                  <ArrowRight className="h-4 w-4" />
+                </Link>
+              )}
+              <Link href="/get-started">
+                <span className="inline-flex items-center gap-2 text-accent font-medium hover:underline underline-offset-4">
+                  {solution.appUrl ? "Talk to us first" : "Get started"}
+                  <ArrowRight className="h-4 w-4" />
+                </span>
+              </Link>
+            </div>
           </div>
         </section>
       </main>
