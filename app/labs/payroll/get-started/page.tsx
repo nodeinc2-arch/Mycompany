@@ -186,7 +186,7 @@ export default function CompanyOnboardingPage() {
       </div>
 
       <p className="mt-8 text-[10px] text-muted-foreground leading-relaxed">
-        Scaffold build. Savings are illustrative estimates from an editable model, not a guarantee. Pricing is a placeholder.
+        Savings are illustrative estimates from an editable model, not a guarantee. Actual results vary by business.
       </p>
     </div>
   )
