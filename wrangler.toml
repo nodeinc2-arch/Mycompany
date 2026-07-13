@@ -13,18 +13,17 @@ binding = "ASSETS"
 # product link in the homepage finance section to resolve instead of 404.
 LABS_ENABLED = "1"
 
+# Base URL for absolute links built server-side (Stripe checkout success/cancel
+# URLs); page metadata and the sitemap already default to this host in code.
+NEXT_PUBLIC_SITE_URL = "https://www.node2.io"
+
 # Durable, relational store for Pay.ca (audit log, billing entitlement,
-# tenants). Create the database and apply migrations with:
-#   wrangler d1 create PAYCA_DB      # prints database_id
-#   pnpm db:migrate                  # applies migrations/ locally
-#   pnpm db:migrate:remote           # applies to the deployed DB
-# then uncomment the block below and paste the returned database_id. Until then,
-# the app falls back to a non-durable in-memory store (see lib/labs/payroll/db.ts
-# and docs/d1-setup.md). Left commented because a placeholder id fails the deploy.
-# [[d1_databases]]
-# binding = "PAYCA_DB"
-# database_name = "payca"
-# database_id = "REPLACE_WITH_D1_DATABASE_ID"
+# tenants) — see docs/d1-setup.md. Migrations live in migrations/ and are
+# applied with pnpm db:migrate (local) / pnpm db:migrate:remote (deployed DB).
+[[d1_databases]]
+binding = "PAYCA_DB"
+database_name = "payca"
+database_id = "de0a6b19-aca7-491f-a043-3314bb9fe8f6"
 
 [[routes]]
 pattern = "www.node2.io"
