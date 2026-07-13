@@ -4,13 +4,18 @@ import { useState } from "react"
 import { useRouter } from "next/navigation"
 import { ArrowRight, Loader2 } from "lucide-react"
 
-// Starts Stripe Checkout for the Pay.ca plan. POSTs to the billing route and
-// redirects to the hosted Checkout URL. If billing isn't configured (503) or
-// anything fails, falls back to the /get-started contact path so the CTA always
-// does something useful.
+// Sends the buyer to pay for onboarding. Resolution order:
+//   1. A Stripe Payment Link (NEXT_PUBLIC_PILOT_PAYMENT_LINK) — the simplest way
+//      to charge the one-time pilot fee; no API keys or webhook needed. Set this
+//      to the link from the Stripe dashboard the moment the account is ready.
+//   2. Stripe Checkout via the billing route (needs STRIPE_SECRET_KEY).
+//   3. The /get-started contact path — so the CTA always does something useful
+//      even before any Stripe account exists.
+
+const PAYMENT_LINK = process.env.NEXT_PUBLIC_PILOT_PAYMENT_LINK
 
 export function CheckoutButton({
-  label = "Get started",
+  label = "Book your onboarding",
   className,
 }: {
   label?: string
@@ -22,6 +27,12 @@ export function CheckoutButton({
   const start = async () => {
     setLoading(true)
     try {
+      // 1. Payment Link — go straight there, no server round-trip.
+      if (PAYMENT_LINK) {
+        window.location.href = PAYMENT_LINK
+        return
+      }
+      // 2. Stripe Checkout session (if secret key is configured server-side).
       const res = await fetch("/api/labs/payroll/billing/checkout", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -34,7 +45,7 @@ export function CheckoutButton({
           return
         }
       }
-      // Not configured / failed → graceful fallback.
+      // 3. Not configured / failed → graceful fallback.
       router.push("/get-started")
     } catch {
       router.push("/get-started")
