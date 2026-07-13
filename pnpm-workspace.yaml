@@ -1,4 +1,7 @@
 allowBuilds:
   esbuild: true
   sharp: true
+  # Native resolver for eslint-plugin-import; ESLint runs fine without it, so
+  # we skip its build script rather than run install-time native compilation.
+  unrs-resolver: false
   workerd: true
