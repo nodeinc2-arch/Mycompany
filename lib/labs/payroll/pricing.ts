@@ -2,8 +2,8 @@
 //
 // The positioning is deliberately simple: one plan, at market rate, that does
 // everything the platform can do. Edit the numbers here and every surface (the
-// pricing page, overview CTA) updates. Figures are PLACEHOLDERS — set them to
-// whatever the real go-to-market rate is.
+// pricing page, overview CTA) updates. These are the live go-to-market rates —
+// they must match the Stripe Price IDs (STRIPE_PRICE_MONTHLY / _SETUP).
 
 export const pricing = {
   /** One-time implementation: migration, bank connect, CRA setup, first run. */

@@ -139,7 +139,8 @@ export default async function PricingPage({
       </section>
 
       <p className="mt-10 text-center text-[10px] text-muted-foreground leading-relaxed">
-        Scaffold build. Prices are placeholders and no billing is processed. Pay.ca is a Node2 Labs prototype.
+        Pay.ca is an early-access product from Node2. Prices are in CAD and billed securely via Stripe.
+        Available across Canada excluding Quebec at launch. Prices may change; your rate is locked at signup.
       </p>
     </div>
   )
