@@ -8,7 +8,7 @@ import { ollamaInfo } from "@/lib/labs/payroll/ai/ollama"
 export const runtime = "nodejs"
 
 // Stub MCP-style endpoint. Real Model Context Protocol uses JSON-RPC over stdio
-// or SSE; this HTTP route mirrors the shape so a Pay.ca MCP server could later
+// or SSE; this HTTP route mirrors the shape so a Node2 Payroll MCP server could later
 // drop in without UI rewrites.
 
 type RpcId = string | number | null | undefined

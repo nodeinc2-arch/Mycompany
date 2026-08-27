@@ -59,7 +59,7 @@ export async function POST(request: Request) {
     const resend = new Resend(apiKey)
     const { error } = await resend.emails.send({
       from: "Node2 Contact <onboarding@resend.dev>",
-      to: "nodeinc2@gmail.com",
+      to: "shweta@node2.io",
       replyTo: email,
       subject,
       html: `

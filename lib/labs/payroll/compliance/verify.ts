@@ -1,4 +1,4 @@
-// Rate verification harness for Pay.ca.
+// Rate verification harness for Node2 Payroll.
 //
 // The rate VALUES in rates-2026 are best-effort and unverified. This module
 // doesn't certify them — only a human checking the authoritative CRA source can

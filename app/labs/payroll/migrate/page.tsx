@@ -149,7 +149,7 @@ export default function MigratePage() {
   return (
     <div className="px-4 sm:px-6 lg:px-8 py-10 lg:py-14 max-w-6xl mx-auto">
       <div className="mb-8">
-        <p className="text-xs font-medium text-accent uppercase tracking-widest mb-2">Migrate to Pay.ca</p>
+        <p className="text-xs font-medium text-accent uppercase tracking-widest mb-2">Migrate to Node2 Payroll</p>
         <h1 className="text-3xl sm:text-4xl font-medium tracking-tight text-foreground mb-3">
           Move your payroll from where it lives today.
         </h1>
@@ -374,7 +374,7 @@ function ConnectStep({
       ) : (
         <div className="rounded-xl border border-border/60 bg-background/60 p-5 mb-6 text-sm">
           <p className="text-foreground mb-3">
-            You&apos;ll be redirected to <strong>{source.vendor}</strong> to authorize Pay.ca to read the entities below.
+            You&apos;ll be redirected to <strong>{source.vendor}</strong> to authorize Node2 Payroll to read the entities below.
           </p>
           <ul className="text-xs text-muted-foreground space-y-1 list-disc list-inside mb-4">
             {source.entities.map((e) => (
@@ -507,7 +507,7 @@ function CsvMappingStep({
         </div>
         <p className="text-xs text-muted-foreground inline-flex items-center gap-1.5">
           <Sparkles className="h-3 w-3 text-accent" />
-          Headers auto-mapped to Pay.ca fields. Override anything that looks off — confidence below 85% is worth a glance.
+          Headers auto-mapped to Node2 Payroll fields. Override anything that looks off — confidence below 85% is worth a glance.
         </p>
       </div>
 

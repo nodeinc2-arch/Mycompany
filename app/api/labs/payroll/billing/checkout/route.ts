@@ -8,7 +8,7 @@ import {
 
 export const runtime = "nodejs"
 
-// Starts a Stripe Checkout Session for the Pay.ca plan: a recurring monthly
+// Starts a Stripe Checkout Session for the Node2 Payroll plan: a recurring monthly
 // subscription plus a one-time setup fee. Returns the hosted Checkout URL for
 // the client to redirect to.
 //

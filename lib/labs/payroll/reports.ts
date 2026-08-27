@@ -1,4 +1,4 @@
-// Reporting / export engine for Pay.ca.
+// Reporting / export engine for Node2 Payroll.
 //
 // Turns a computed run draft into the three artifacts an accountant actually
 // asks for: a payroll register (every line), a GL journal (debits/credits that

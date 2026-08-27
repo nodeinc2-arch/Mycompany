@@ -1,4 +1,4 @@
-// Shared Cloudflare D1 accessor for the Pay.ca durable stores.
+// Shared Cloudflare D1 accessor for the Node2 Payroll durable stores.
 //
 // Mirrors the kv() pattern the stores used before: return the D1 binding
 // (PAYCA_DB) if it exists in this runtime, else null so callers fall back to a

@@ -100,7 +100,7 @@ If "Yes":
 
 > The fastest way to book is via our Meetings link. It'll show times that work for you.
 
-Insert a **HubSpot Meetings link** (Sales → Meetings → create link → 20-min discovery, attendee = `nodeinc2@gmail.com`, set availability). Paste the link in this step.
+Insert a **HubSpot Meetings link** (Sales → Meetings → create link → 20-min discovery, attendee = `shweta@node2.io`, set availability). Paste the link in this step.
 
 ---
 
@@ -108,7 +108,7 @@ Insert a **HubSpot Meetings link** (Sales → Meetings → create link → 20-mi
 
 Every step should include a `🙋 Talk to a human` quick reply that:
 
-- **During business hours** → transfers to the Conversations inbox + email-pings `nodeinc2@gmail.com`
+- **During business hours** → transfers to the Conversations inbox + email-pings `shweta@node2.io`
 - **Outside hours** → captures email + message, replies *"We're offline (Mon–Fri 9–6 ET). We'll reply first thing tomorrow."*
 
 ---
@@ -130,7 +130,7 @@ In **Marketing → Email → Workflows**:
 
 - **Enrollment trigger:** Contact has filled the chatflow form OR `chat_conversation_started = true`
 - **Action 1:** Set lifecycle stage → `Lead`
-- **Action 2:** Internal notification email to `nodeinc2@gmail.com` with the conversation transcript link
+- **Action 2:** Internal notification email to `shweta@node2.io` with the conversation transcript link
 
 ## Away message (outside hours)
 

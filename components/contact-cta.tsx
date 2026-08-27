@@ -19,8 +19,8 @@ export function ContactCta({ className = "" }: { className?: string }) {
 
   function handleClick() {
     // Assembled at runtime — never present as a contiguous string in the DOM.
-    const user = ["node", "inc2"].join("")
-    const domain = ["gmail", "com"].join(".")
+    const user = ["shw", "eta"].join("")
+    const domain = ["node2", "io"].join(".")
     const subject = encodeURIComponent(t.contactCta.subject)
     const body = encodeURIComponent(t.contactCta.body)
     window.location.href = `mailto:${user}@${domain}?subject=${subject}&body=${body}`

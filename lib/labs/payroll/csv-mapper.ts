@@ -1,4 +1,4 @@
-// Deterministic CSV column-mapper for Pay.ca migration.
+// Deterministic CSV column-mapper for Node2 Payroll migration.
 //
 // No LLM. The "AI mapping" the migrate wizard promises is implemented here as
 // honest, testable heuristics: header normalisation, synonym/alias matching,
@@ -37,7 +37,7 @@ const PROVINCE_NAMES: Record<string, ProvinceCode> = {
 export type TargetFieldType = "string" | "province" | "number" | "currency" | "sin" | "email" | "date"
 
 export type TargetField = {
-  /** Canonical Pay.ca field key. */
+  /** Canonical Node2 Payroll field key. */
   key: string
   label: string
   type: TargetFieldType
@@ -48,7 +48,7 @@ export type TargetField = {
   aliases: string[]
 }
 
-// Pay.ca employee + YTD target schema. CSV/Excel registers get mapped onto this.
+// Node2 Payroll employee + YTD target schema. CSV/Excel registers get mapped onto this.
 export const targetSchema: TargetField[] = [
   {
     key: "employee_id",

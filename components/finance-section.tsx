@@ -65,7 +65,7 @@ export function FinanceSection() {
               <p className="text-sm text-accent-foreground/85 leading-relaxed">{t.finance.privacyNote}</p>
             </div>
 
-            {/* Pay.ca product callout */}
+            {/* Node2 Payroll product callout */}
             <Link
               href={product.href}
               className="group block rounded-2xl border border-accent-foreground/30 bg-accent-foreground text-accent p-5 mb-8 transition-all duration-300 hover:shadow-lg"

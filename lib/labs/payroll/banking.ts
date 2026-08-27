@@ -1,4 +1,4 @@
-// Banking / EFT payment engine for Pay.ca.
+// Banking / EFT payment engine for Node2 Payroll.
 //
 // Turns a computed RunDraft into a payable batch: one direct-deposit credit per
 // employee (their net), plus a single debit to CRA for the PD7A remittance. The

@@ -1,4 +1,4 @@
-// Server-trusted session for Pay.ca — the ONLY authority on who is signed in.
+// Server-trusted session for Node2 Payroll — the ONLY authority on who is signed in.
 //
 // The client-side SessionProvider (session.tsx) is UI state; it can be spoofed.
 // This module is what the API routes trust: the tenant id lives in a signed

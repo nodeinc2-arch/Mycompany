@@ -1,4 +1,4 @@
-// Billing entitlement store for Pay.ca.
+// Billing entitlement store for Node2 Payroll.
 //
 // Records whether a customer has an active subscription, written by the Stripe
 // webhook and read wherever a paid feature is gated. Backed by Cloudflare D1

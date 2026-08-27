@@ -2,7 +2,7 @@
 
 import { useState } from "react"
 import Link from "next/link"
-import { Leaf, Cpu, Brain, Server, ShieldCheck, DollarSign, Play, UserPlus, UserMinus, FileText, ArrowRight } from "lucide-react"
+import { Leaf, Cpu, Brain, Server, ShieldCheck, DollarSign, Play, UserPlus, UserMinus, FileText, ArrowRight, BookOpen, Cloud, Scale, Sparkles } from "lucide-react"
 import { pricing, priceLabel } from "@/lib/labs/payroll/pricing"
 import { integrations, type Integration } from "@/lib/labs/payroll/integrations"
 import { kpis } from "@/lib/labs/payroll/sample-data"
@@ -11,6 +11,8 @@ import { IntegrationDrawer } from "@/components/labs/payroll/integration-drawer"
 import { AiAssistant } from "@/components/labs/payroll/ai-assistant"
 import { McpCard } from "@/components/labs/payroll/mcp-card"
 import { RunsTable } from "@/components/labs/payroll/runs-table"
+import { Reveal } from "@/components/labs/payroll/reveal"
+import { WelcomeBack } from "@/components/labs/payroll/welcome-back"
 
 const marketReferences = [
   {
@@ -44,6 +46,33 @@ const featureStrip = [
   { icon: ShieldCheck, title: "PIPEDA-aware", body: "Data residency, encryption, and access trails by default." },
 ]
 
+// Upcoming capabilities — clearly marked as not yet available. Copy is
+// deliberately non-committal: no launch dates, no guarantees, and each item
+// notes it's planned/exploratory so nothing here reads as a live feature or a
+// binding promise (important for a payroll/compliance product).
+const comingSoon = [
+  {
+    icon: BookOpen,
+    title: "Bookkeeping",
+    body: "General-ledger bookkeeping alongside payroll, so your books and pay runs reconcile in one place.",
+  },
+  {
+    icon: Cloud,
+    title: "Private cloud & data residency",
+    body: "Optional dedicated, isolated data hosting for teams that need their payroll data kept on their own private infrastructure.",
+  },
+  {
+    icon: Scale,
+    title: "Licensing, legal & compliance",
+    body: "Guided help with payroll-related licensing, legal, and compliance obligations. Informational only — not legal advice.",
+  },
+  {
+    icon: Sparkles,
+    title: "Add-on professional services",
+    body: "Optional expert services — setup, migration, and reviews — available on request when a team needs a hand.",
+  },
+]
+
 export default function PayrollLabsPage() {
   const [activeId, setActiveId] = useState<string | null>(null)
   const [drawerOpen, setDrawerOpen] = useState(false)
@@ -67,7 +96,7 @@ export default function PayrollLabsPage() {
             </span>
           </div>
           <h1 className="text-4xl sm:text-5xl lg:text-6xl font-medium tracking-tight text-foreground leading-[1.05] mb-6">
-            <em className="font-serif italic font-normal">Pay.ca</em> — AI-native payroll for{" "}
+            <em className="font-serif italic font-normal">Node2 Payroll</em> — AI-native payroll for{" "}
             <span className="text-muted-foreground">Canadian businesses.</span>
           </h1>
           <p className="text-lg text-muted-foreground max-w-3xl leading-relaxed">
@@ -76,8 +105,11 @@ export default function PayrollLabsPage() {
           </p>
         </section>
 
+        {/* Welcome back — only renders when signed in (Overview is public). */}
+        <WelcomeBack />
+
         {/* KPI strip */}
-        <section className="grid sm:grid-cols-2 lg:grid-cols-4 gap-3">
+        <Reveal as="section" className="grid sm:grid-cols-2 lg:grid-cols-4 gap-3">
           {kpis.map((k) => (
             <div key={k.label} className="rounded-2xl border border-border/50 bg-card p-5">
               <p className="text-[10px] uppercase tracking-widest text-muted-foreground mb-2">{k.label}</p>
@@ -85,10 +117,10 @@ export default function PayrollLabsPage() {
               <p className="text-xs text-muted-foreground mt-1">{k.delta}</p>
             </div>
           ))}
-        </section>
+        </Reveal>
 
         {/* Lifecycle quick actions */}
-        <section>
+        <Reveal as="section" delay={60}>
           <h2 className="text-sm font-medium text-accent uppercase tracking-widest mb-6">Run the payroll lifecycle</h2>
           <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-3">
             {[
@@ -113,11 +145,11 @@ export default function PayrollLabsPage() {
               </Link>
             ))}
           </div>
-        </section>
+        </Reveal>
 
         {/* Feature strip */}
-        <section>
-          <h2 className="text-sm font-medium text-accent uppercase tracking-widest mb-6">Why Pay.ca</h2>
+        <Reveal as="section" delay={60}>
+          <h2 className="text-sm font-medium text-accent uppercase tracking-widest mb-6">Why Node2 Payroll</h2>
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-3">
             {featureStrip.map((f) => (
               <div key={f.title} className="rounded-2xl border border-border/50 bg-card p-5">
@@ -129,16 +161,16 @@ export default function PayrollLabsPage() {
               </div>
             ))}
           </div>
-        </section>
+        </Reveal>
 
         {/* AI + MCP */}
-        <section className="grid lg:grid-cols-2 gap-6">
+        <Reveal as="section" delay={60} className="grid lg:grid-cols-2 gap-6">
           <AiAssistant />
           <McpCard />
-        </section>
+        </Reveal>
 
         {/* Integrations */}
-        <section>
+        <Reveal as="section">
           <div className="flex items-end justify-between mb-6">
             <div>
               <h2 className="text-sm font-medium text-accent uppercase tracking-widest mb-2">Integrations</h2>
@@ -153,24 +185,24 @@ export default function PayrollLabsPage() {
               <IntegrationCard key={i.id} integration={i} onConnect={() => openIntegration(i.id)} />
             ))}
           </div>
-        </section>
+        </Reveal>
 
         {/* Runs table */}
-        <section>
+        <Reveal as="section">
           <RunsTable />
-        </section>
+        </Reveal>
 
         {/* Key market products */}
-        <section>
+        <Reveal as="section">
           <h2 className="text-sm font-medium text-accent uppercase tracking-widest mb-2">Key market products</h2>
-          <p className="text-2xl font-medium text-foreground mb-6">Where Pay.ca lands vs. the incumbents.</p>
+          <p className="text-2xl font-medium text-foreground mb-6">Where Node2 Payroll lands vs. the incumbents.</p>
           <div className="overflow-hidden rounded-2xl border border-border/50">
             <table className="w-full text-sm">
               <thead className="text-[10px] uppercase tracking-widest text-muted-foreground bg-secondary/40">
                 <tr>
                   <th className="text-left font-medium px-6 py-3">Product</th>
                   <th className="text-left font-medium px-6 py-3">Today</th>
-                  <th className="text-left font-medium px-6 py-3">Pay.ca edge</th>
+                  <th className="text-left font-medium px-6 py-3">Node2 Payroll edge</th>
                 </tr>
               </thead>
               <tbody>
@@ -184,10 +216,42 @@ export default function PayrollLabsPage() {
               </tbody>
             </table>
           </div>
-        </section>
+        </Reveal>
+
+        {/* Coming soon */}
+        <Reveal as="section">
+          <div className="flex items-end justify-between mb-6">
+            <div>
+              <h2 className="text-sm font-medium text-accent uppercase tracking-widest mb-2">On the roadmap</h2>
+              <p className="text-2xl font-medium text-foreground">What we&apos;re building next.</p>
+            </div>
+            <span className="text-xs text-muted-foreground">Planned — not yet available</span>
+          </div>
+          <div className="grid sm:grid-cols-2 gap-3">
+            {comingSoon.map((f) => (
+              <div
+                key={f.title}
+                className="relative rounded-2xl border border-dashed border-border/60 bg-card/60 p-5"
+              >
+                <span className="absolute top-4 right-4 px-2 py-0.5 text-[10px] font-medium uppercase tracking-wider rounded-full bg-secondary text-muted-foreground border border-border/50">
+                  Coming soon
+                </span>
+                <div className="w-9 h-9 rounded-full bg-secondary flex items-center justify-center mb-3">
+                  <f.icon className="h-4 w-4 text-muted-foreground" />
+                </div>
+                <h3 className="font-medium text-foreground mb-1 pr-24">{f.title}</h3>
+                <p className="text-sm text-muted-foreground leading-relaxed">{f.body}</p>
+              </div>
+            ))}
+          </div>
+          <p className="mt-4 text-xs text-muted-foreground">
+            These features are planned and shown for transparency. They aren&apos;t available yet, timelines may change, and
+            nothing here is a commitment. Legal and compliance help is informational only and not a substitute for professional advice.
+          </p>
+        </Reveal>
 
         {/* Pricing CTA */}
-        <section className="rounded-3xl border border-accent/30 bg-accent/5 p-8 sm:p-10 flex flex-col sm:flex-row items-start sm:items-center gap-6 justify-between">
+        <Reveal as="section" className="rounded-3xl border border-accent/30 bg-accent/5 p-8 sm:p-10 flex flex-col sm:flex-row items-start sm:items-center gap-6 justify-between">
           <div>
             <h2 className="text-sm font-medium text-accent uppercase tracking-widest mb-2">Pricing</h2>
             <p className="text-2xl font-medium text-foreground mb-1">{pricing.tagline}</p>
@@ -201,10 +265,10 @@ export default function PayrollLabsPage() {
           >
             See pricing <ArrowRight className="h-4 w-4" />
           </Link>
-        </section>
+        </Reveal>
 
         <footer className="pt-8 border-t border-border/50 text-xs text-muted-foreground flex flex-col sm:flex-row gap-2 justify-between">
-          <span>Pay.ca scaffold · Node2 Labs · Not for production use.</span>
+          <span>Node2 Payroll scaffold · Node2 Labs · Not for production use.</span>
           <span>All numbers, integrations, and AI responses are mocked.</span>
         </footer>
       </div>

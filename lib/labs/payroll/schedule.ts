@@ -1,4 +1,4 @@
-// Pay schedule + calendar engine for Pay.ca.
+// Pay schedule + calendar engine for Node2 Payroll.
 //
 // Generates the upcoming pay periods, pay dates, and CRA PD7A remittance due
 // dates for a chosen frequency — the data behind the payroll calendar. Pure and

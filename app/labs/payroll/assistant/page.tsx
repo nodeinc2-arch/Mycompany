@@ -75,7 +75,7 @@ export default function AssistantPage() {
     <div className="px-4 sm:px-6 lg:px-8 py-10 lg:py-14 max-w-5xl mx-auto">
       <div className="mb-8">
         <p className="text-xs font-medium text-accent uppercase tracking-widest mb-2">Micro AI</p>
-        <h1 className="text-3xl sm:text-4xl font-medium tracking-tight text-foreground mb-2">Pay.ca payroll Micro AI</h1>
+        <h1 className="text-3xl sm:text-4xl font-medium tracking-tight text-foreground mb-2">Node2 Payroll payroll Micro AI</h1>
         <p className="text-muted-foreground max-w-3xl mb-3">
           A local small model that answers payroll questions by calling the real demo engines — it never invents
           numbers. Every answer shows the tools it ran. Posts to <span className="font-mono text-foreground">/api/labs/payroll/mcp</span>.

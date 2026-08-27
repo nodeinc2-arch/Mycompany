@@ -1,4 +1,4 @@
-// Savings / ROI engine for Pay.ca.
+// Savings / ROI engine for Node2 Payroll.
 //
 // Answers the question a prospect actually asks: "how does running payroll with
 // AI, and letting it manage taxes and remittances, save my company money?"
@@ -6,7 +6,7 @@
 // It's a deterministic model (no LLM): given a company's shape and what they
 // pay today, it estimates the recurring cost of the status quo — admin time,
 // provider fees, accountant fees, and the expected cost of compliance errors —
-// then nets it against Pay.ca's price to produce an annual saving.
+// then nets it against Node2 Payroll's price to produce an annual saving.
 //
 // Every assumption is a named, overridable constant so the numbers can be
 // tuned to current Canadian norms rather than buried magic values. Figures are
@@ -45,7 +45,7 @@ export type SavingsAssumptions = {
   yearEndHoursManual: number
   /** External bookkeeper/accountant spend per year tied to payroll. */
   accountantAnnual: number
-  /** Share of accountant payroll work Pay.ca absorbs (0–1). */
+  /** Share of accountant payroll work Node2 Payroll absorbs (0–1). */
   accountantReduction: number
   /** Annual probability of a material payroll/remittance error today (0–1). */
   errorRateAnnual: number
@@ -80,7 +80,7 @@ export type SavingsLine = {
   label: string
   /** Cost today (status quo) for this category, annual. */
   statusQuo: number
-  /** Cost with Pay.ca, annual. */
+  /** Cost with Node2 Payroll, annual. */
   withPayCa: number
   /** statusQuo - withPayCa. */
   saved: number
@@ -95,7 +95,7 @@ export type SavingsResult = {
     savedAnnual: number
     /** Saving as a share of status-quo spend (0–1). */
     savedPct: number
-    /** Months of Pay.ca the saving pays for. */
+    /** Months of Node2 Payroll the saving pays for. */
     paybackCoverageMonths: number
   }
   payCa: { setup: number; monthlyAnnualized: number }
@@ -104,10 +104,10 @@ export type SavingsResult = {
 const round2 = (n: number) => Math.round(n * 100) / 100
 
 /**
- * Compute the annual ROI of moving to Pay.ca.
+ * Compute the annual ROI of moving to Node2 Payroll.
  *
  * Status quo = admin time + year-end time + current provider + accountant +
- * expected error cost. Pay.ca side = its fee + the residual (un-automated)
+ * expected error cost. Node2 Payroll side = its fee + the residual (un-automated)
  * portion of admin/accountant time. The first-year setup fee is reported
  * separately so it doesn't distort the steady-state annual comparison.
  */
@@ -137,7 +137,7 @@ export function computeSavings(input: SavingsInput): SavingsResult {
   const errStatusQuo = round2(a.errorRateAnnual * a.errorCost)
   const errWithPayCa = round2(errStatusQuo * (1 - a.errorReduction))
 
-  // 6. Pay.ca platform fee (annualized monthly; setup handled separately).
+  // 6. Node2 Payroll platform fee (annualized monthly; setup handled separately).
   const payCaFeeAnnual = round2(pricing.monthly * 12)
 
   const lines: SavingsLine[] = [
@@ -163,7 +163,7 @@ export function computeSavings(input: SavingsInput): SavingsResult {
       statusQuo: providerStatusQuo,
       withPayCa: 0,
       saved: providerStatusQuo,
-      note: providerStatusQuo > 0 ? "Replaced by Pay.ca" : "No provider today",
+      note: providerStatusQuo > 0 ? "Replaced by Node2 Payroll" : "No provider today",
     },
     {
       key: "accountant",
@@ -171,7 +171,7 @@ export function computeSavings(input: SavingsInput): SavingsResult {
       statusQuo: acctStatusQuo,
       withPayCa: acctWithPayCa,
       saved: round2(acctStatusQuo - acctWithPayCa),
-      note: `Pay.ca absorbs ${Math.round(a.accountantReduction * 100)}% of payroll bookkeeping`,
+      note: `Node2 Payroll absorbs ${Math.round(a.accountantReduction * 100)}% of payroll bookkeeping`,
     },
     {
       key: "errors",
@@ -183,7 +183,7 @@ export function computeSavings(input: SavingsInput): SavingsResult {
     },
     {
       key: "platform",
-      label: "Pay.ca platform fee",
+      label: "Node2 Payroll platform fee",
       statusQuo: 0,
       withPayCa: payCaFeeAnnual,
       saved: round2(-payCaFeeAnnual),

@@ -1,6 +1,6 @@
 "use client"
 
-// Session provider for Pay.ca — the client-side view of "who is signed in".
+// Session provider for Node2 Payroll — the client-side view of "who is signed in".
 //
 // The AUTHORITY is the server: a signed httpOnly cookie set by
 // /api/labs/payroll/auth/session (see lib/.../server-session.ts). This provider
@@ -18,12 +18,26 @@ type SessionValue = {
   ready: boolean
   /** Sign in as a tenant by id (demo company picker). Sets the server cookie. */
   signInAs: (tenantId: string) => Promise<Tenant | null>
+  /** Create a new company and sign in as it. Returns the tenant or an error. */
+  signUp: (input: SignUpInput) => Promise<SignUpResult>
   signOut: () => Promise<void>
 }
+
+export type SignUpInput = {
+  companyName: string
+  ownerEmail: string
+  province: string
+  employeeCount?: number
+}
+
+export type SignUpResult =
+  | { ok: true; tenant: Tenant }
+  | { ok: false; message: string }
 
 const SessionContext = createContext<SessionValue | null>(null)
 
 const SESSION_URL = "/api/labs/payroll/auth/session"
+const SIGNUP_URL = "/api/labs/payroll/auth/signup"
 
 export function SessionProvider({ children }: { children: React.ReactNode }) {
   const [tenant, setTenant] = useState<Tenant | null>(null)
@@ -59,13 +73,28 @@ export function SessionProvider({ children }: { children: React.ReactNode }) {
     return t
   }, [])
 
+  const signUp = useCallback(async (input: SignUpInput): Promise<SignUpResult> => {
+    const res = await fetch(SIGNUP_URL, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(input),
+    }).catch(() => null)
+    if (!res) return { ok: false, message: "Network error. Try again." }
+    const data = (await res.json().catch(() => ({}))) as { tenant?: Tenant; message?: string }
+    if (!res.ok || !data.tenant) {
+      return { ok: false, message: data.message || "Couldn't create your company. Try again." }
+    }
+    setTenant(data.tenant)
+    return { ok: true, tenant: data.tenant }
+  }, [])
+
   const signOut = useCallback(async () => {
     await fetch(SESSION_URL, { method: "DELETE" }).catch(() => {})
     setTenant(null)
   }, [])
 
   return (
-    <SessionContext.Provider value={{ tenant, ready, signInAs, signOut }}>
+    <SessionContext.Provider value={{ tenant, ready, signInAs, signUp, signOut }}>
       {children}
     </SessionContext.Provider>
   )

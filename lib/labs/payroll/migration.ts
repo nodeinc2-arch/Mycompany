@@ -22,7 +22,7 @@ export const migrationSources: MigrationSource[] = [
     notes: "Pulls employee list, YTD payroll totals, GL mappings, and CRA setup. T4 history pulled when present.",
     initial: "Q",
     accent: "#2ca01c",
-    aiAssist: "We map QBO GL accounts to Pay.ca buckets and flag any account that doesn't have a CRA equivalent.",
+    aiAssist: "We map QBO GL accounts to Node2 Payroll buckets and flag any account that doesn't have a CRA equivalent.",
   },
   {
     id: "workday",
@@ -34,7 +34,7 @@ export const migrationSources: MigrationSource[] = [
     notes: "Pulls workers, comp history, deductions, and bank routing via Workday REST and SOAP APIs.",
     initial: "W",
     accent: "#0a73b8",
-    aiAssist: "LLM resolves Workday's worker-vs-position model into Pay.ca's simpler employee record.",
+    aiAssist: "LLM resolves Workday's worker-vs-position model into Node2 Payroll's simpler employee record.",
   },
   {
     id: "netsuite",
@@ -46,7 +46,7 @@ export const migrationSources: MigrationSource[] = [
     notes: "TBA-authenticated SuiteQL pulls of employees, payroll journals, and subsidiary cost-center mappings.",
     initial: "N",
     accent: "#125c9e",
-    aiAssist: "Auto-detects multi-subsidiary structures and proposes a Pay.ca org tree.",
+    aiAssist: "Auto-detects multi-subsidiary structures and proposes a Node2 Payroll org tree.",
   },
   {
     id: "zoho",
@@ -70,7 +70,7 @@ export const migrationSources: MigrationSource[] = [
     notes: "Pulls workers, banking, YTD CPP/EI/federal/provincial totals, and T4 history.",
     initial: "A",
     accent: "#d50032",
-    aiAssist: "SLM reconciles ADP YTD lines against Pay.ca buckets, flags discrepancies > $1.",
+    aiAssist: "SLM reconciles ADP YTD lines against Node2 Payroll buckets, flags discrepancies > $1.",
   },
   {
     id: "ceridian-dayforce",
@@ -82,7 +82,7 @@ export const migrationSources: MigrationSource[] = [
     notes: "Dayforce REST pulls workers, deduction codes, and pay history.",
     initial: "C",
     accent: "#e94e1b",
-    aiAssist: "Maps Dayforce earning/deduction codes to Pay.ca equivalents with confidence scores.",
+    aiAssist: "Maps Dayforce earning/deduction codes to Node2 Payroll equivalents with confidence scores.",
   },
   {
     id: "rise-people",
@@ -103,7 +103,7 @@ export const migrationSources: MigrationSource[] = [
     authMethod: "OAuth 2.0",
     entities: ["employees", "pay_runs", "ytd_totals", "tax_setup", "direct_deposit"],
     estimatedMinutes: 5,
-    notes: "Canadian small-business payroll. One of the most common Pay.ca migration sources.",
+    notes: "Canadian small-business payroll. One of the most common Node2 Payroll migration sources.",
     initial: "W",
     accent: "#1d4ed8",
     aiAssist: "Drop-in: shared CRA assumptions mean almost zero manual mapping.",

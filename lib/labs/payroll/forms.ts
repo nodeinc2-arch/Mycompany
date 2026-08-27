@@ -1,4 +1,4 @@
-// Lifecycle form engine for Pay.ca.
+// Lifecycle form engine for Node2 Payroll.
 //
 // Produces populated, printable payroll documents from shared employee + run
 // data, so onboarding, termination, and year-end all draw from one source:
@@ -266,6 +266,6 @@ export function buildT2200(input: T2200Input): T2200Form {
       { question: "Required to use a personal vehicle for work?", answer: yn(input.requiredToUseVehicle) },
       { question: "Received a non-taxable allowance or reimbursement?", answer: yn(input.receivedAllowance) },
     ],
-    signatureLine: "Certified by employer — Pay.ca scaffold (unsigned demo).",
+    signatureLine: "Certified by employer — Node2 Payroll scaffold (unsigned demo).",
   }
 }

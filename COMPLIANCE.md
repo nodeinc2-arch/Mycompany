@@ -1,6 +1,6 @@
-# Pay.ca — Compliance & Legal Readiness
+# Node2 Payroll — Compliance & Legal Readiness
 
-> **Status: PROTOTYPE / DEMO.** Pay.ca is currently a scaffold. No real payroll
+> **Status: PROTOTYPE / DEMO.** Node2 Payroll is currently a scaffold. No real payroll
 > is processed, no money moves, no filings are made, and all tax rates are
 > best-effort and **unverified**. This document is the roadmap to making it a
 > real product — it is **not legal advice**. Engage a Canadian privacy/fintech
@@ -11,7 +11,7 @@ Legend: ✅ done · 🟡 in progress · ⬜ not started · 🔴 **blocker before
 ---
 
 ## 1. Privacy & data protection
-Pay.ca handles SINs, banking coordinates, and pay data — among the most
+Node2 Payroll handles SINs, banking coordinates, and pay data — among the most
 sensitive personal information there is.
 
 - ⬜ 🔴 **PIPEDA** compliance program (consent, purpose limitation, safeguards, retention, breach notification to the OPC).
@@ -20,7 +20,7 @@ sensitive personal information there is.
 - ⬜ 🔴 **SIN handling controls** — collect only for the legitimate payroll/tax purpose, encrypt, restrict access, never use as a general identifier.
 - 🟡 Public **Privacy Policy** — a `/privacy` page exists but needs legal review for this scope.
 - ⬜ **Breach response plan** (detection, containment, notification timelines).
-- ⬜ **Data Processing Agreement** template — Pay.ca is a processor handling employee data on the employer's behalf.
+- ⬜ **Data Processing Agreement** template — Node2 Payroll is a processor handling employee data on the employer's behalf.
 
 ## 2. Tax & payroll compliance
 - 🟡 **Source deductions accuracy** — real federal + provincial brackets, basic personal amount credits, CPP/CPP2, EI are implemented, BUT:

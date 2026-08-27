@@ -1,4 +1,4 @@
-// Tenant-scoped pay-run history for Pay.ca.
+// Tenant-scoped pay-run history for Node2 Payroll.
 //
 // The dashboard's "recent pay runs" list was a static sample array, and
 // submitting a run persisted nothing — the submitted run vanished. This store

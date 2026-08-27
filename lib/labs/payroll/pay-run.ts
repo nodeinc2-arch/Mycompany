@@ -1,4 +1,4 @@
-// Pay-run engine for Pay.ca.
+// Pay-run engine for Node2 Payroll.
 //
 // Centralises the per-employee net calculation and rolls it up into a full run:
 // employee lines, run totals, employer-side cost, and the CRA PD7A remittance

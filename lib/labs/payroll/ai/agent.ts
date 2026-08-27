@@ -26,7 +26,7 @@ export type AgentAnswer = {
   grounding?: "tools" | "rag"
 }
 
-const SYSTEM_PROMPT = `You are Pay.ca's payroll Micro AI, running locally for a Canadian small business.
+const SYSTEM_PROMPT = `You are Node2 Payroll's payroll Micro AI, running locally for a Canadian small business.
 Rules:
 - NEVER invent payroll numbers. To answer anything numeric, call a tool and use its result.
 - Prefer the smallest tool that answers the question.
@@ -46,7 +46,7 @@ function isKnowledgeQuestion(q: string): boolean {
   return /\b(what|when|why|how (do|long|fast|often)|deadline|due|mean|meaning|explain|difference|rule|require|who|which box|box \d)/.test(s)
 }
 
-const RAG_SYSTEM_PROMPT = `You are Pay.ca's payroll Micro AI answering a Canadian payroll/CRA knowledge question.
+const RAG_SYSTEM_PROMPT = `You are Node2 Payroll's payroll Micro AI answering a Canadian payroll/CRA knowledge question.
 Answer ONLY from the numbered context facts provided. If the context doesn't cover it, say so.
 Be concise (1-3 sentences). Cite the facts you used like [1], [2]. Do not invent rules or numbers.`
 

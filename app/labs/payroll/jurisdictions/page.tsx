@@ -8,7 +8,7 @@ import {
 
 export const metadata = {
   title: "Jurisdictions & local law",
-  description: "Per-region payroll obligations Pay.ca models, and their compliance status.",
+  description: "Per-region payroll obligations Node2 Payroll models, and their compliance status.",
 }
 
 // Read-only view of the jurisdiction registry: what the law requires in each
@@ -38,7 +38,7 @@ export default function JurisdictionsPage() {
           <Scale className="h-7 w-7 text-accent" /> Jurisdictions &amp; local law
         </h1>
         <p className="text-muted-foreground max-w-2xl">
-          Payroll obligations differ by region. This is what Pay.ca models for each Canadian
+          Payroll obligations differ by region. This is what Node2 Payroll models for each Canadian
           jurisdiction and how far each obligation has been implemented. It describes status — it
           is <span className="text-foreground">not</span> a legal certification.
         </p>
