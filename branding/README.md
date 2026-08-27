@@ -18,5 +18,5 @@ Source-of-truth for Node2's brand assets and templates. Anything in this folder 
 - **Tagline (FR):** *Construire la prochaine couche TI du Canada*
 - **Mission:** Build IT technology in Canada — AI-integrated platforms, custom local LLMs, and finance automation engineered for Canadian businesses.
 - **Locations:** Toronto, Canada (remote office) · Pune, India (development center, registration pending)
-- **Primary contact:** nodeinc2@gmail.com
+- **Primary contact:** shweta@node2.io
 - **LinkedIn:** https://www.linkedin.com/company/node2-io/

@@ -1,4 +1,4 @@
-// Stripe client + billing config for Pay.ca.
+// Stripe client + billing config for Node2 Payroll.
 //
 // Everything here is env-driven and OPTIONAL: no key is committed, and the app
 // runs fine without Stripe configured (the checkout route returns 503 and the
@@ -36,14 +36,14 @@ export function getStripe(): Stripe {
     _stripe = new Stripe(process.env.STRIPE_SECRET_KEY, {
       // Pin a known-good API version; bump deliberately, not implicitly.
       apiVersion: "2026-06-24.dahlia",
-      appInfo: { name: "Pay.ca (Node2 Labs)" },
+      appInfo: { name: "Node2 Payroll (Node2 Labs)" },
     })
   }
   return _stripe
 }
 
 /**
- * The line items for a Pay.ca subscription checkout: the recurring monthly plan
+ * The line items for a Node2 Payroll subscription checkout: the recurring monthly plan
  * plus the one-time setup fee. Uses pre-made Price IDs when configured;
  * otherwise builds inline price_data from pricing.ts so test checkouts work
  * before any Price objects exist in the dashboard.

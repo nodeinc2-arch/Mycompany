@@ -1,4 +1,4 @@
-// Country-agnostic tax engine types for Pay.ca.
+// Country-agnostic tax engine types for Node2 Payroll.
 //
 // A jurisdiction is a (country, region) pair: Canada→province, US→state,
 // Mexico→federal-only. Each country provides full demo bracket tables and a

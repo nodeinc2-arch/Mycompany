@@ -30,7 +30,7 @@ curl -s ${endpoint} -X POST -H 'content-type: application/json' \\
         </span>
       </div>
       <p className="text-xs text-muted-foreground mb-4">
-        Pay.ca ships a Model Context Protocol server so Claude, Copilot, and other agents can read your payroll state
+        Node2 Payroll ships a Model Context Protocol server so Claude, Copilot, and other agents can read your payroll state
         and run tools directly — under your auth, your data, your audit log.
       </p>
 

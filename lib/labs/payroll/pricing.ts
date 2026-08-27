@@ -1,4 +1,4 @@
-// Pricing for Pay.ca — single source of truth.
+// Pricing for Node2 Payroll — single source of truth.
 //
 // The positioning is deliberately simple: one plan, at market rate, that does
 // everything the platform can do. Edit the numbers here and every surface (the
@@ -14,7 +14,7 @@ export const pricing = {
   /** Who the single plan is aimed at. */
   audience: "Canadian businesses, 5–250 employees",
   /** Headline name for the all-in plan. */
-  planName: "Pay.ca Complete",
+  planName: "Node2 Payroll Complete",
   tagline: "One plan. Market rate. It does everything.",
 } as const
 

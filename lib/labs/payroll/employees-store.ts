@@ -1,4 +1,4 @@
-// Tenant-scoped employee store for Pay.ca.
+// Tenant-scoped employee store for Node2 Payroll.
 //
 // Employees are the first piece of real per-company payroll data to move off
 // the in-memory sample-data array and into Cloudflare D1, keyed by tenant so

@@ -119,9 +119,9 @@ export const translations = {
       tools: ['Workday', 'ADP', 'Ceridian', 'SAP', 'QuickBooks', 'Xero', 'Power BI', 'Local LLMs'],
       product: {
         badge: 'New · In development',
-        name: 'Pay.ca',
+        name: 'Node2 Payroll',
         description: 'Our own AI-native payroll platform for Canadian businesses — connect your bank, run payroll, and pay employees by direct deposit with a human approval step before any money moves. CRA-first: CPP, EI, PD7A, T4 and ROE handled natively.',
-        cta: 'Explore Pay.ca',
+        cta: 'Explore Node2 Payroll',
         href: '/labs/payroll',
       },
     },
@@ -297,9 +297,9 @@ export const translations = {
       tools: ['Workday', 'ADP', 'Ceridian', 'SAP', 'QuickBooks', 'Xero', 'Power BI', 'Local LLMs'],
       product: {
         badge: 'Nouveau · En développement',
-        name: 'Pay.ca',
+        name: 'Node2 Payroll',
         description: 'Notre propre plateforme de paie à IA native pour les entreprises canadiennes — connectez votre banque, faites la paie et payez les employés par dépôt direct, avec une étape d\'approbation humaine avant tout mouvement d\'argent. Conçue pour l\'ARC : RPC, AE, PD7A, T4 et RE traités nativement.',
-        cta: 'Découvrir Pay.ca',
+        cta: 'Découvrir Node2 Payroll',
         href: '/labs/payroll',
       },
     },

@@ -115,7 +115,7 @@ export default async function RootLayout({
           {
             "@type": "ContactPoint",
             contactType: "customer support",
-            email: "nodeinc2@gmail.com",
+            email: "shweta@node2.io",
             availableLanguage: ["English", "French"],
           },
         ],

@@ -302,7 +302,7 @@ function PaymentsInner() {
             <ShieldCheck className="h-5 w-5 text-accent" /> Human approval required
           </p>
           <p className="text-sm text-muted-foreground mb-5">
-            Pay.ca computed this batch, but it will not release on its own. A person must verify and approve.
+            Node2 Payroll computed this batch, but it will not release on its own. A person must verify and approve.
           </p>
 
           <div className="space-y-3 mb-5">

@@ -1,4 +1,4 @@
-// Jurisdiction & local-law registry for Pay.ca.
+// Jurisdiction & local-law registry for Node2 Payroll.
 //
 // Payroll is a compliance product: every region imposes its own rules. This
 // module makes the legal obligations of each Canadian jurisdiction EXPLICIT,

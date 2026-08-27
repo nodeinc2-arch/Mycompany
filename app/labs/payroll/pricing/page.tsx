@@ -41,7 +41,7 @@ export default async function PricingPage({
           {pricing.tagline}
         </h1>
         <p className="text-lg text-muted-foreground leading-relaxed">
-          Pay.ca runs your entire payroll — paying people, staying compliant with the CRA, and closing
+          Node2 Payroll runs your entire payroll — paying people, staying compliant with the CRA, and closing
           out the year. One plan at market rate, for {pricing.audience}. We onboard you personally:
           book a guided setup and we run your first pay cycle with you.
         </p>
@@ -125,7 +125,7 @@ export default async function PricingPage({
 
       {/* Bottom CTA */}
       <section className="text-center rounded-3xl border border-border/50 bg-secondary/30 p-10">
-        <h2 className="text-2xl font-medium text-foreground mb-3">Ready to run payroll on Pay.ca?</h2>
+        <h2 className="text-2xl font-medium text-foreground mb-3">Ready to run payroll on Node2 Payroll?</h2>
         <p className="text-muted-foreground mb-6 max-w-xl mx-auto">
           Book your onboarding and we&apos;ll connect your bank, import your team, and run your first
           pay cycle together — hands-on, start to finish.
@@ -142,7 +142,7 @@ export default async function PricingPage({
       </section>
 
       <p className="mt-10 text-center text-[10px] text-muted-foreground leading-relaxed">
-        Pay.ca is an early-access product from Node2. Prices are in CAD and billed securely via Stripe.
+        Node2 Payroll is an early-access product from Node2. Prices are in CAD and billed securely via Stripe.
         Available across Canada excluding Quebec at launch. Prices may change; your rate is locked at signup.
       </p>
     </div>

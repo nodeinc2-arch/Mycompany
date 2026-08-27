@@ -1,6 +1,6 @@
-# Pay.ca durable store — Cloudflare D1 setup
+# Node2 Payroll durable store — Cloudflare D1 setup
 
-Pay.ca's durable data — the append-only **audit log**, billing **entitlement**,
+Node2 Payroll's durable data — the append-only **audit log**, billing **entitlement**,
 and **tenants** — persists to a Cloudflare **D1** database bound as `PAYCA_DB`.
 
 It's optional and fail-soft: with nothing bound, the stores fall back to a

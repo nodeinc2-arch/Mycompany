@@ -3,6 +3,7 @@
 import Link from "next/link"
 import { usePathname } from "next/navigation"
 import { useSession } from "@/lib/labs/payroll/auth/session"
+import { AuthGuard } from "@/components/labs/payroll/auth-guard"
 import {
   LayoutDashboard,
   Users,
@@ -57,19 +58,36 @@ const nav = [
   { href: "/labs/payroll/settings", label: "Settings", icon: Settings, match: (p: string) => p.startsWith("/labs/payroll/settings") },
 ]
 
+// Routes that stay public (no sign-in required): the Overview/marketing view,
+// the sign-in page itself, and the top-of-funnel pages a prospect should see
+// before creating an account. Everything else under /labs/payroll is the
+// signed-in tool and gets guarded.
+const PUBLIC_ROUTES = new Set<string>([
+  "/labs/payroll",
+  "/labs/payroll/sign-in",
+  "/labs/payroll/sign-up",
+  "/labs/payroll/pricing",
+  "/labs/payroll/get-started",
+])
+
+function isPublicRoute(pathname: string): boolean {
+  return PUBLIC_ROUTES.has(pathname)
+}
+
 export function Shell({ children }: { children: React.ReactNode }) {
   const pathname = usePathname()
   const { tenant, ready, signOut } = useSession()
+  const guarded = !isPublicRoute(pathname)
 
   return (
     <div className="flex min-h-[calc(100vh-2.5rem)]">
       <aside className="hidden lg:flex w-60 shrink-0 flex-col border-r border-border/50 bg-card/40 px-4 py-6">
         <Link href="/labs/payroll" className="px-2 mb-8 inline-flex items-center gap-2">
           <span className="w-8 h-8 rounded-lg bg-accent/15 border border-accent/30 flex items-center justify-center text-accent font-semibold">
-            P
+            N
           </span>
           <div className="flex flex-col leading-tight">
-            <span className="text-sm font-medium text-foreground">Pay.ca</span>
+            <span className="text-sm font-medium text-foreground">Node2 Payroll</span>
             <span className="text-[10px] uppercase tracking-widest text-muted-foreground">Node2 Labs</span>
           </div>
         </Link>
@@ -130,7 +148,9 @@ export function Shell({ children }: { children: React.ReactNode }) {
         </div>
       </aside>
 
-      <main className="flex-1 min-w-0">{children}</main>
+      <main className="flex-1 min-w-0">
+        {guarded ? <AuthGuard>{children}</AuthGuard> : children}
+      </main>
     </div>
   )
 }

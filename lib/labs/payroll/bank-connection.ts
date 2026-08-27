@@ -1,4 +1,4 @@
-// Bank connection layer for Pay.ca.
+// Bank connection layer for Node2 Payroll.
 //
 // Models the "connect your payroll funding account" step that precedes paying
 // anyone. In production this would be an aggregator handshake (Flinks / Plaid /

@@ -6,18 +6,18 @@ import { SOLUTIONS, SOLUTION_STATUS_LABEL } from "@/lib/solutions"
 import { INSIGHT_POSTS } from "@/lib/insights"
 
 export const metadata = {
-  title: "What's built — a live map of the Node2 site & Pay.ca demo",
+  title: "What's built — a live map of the Node2 site & Node2 Payroll demo",
   description:
-    "A single overview of everything built here: the Node2 marketing site, the subscribable Solutions product lines, the Pay.ca payroll demo tool, and the Insights library — with direct links into each.",
+    "A single overview of everything built here: the Node2 marketing site, the subscribable Solutions product lines, the Node2 Payroll payroll demo tool, and the Insights library — with direct links into each.",
   alternates: { canonical: "/whats-built" },
 }
 
 // A single "what's been built" index. It derives its lists from the same
 // registries the rest of the site uses (SOLUTIONS, INSIGHT_POSTS) so it can't
-// drift; the Pay.ca feature list is maintained here as the deep-link map into
+// drift; the Node2 Payroll feature list is maintained here as the deep-link map into
 // the demo tool. Purpose: let anyone see the whole picture and click straight in.
 
-// The Pay.ca demo tool's surfaces, grouped, each a real route under /labs/payroll.
+// The Node2 Payroll demo tool's surfaces, grouped, each a real route under /labs/payroll.
 const PAYCA_SECTIONS: { group: string; links: { href: string; label: string; note: string }[] }[] = [
   {
     group: "Start here",
@@ -76,17 +76,17 @@ export default function WhatsBuiltPage() {
               Everything <em className="font-serif italic font-normal">built here</em>, in one place
             </h1>
             <p className="text-lg text-muted-foreground leading-relaxed max-w-2xl mb-4">
-              A live map of the site and the Pay.ca demo tool. Every item links straight to the real page.
+              A live map of the site and the Node2 Payroll demo tool. Every item links straight to the real page.
             </p>
             <p className="text-sm text-muted-foreground max-w-2xl mb-14">
-              <span className="text-foreground">Note:</span> Pay.ca is a working <strong>DEMO</strong> — no real money
+              <span className="text-foreground">Note:</span> Node2 Payroll is a working <strong>DEMO</strong> — no real money
               moves, no CRA filings, and tax rates are unverified. Sign in with any demo company to explore.
             </p>
 
-            {/* Pay.ca demo tool */}
+            {/* Node2 Payroll demo tool */}
             <section className="mb-16">
               <div className="flex items-center gap-3 mb-2">
-                <h2 className="text-2xl font-medium text-foreground">Pay.ca — payroll demo tool</h2>
+                <h2 className="text-2xl font-medium text-foreground">Node2 Payroll — payroll demo tool</h2>
                 <Badge>Beta · Demo</Badge>
               </div>
               <p className="text-muted-foreground mb-6 max-w-2xl">

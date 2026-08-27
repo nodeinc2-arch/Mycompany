@@ -1,4 +1,4 @@
-// Append-only audit log for Pay.ca.
+// Append-only audit log for Node2 Payroll.
 //
 // Records who did what, when, for sensitive actions — a compliance + SOC2
 // building block, and the natural complement to the human-in-the-loop approval

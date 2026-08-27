@@ -1,6 +1,6 @@
-# Pay.ca billing — Stripe setup
+# Node2 Payroll billing — Stripe setup
 
-The Pay.ca pricing page (`/labs/payroll/pricing`) can run real Stripe Checkout
+The Node2 Payroll pricing page (`/labs/payroll/pricing`) can run real Stripe Checkout
 for the plan (**one-time setup fee + flat monthly subscription**). It's entirely
 optional and env-driven: with nothing configured, the "Get started" CTA falls
 back to `/get-started`, and the billing routes return `503`.

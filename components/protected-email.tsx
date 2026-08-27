@@ -19,8 +19,8 @@ export function ProtectedEmail({
   subject?: string
 }) {
   function handleClick() {
-    const user = ["node", "inc2"].join("")
-    const domain = ["gmail", "com"].join(".")
+    const user = ["shw", "eta"].join("")
+    const domain = ["node2", "io"].join(".")
     const q = subject ? `?subject=${encodeURIComponent(subject)}` : ""
     window.location.href = `mailto:${user}@${domain}${q}`
   }

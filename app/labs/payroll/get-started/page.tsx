@@ -55,7 +55,7 @@ export default function CompanyOnboardingPage() {
         </h1>
         <p className="text-muted-foreground max-w-2xl">
           Tell us about your payroll today. We&apos;ll estimate what it costs you to run it manually —
-          admin time, provider fees, accountant work, and CRA error risk — versus letting Pay.ca run it
+          admin time, provider fees, accountant work, and CRA error risk — versus letting Node2 Payroll run it
           with AI and manage your taxes and remittances automatically.
         </p>
       </div>
@@ -151,7 +151,7 @@ export default function CompanyOnboardingPage() {
             <div className="px-6 py-3 border-b border-border/50 text-xs uppercase tracking-widest text-muted-foreground grid grid-cols-12">
               <span className="col-span-6">Where the money goes</span>
               <span className="col-span-3 text-right">Today</span>
-              <span className="col-span-3 text-right">With Pay.ca</span>
+              <span className="col-span-3 text-right">With Node2 Payroll</span>
             </div>
             {result.lines.map((l) => (
               <div key={l.key} className="px-6 py-3 border-t border-border/40 grid grid-cols-12 items-center text-sm">
