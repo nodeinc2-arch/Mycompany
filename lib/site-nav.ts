@@ -81,6 +81,8 @@ export function footerGroups(language: Language): NavGroup[] {
         ...INSIGHT_POSTS.filter((p) => !p.internal).map((p) => ({ href: p.href, label: p.title.split(":")[0] })),
         { href: "/contact", label: f.contact },
         { href: "/privacy", label: f.privacy },
+        { href: "/terms", label: f.terms },
+        { href: "/accessibility", label: f.accessibility },
       ],
     },
   ]
