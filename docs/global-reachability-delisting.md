@@ -25,6 +25,13 @@ as legitimate-business signals.
 
 ---
 
+## Status log
+
+- **2026-10-03 — Netcraft correction submitted** (`report.netcraft.com`,
+  "incorrectly blocked site"). Awaiting reassessment; this feed drives many
+  corporate/ISP filters, so a fix should propagate. _Follow up if still
+  blocked in ~1–2 weeks._
+
 ## Steps for YOU to execute (off-code)
 
 ### 1. Google Search Console — verify ownership (highest priority)
