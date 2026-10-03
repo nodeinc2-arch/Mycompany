@@ -12,6 +12,8 @@ import { AccessibilityProvider } from "@/components/accessibility-provider"
 import { A11yToolbar } from "@/components/a11y-toolbar"
 import { ConsoleGuard } from "@/components/owner/console-guard"
 import { isOwner } from "@/lib/owner/owner-auth"
+import { CookieConsent } from "@/components/cookie-consent"
+import { AnalyticsGate } from "@/components/analytics-gate"
 
 const _inter = Inter({ subsets: ["latin"] })
 const _geistMono = Geist_Mono({ subsets: ["latin"] })
@@ -19,6 +21,14 @@ const _playfair = Playfair_Display({ subsets: ["latin"], variable: "--font-serif
 
 const GA_MEASUREMENT_ID = "G-4Z7DS3Q5H9"
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://www.node2.io"
+
+// Cloudflare Web Analytics token (from the CF dashboard → Web Analytics). The
+// beacon is served from Cloudflare's edge and tied to this zone, so unlike
+// Google Analytics (googletagmanager.com) it isn't DNS-filtered separately from
+// the site by Indian ISPs / ad-blockers — which is why GA under-counts (or
+// zeroes out) India traffic even though the site loads fine there. Rendered
+// only when the token is set, so dev/preview builds stay beacon-free.
+const CF_ANALYTICS_TOKEN = process.env.NEXT_PUBLIC_CF_ANALYTICS_TOKEN
 
 async function readLang(): Promise<Language> {
   const store = await cookies()
@@ -217,18 +227,9 @@ export default async function RootLayout({
   return (
     <html lang={lang === "fr" ? "fr-CA" : "en-CA"} suppressHydrationWarning>
       <head>
-        <Script
-          src={`https://www.googletagmanager.com/gtag/js?id=${GA_MEASUREMENT_ID}`}
-          strategy="afterInteractive"
-        />
-        <Script id="google-analytics" strategy="afterInteractive">
-          {`
-            window.dataLayer = window.dataLayer || [];
-            function gtag(){dataLayer.push(arguments);}
-            gtag('js', new Date());
-            gtag('config', '${GA_MEASUREMENT_ID}');
-          `}
-        </Script>
+        {/* Analytics (GA + Cloudflare) load only AFTER cookie consent — see
+            AnalyticsGate + CookieConsent. PIPEDA/GDPR: no non-essential
+            tracking before the user accepts. */}
         <Script
           id="ld-organization"
           type="application/ld+json"
@@ -241,10 +242,13 @@ export default async function RootLayout({
             leaks into devtools; the owner keeps the full console. owner is
             decided server-side from the signed owner cookie. */}
         <ConsoleGuard owner={owner} />
+        {/* Consent-gated analytics + the consent banner itself. */}
+        <AnalyticsGate gaId={GA_MEASUREMENT_ID} cfToken={CF_ANALYTICS_TOKEN} />
         <ThemeProvider attribute="class" defaultTheme="dark" enableSystem disableTransitionOnChange>
           <AccessibilityProvider>
             <LanguageProvider initialLanguage={lang}>
               {children}
+              <CookieConsent />
               <ChatWidget />
               <A11yToolbar />
             </LanguageProvider>
