@@ -10,6 +10,8 @@ import { ChatWidget } from "@/components/chat-widget"
 import { ThemeProvider } from "@/components/theme-provider"
 import { AccessibilityProvider } from "@/components/accessibility-provider"
 import { A11yToolbar } from "@/components/a11y-toolbar"
+import { ConsoleGuard } from "@/components/owner/console-guard"
+import { isOwner } from "@/lib/owner/owner-auth"
 
 const _inter = Inter({ subsets: ["latin"] })
 const _geistMono = Geist_Mono({ subsets: ["latin"] })
@@ -72,6 +74,7 @@ export default async function RootLayout({
   children: React.ReactNode
 }>) {
   const lang = await readLang()
+  const owner = await isOwner()
 
   // Rich JSON-LD graph: Organization + WebSite (SearchAction) + Service catalog
   // + FAQPage. Built to maximize rich-result eligibility and topical relevance
@@ -234,6 +237,10 @@ export default async function RootLayout({
         />
       </head>
       <body className={`font-sans antialiased`}>
+        {/* Silence chatty console output for non-owners so nothing sensitive
+            leaks into devtools; the owner keeps the full console. owner is
+            decided server-side from the signed owner cookie. */}
+        <ConsoleGuard owner={owner} />
         <ThemeProvider attribute="class" defaultTheme="dark" enableSystem disableTransitionOnChange>
           <AccessibilityProvider>
             <LanguageProvider initialLanguage={lang}>
