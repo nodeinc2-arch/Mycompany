@@ -74,7 +74,9 @@ export async function generateMetadata(): Promise<Metadata> {
       follow: true,
       googleBot: { index: true, follow: true, "max-image-preview": "large", "max-snippet": -1 },
     },
-    icons: { icon: "/logo-for-dark-bg.jpg", apple: "/logo-for-dark-bg.jpg" },
+    // SVG favicon (app/icon.svg) is crisp at any size; keep the raster as the
+    // Apple touch icon since iOS ignores SVG.
+    icons: { icon: "/icon.svg", apple: "/logo-for-dark-bg.jpg" },
   }
 }
 
