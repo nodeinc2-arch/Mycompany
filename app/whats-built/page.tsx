@@ -6,47 +6,19 @@ import { SOLUTIONS, SOLUTION_STATUS_LABEL } from "@/lib/solutions"
 import { INSIGHT_POSTS } from "@/lib/insights"
 
 export const metadata = {
-  title: "What's built — a live map of the Node2 site & Node2 Payroll demo",
+  title: "What's built — a live map of the Node2 site",
   description:
-    "A single overview of everything built here: the Node2 marketing site, the subscribable Solutions product lines, the Node2 Payroll payroll demo tool, and the Insights library — with direct links into each.",
+    "A single overview of everything built here: the Node2 marketing site, the subscribable Solutions product lines, and the Insights library — with direct links into each.",
   alternates: { canonical: "/whats-built" },
 }
 
 // A single "what's been built" index. It derives its lists from the same
 // registries the rest of the site uses (SOLUTIONS, INSIGHT_POSTS) so it can't
-// drift; the Node2 Payroll feature list is maintained here as the deep-link map into
-// the demo tool. Purpose: let anyone see the whole picture and click straight in.
-
-// The Node2 Payroll demo tool's surfaces, grouped, each a real route under /labs/payroll.
-const PAYCA_SECTIONS: { group: string; links: { href: string; label: string; note: string }[] }[] = [
-  {
-    group: "Start here",
-    links: [
-      { href: "/labs/payroll", label: "Overview / dashboard", note: "KPIs, recent pay runs, feature map" },
-      { href: "/labs/payroll/sign-in", label: "Sign in", note: "Pick a demo company (DemoCorp, Maple, Nord)" },
-      { href: "/labs/payroll/pricing", label: "Pricing", note: "Subscription plan + setup fee" },
-    ],
-  },
-  {
-    group: "Run payroll",
-    links: [
-      { href: "/labs/payroll/employees", label: "Employees", note: "Per-company people, personas & net-pay preview" },
-      { href: "/labs/payroll/runs/new", label: "Run payroll", note: "Period → review → approve, with a compliance gate" },
-      { href: "/labs/payroll/banking", label: "Connect bank", note: "Funding account for direct deposit + remittance" },
-      { href: "/labs/payroll/payments", label: "Pay employees", note: "EFT batch + human-in-the-loop release gate" },
-    ],
-  },
-  {
-    group: "Compliance & records",
-    links: [
-      { href: "/labs/payroll/jurisdictions", label: "Jurisdictions & local law", note: "All 13 provinces/territories, per-region obligations" },
-      { href: "/labs/payroll/compliance", label: "Verify tax rates", note: "Diff our rates vs CRA, tracked sign-off" },
-      { href: "/labs/payroll/audit", label: "Audit log", note: "Append-only trail of sensitive actions" },
-      { href: "/labs/payroll/termination", label: "Termination & ROE", note: "Final pay + Record of Employment draft" },
-      { href: "/labs/payroll/year-end", label: "Year-end (T4 / T2200)", note: "Slips from YTD totals" },
-    ],
-  },
-]
+// drift. Purpose: let anyone see the public picture and click straight in.
+//
+// Note: Node2 Payroll is an internal MVP that is NOT public yet. It is
+// deliberately omitted from this map — the only public path to it is the
+// /contact form. Do not add deep links into /labs/payroll/* here.
 
 function Badge({ children }: { children: React.ReactNode }) {
   return (
@@ -75,49 +47,11 @@ export default function WhatsBuiltPage() {
             <h1 className="text-4xl sm:text-5xl font-medium tracking-tight text-foreground mb-6 leading-tight">
               Everything <em className="font-serif italic font-normal">built here</em>, in one place
             </h1>
-            <p className="text-lg text-muted-foreground leading-relaxed max-w-2xl mb-4">
-              A live map of the site and the Node2 Payroll demo tool. Every item links straight to the real page.
+            <p className="text-lg text-muted-foreground leading-relaxed max-w-2xl mb-14">
+              A live map of the public site. Every item links straight to the real page. Interested in our
+              AI-native payroll work?{" "}
+              <Link href="/contact" className="text-accent hover:underline">Get in touch →</Link>
             </p>
-            <p className="text-sm text-muted-foreground max-w-2xl mb-14">
-              <span className="text-foreground">Note:</span> Node2 Payroll is a working <strong>DEMO</strong> — no real money
-              moves, no CRA filings, and tax rates are unverified. Sign in with any demo company to explore.
-            </p>
-
-            {/* Node2 Payroll demo tool */}
-            <section className="mb-16">
-              <div className="flex items-center gap-3 mb-2">
-                <h2 className="text-2xl font-medium text-foreground">Node2 Payroll — payroll demo tool</h2>
-                <Badge>Beta · Demo</Badge>
-              </div>
-              <p className="text-muted-foreground mb-6 max-w-2xl">
-                An AI-native Canadian payroll product: multi-tenant, per-region compliance, durable data, and a
-                human-in-the-loop payment gate. Lives under{" "}
-                <code className="text-foreground">/labs/payroll</code>.
-              </p>
-
-              <div className="space-y-6">
-                {PAYCA_SECTIONS.map((section) => (
-                  <div key={section.group}>
-                    <h3 className="text-xs uppercase tracking-widest text-muted-foreground mb-3">{section.group}</h3>
-                    <div className="grid sm:grid-cols-2 gap-3">
-                      {section.links.map((l) => (
-                        <Link
-                          key={l.href}
-                          href={l.href}
-                          className="group rounded-xl border border-border/50 bg-card p-4 hover:border-accent/40 transition-all duration-300 flex items-start justify-between gap-3"
-                        >
-                          <div className="min-w-0">
-                            <p className="text-sm font-medium text-foreground">{l.label}</p>
-                            <p className="text-xs text-muted-foreground mt-0.5">{l.note}</p>
-                          </div>
-                          <ArrowRight className="h-4 w-4 text-muted-foreground group-hover:text-accent group-hover:translate-x-0.5 transition-all shrink-0 mt-0.5" />
-                        </Link>
-                      ))}
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </section>
 
             {/* Solutions product lines */}
             <section className="mb-16">

@@ -80,6 +80,7 @@ export function footerGroups(language: Language): NavGroup[] {
         // "How AI evolved" is the one insights post that lives outside /insights.
         ...INSIGHT_POSTS.filter((p) => !p.internal).map((p) => ({ href: p.href, label: p.title.split(":")[0] })),
         { href: "/contact", label: f.contact },
+        { href: "/compliance", label: f.compliance },
         { href: "/privacy", label: f.privacy },
         { href: "/terms", label: f.terms },
         { href: "/accessibility", label: f.accessibility },

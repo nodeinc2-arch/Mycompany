@@ -5,7 +5,7 @@ import { ArrowRight } from "lucide-react"
 import Link from "next/link"
 import { useLanguage } from "@/lib/LanguageContext"
 import { translations } from "@/lib/translations"
-import { HeroVisual } from "@/components/hero-visual"
+import { HeroAuditPipeline } from "@/components/hero-audit-pipeline"
 import { ContactCta } from "@/components/contact-cta"
 import { Parallax } from "@/components/parallax"
 import { MeshBackground } from "@/components/cinematic/mesh-background"
@@ -68,10 +68,13 @@ export function HeroSection() {
             <ContactCta className="mt-10" />
           </div>
 
-          {/* Right: alternating hero visuals — node-network ⇄ pendulum wave.
-              Subtle parallax drift as the hero scrolls out of view. */}
+          {/* Right: the product motif — an animated audit pipeline
+              (sources → private AI audit → verified/flagged). Resolves once and
+              settles; respects prefers-reduced-motion. Subtle parallax drift. */}
           <Parallax speed={0.18} className="relative hidden lg:block">
-            <HeroVisual />
+            <div className="relative w-full max-w-[540px] mx-auto">
+              <HeroAuditPipeline className="w-full h-auto text-foreground/80" />
+            </div>
           </Parallax>
         </div>
       </div>

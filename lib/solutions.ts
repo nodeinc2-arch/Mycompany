@@ -56,8 +56,6 @@ export const SOLUTIONS: Solution[] = [
       { title: "Compliance built in", description: "Provincial brackets, credits, CPP2 and multi-country tax, verified against source rules." },
       { title: "Private by default", description: "Local AI (Ollama) so sensitive data never goes to a public cloud model." },
     ],
-    appUrl: "/labs/payroll/pricing",
-    appCta: "See pricing & get started",
   },
   {
     slug: "api",

@@ -1,13 +1,29 @@
 "use client"
 
+import { useEffect, useState } from "react"
+
 /**
  * HeroNetwork — a "living" version of the Node2 logo mark for the hero's right side.
  *
  * Nodes gently float and pulse, connection lines shimmer, and data "pulses"
  * travel along the links in the brand green accent. Pure SVG + CSS, no JS
- * animation loop, so it's lightweight and respects `prefers-reduced-motion`.
+ * animation loop, so it's lightweight and respects `prefers-reduced-motion`:
+ * the CSS animations fall back to a static state via the media query below, and
+ * the SMIL traveling pulses are omitted entirely when reduced motion is set.
  */
 export function HeroNetwork({ className = "" }: { className?: string }) {
+  // SMIL <animate> doesn't honour prefers-reduced-motion in CSS, so we gate the
+  // traveling pulses here. Defaults to off until mounted, so SSR/first paint is
+  // the calm state and motion only turns on when we've confirmed it's welcome.
+  const [allowPulses, setAllowPulses] = useState(false)
+  useEffect(() => {
+    const mq = window.matchMedia("(prefers-reduced-motion: reduce)")
+    const apply = () => setAllowPulses(!mq.matches)
+    apply()
+    mq.addEventListener("change", apply)
+    return () => mq.removeEventListener("change", apply)
+  }, [])
+
   // Node layout in a 0..400 viewBox. The three "primary" nodes echo the logo
   // (one hub on the left, two satellites on the right); the rest fill out the
   // network organically.
@@ -72,8 +88,8 @@ export function HeroNetwork({ className = "" }: { className?: string }) {
           )
         })}
 
-        {/* Traveling data pulses */}
-        {links
+        {/* Traveling data pulses — only when motion is welcome. */}
+        {allowPulses && links
           .filter((l) => l.pulse)
           .map((l, i) => {
             const a = byId[l.a]
