@@ -105,8 +105,8 @@ export function HeroAuditPipeline({ className = "" }: { className?: string }) {
 
         {/* Privacy badge: runs privately, on-prem or cloud (on-prem recommended) */}
         <g className="ap-badge">
-          <rect x={CORE_X - 70} y={CORE_Y + 44} width="140" height="20" rx="10" fill="currentColor" fillOpacity="0.05" stroke="currentColor" strokeOpacity="0.15" />
-          <text x={CORE_X} y={CORE_Y + 58} textAnchor="middle" fontSize="9" fill="currentColor" fillOpacity="0.6" fontWeight="500">
+          <rect x={CORE_X - 86} y={CORE_Y + 44} width="172" height="20" rx="10" fill="currentColor" fillOpacity="0.05" stroke="currentColor" strokeOpacity="0.15" />
+          <text x={CORE_X} y={CORE_Y + 57.5} textAnchor="middle" fontSize="8.5" fill="currentColor" fillOpacity="0.6" fontWeight="500">
             Private AI · on-prem ◆ or cloud
           </text>
         </g>
@@ -120,8 +120,8 @@ export function HeroAuditPipeline({ className = "" }: { className?: string }) {
             PAY RUN · BIWEEKLY
           </text>
           <g>
-            <rect x="306" y="28" width="98" height="16" rx="8" fill="var(--accent)" fillOpacity="0.1" stroke="var(--accent)" strokeOpacity="0.3" />
-            <text x="355" y="39" textAnchor="middle" fontSize="8.5" fill="var(--accent)" fillOpacity="0.9" fontWeight="500">
+            <rect x="306" y="28" width="104" height="16" rx="8" fill="var(--accent)" fillOpacity="0.1" stroke="var(--accent)" strokeOpacity="0.3" />
+            <text x="358" y="39" textAnchor="middle" fontSize="8" fill="var(--accent)" fillOpacity="0.9" fontWeight="500">
               CRA · ON ruleset
             </text>
           </g>
