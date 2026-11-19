@@ -24,8 +24,8 @@ const experiences = [
 const skills = [
   "AI-Native Finance",
   "Payroll & Auditing",
-  "Local LLMs",
-  "AI & Automation",
+  "Small, on-prem LLMs",
+  "Industry-specific AI",
   "Canadian Compliance",
   "Business Strategy",
   "Team Leadership",

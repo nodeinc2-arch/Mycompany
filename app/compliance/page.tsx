@@ -86,8 +86,9 @@ const areas: {
     icon: Brain,
     title: "Responsible AI",
     stage: "in-progress",
-    body: "AI computes and a human approves — numbers are tool-grounded, not generated. We track Canada's evolving AI regulation and fairness obligations.",
+    body: "We use small, industry-specific models scoped to payroll — not a general-purpose assistant. They can run privately on your own infrastructure, AI computes and a human approves, and numbers are tool-grounded, not generated.",
     points: [
+      "Small, payroll-scoped local models (on-prem recommended) — in place",
       "Transparency: AI assists, human decides — in place",
       "Bias / fairness review on pay-related features — planned",
       "Tracking Canada's AIDA as it develops",
