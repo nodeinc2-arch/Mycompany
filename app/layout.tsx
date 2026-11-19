@@ -124,7 +124,6 @@ export default async function RootLayout({
         ],
         sameAs: [
           "https://www.linkedin.com/company/node2-io/",
-          "https://github.com/node2",
         ],
         contactPoint: [
           {

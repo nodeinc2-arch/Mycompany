@@ -4,7 +4,7 @@ import { useState } from "react"
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import { Logo } from "@/components/logo"
-import { Menu, X, Linkedin, Github, Globe } from "lucide-react"
+import { Menu, X, Linkedin, Globe } from "lucide-react"
 import { useLanguage } from "@/lib/LanguageContext"
 import { translations } from "@/lib/translations"
 import { primaryNav } from "@/lib/site-nav"
@@ -50,16 +50,7 @@ export function Header() {
             >
               <Linkedin className="h-4 w-4" />
             </Link>
-            <Link
-              href="https://github.com/node2"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="p-2 text-muted-foreground hover:text-foreground transition-colors duration-300"
-              aria-label="GitHub"
-            >
-              <Github className="h-4 w-4" />
-            </Link>
-            
+
             <div className="relative">
               <button
                 onClick={() => setIsLangOpen(!isLangOpen)}
@@ -159,16 +150,7 @@ export function Header() {
                 >
                   <Linkedin className="h-5 w-5" />
                 </Link>
-                <Link
-                  href="https://github.com/node2"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="p-2 text-muted-foreground hover:text-foreground transition-colors"
-                  aria-label="GitHub"
-                >
-                  <Github className="h-5 w-5" />
-                </Link>
-                
+
                 <div className="relative">
                   <button
                     onClick={() => setIsLangOpen(!isLangOpen)}

@@ -1,6 +1,6 @@
 import Link from "next/link"
 import Image from "next/image"
-import { Linkedin, Github, MapPin, Briefcase, Sparkles } from "lucide-react"
+import { Linkedin, MapPin, Briefcase, Sparkles } from "lucide-react"
 import { Parallax } from "@/components/parallax"
 
 const experiences = [
@@ -110,15 +110,6 @@ export function AboutSection() {
               >
                 <Linkedin className="h-4 w-4" />
                 <span className="text-sm">LinkedIn</span>
-              </Link>
-              <Link
-                href="https://github.com/node2"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex items-center gap-2 px-4 py-2 rounded-full bg-secondary text-foreground hover:bg-secondary/80 transition-colors duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
-              >
-                <Github className="h-4 w-4" />
-                <span className="text-sm">GitHub</span>
               </Link>
             </div>
           </div>

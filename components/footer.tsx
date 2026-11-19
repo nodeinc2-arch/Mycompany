@@ -2,7 +2,7 @@
 
 import Link from "next/link"
 import { Logo } from "@/components/logo"
-import { Linkedin, Github, MapPin } from "lucide-react"
+import { Linkedin, MapPin } from "lucide-react"
 import { useLanguage } from "@/lib/LanguageContext"
 import { translations } from "@/lib/translations"
 import { footerGroups } from "@/lib/site-nav"
@@ -41,15 +41,6 @@ export function Footer() {
                 aria-label="LinkedIn"
               >
                 <Linkedin className="h-4 w-4" />
-              </Link>
-              <Link
-                href="https://github.com/node2"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="w-10 h-10 rounded-full bg-secondary flex items-center justify-center text-muted-foreground hover:text-foreground hover:bg-secondary/80 transition-all duration-300"
-                aria-label="GitHub"
-              >
-                <Github className="h-4 w-4" />
               </Link>
             </div>
           </div>
