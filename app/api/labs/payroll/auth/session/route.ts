@@ -19,7 +19,7 @@ export async function GET(req: Request) {
     return NextResponse.json({ error: "not_found" }, { status: 404 })
   }
   const tenantId = await getServerTenantId(req)
-  const tenant = tenantId ? (getTenantById(tenantId) ?? null) : null
+  const tenant = tenantId ? ((await getTenantById(tenantId)) ?? null) : null
   return NextResponse.json({ tenant })
 }
 
@@ -28,7 +28,7 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: "not_found" }, { status: 404 })
   }
   const body = (await req.json().catch(() => ({}))) as { tenantId?: string }
-  const tenant = body.tenantId ? getTenantById(body.tenantId) : undefined
+  const tenant = body.tenantId ? await getTenantById(body.tenantId) : undefined
   if (!tenant) {
     return NextResponse.json({ error: "unknown_tenant" }, { status: 400 })
   }
@@ -54,7 +54,7 @@ export async function DELETE(req: Request) {
   // Record the sign-out for whoever is currently signed in (best-effort).
   const tenantId = await getServerTenantId(req)
   if (tenantId) {
-    const tenant = getTenantById(tenantId)
+    const tenant = await getTenantById(tenantId)
     if (tenant) {
       try {
         await recordAudit({ tenantId: tenant.id, actor: tenant.ownerEmail, action: "auth.signout" })

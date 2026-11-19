@@ -31,7 +31,7 @@ export async function POST(req: Request) {
   // prototype behaviour — nothing to verify against).
   const verifyEnabled = isEmailVerificationEnabled()
 
-  const result = createTenant({
+  const result = await createTenant({
     companyName: body.companyName ?? "",
     ownerEmail: body.ownerEmail ?? "",
     province: body.province ?? "",

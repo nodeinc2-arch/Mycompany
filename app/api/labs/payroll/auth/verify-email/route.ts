@@ -28,12 +28,12 @@ export async function GET(req: Request) {
     return NextResponse.redirect(`${base}/labs/payroll/welcome?verify=expired`)
   }
 
-  const tenant = getTenantByEmail(email)
+  const tenant = await getTenantByEmail(email)
   if (!tenant) {
     return NextResponse.redirect(`${base}/labs/payroll/welcome?verify=unknown`)
   }
 
-  markTenantVerified(tenant.id)
+  await markTenantVerified(tenant.id)
 
   try {
     await recordAudit({ tenantId: tenant.id, actor: tenant.ownerEmail, action: "auth.signin" })

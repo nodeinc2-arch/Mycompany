@@ -49,7 +49,7 @@ sensitive personal information there is.
 - ⬜ 🔴 **Terms of Service** + **liability limitations** (payroll errors carry real financial consequences).
 - ⬜ **Cyber / E&O insurance.**
 - 🟡 Security posture: encryption at rest & in transit, access controls, and eventually **SOC 2** (procurement will require it). **Audit logging ✅** — append-only, tenant-scoped trail of sensitive actions (sign-in, run approved, payment released, bank connect/disconnect), exportable to CSV.
-- 🟡 **Authentication & multi-tenancy** — session + tenant (company) model landed (scaffold: no password/IdP, browser session). Real identity provider + per-tenant **data isolation** (a real DB) still required before any real data.
+- 🟡 **Authentication & multi-tenancy** — session + tenant (company) model landed. **Tenant data isolation ✅ (row-level):** all tenants persist in durable D1; every tenant-data API route derives the tenant from the signed server session (`getServerTenantId`) and never trusts a client-supplied tenant id; every store is keyed `WHERE tenant_id = ?`; the MCP/AI tools read demo data only. Verified — company A cannot read/write company B's data. **Still pending:** a real identity provider (today sign-in is "pick a company", no password/IdP) and, for customers who require it, a dedicated per-tenant database/cloud (a premium "silo" — the resolve-a-tenant's-datastore seam is designed in; see `docs/tenant-isolation.md`).
 
 ## 6. Repository & engineering security
 - 🔴 **Make the repo private** (admin-only; pending).

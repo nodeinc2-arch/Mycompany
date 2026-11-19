@@ -48,7 +48,7 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: "invalid_event" }, { status: 400 })
   }
   // Actor is the signed-in tenant's owner — not client-supplied.
-  const actor = getTenantById(tenantId)?.ownerEmail ?? tenantId
+  const actor = (await getTenantById(tenantId))?.ownerEmail ?? tenantId
   const event = await recordAudit({
     tenantId,
     actor,

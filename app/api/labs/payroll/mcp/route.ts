@@ -10,6 +10,13 @@ export const runtime = "nodejs"
 // Stub MCP-style endpoint. Real Model Context Protocol uses JSON-RPC over stdio
 // or SSE; this HTTP route mirrors the shape so a Node2 Payroll MCP server could later
 // drop in without UI rewrites.
+//
+// ISOLATION NOTE: the tools here run ONLY against shared demo data
+// (sampleEmployees in ai/tool-runner.ts) — no real tenant's payroll data is
+// ever read, so there is no cross-tenant exposure today. Before wiring any tool
+// to a tenant-scoped store (e.g. listEmployees(tenantId)), this route MUST first
+// derive the tenant from the signed session (getServerTenantId) and pass it
+// through — never accept a tenant id from the JSON-RPC params.
 
 type RpcId = string | number | null | undefined
 

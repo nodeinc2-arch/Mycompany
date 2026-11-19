@@ -76,7 +76,7 @@ export async function POST(req: Request) {
   // owner; the human reviewer who approved is recorded as context.
   if (tenantId) {
     try {
-      const actor = getTenantById(tenantId)?.ownerEmail ?? tenantId
+      const actor = (await getTenantById(tenantId))?.ownerEmail ?? tenantId
       await recordAudit({
         tenantId,
         actor,

@@ -14,6 +14,7 @@ import { ConsoleGuard } from "@/components/owner/console-guard"
 import { isOwner } from "@/lib/owner/owner-auth"
 import { CookieConsent } from "@/components/cookie-consent"
 import { AnalyticsGate } from "@/components/analytics-gate"
+import { ServiceWorkerRegister } from "@/components/service-worker-register"
 
 const _inter = Inter({ subsets: ["latin"] })
 const _geistMono = Geist_Mono({ subsets: ["latin"] })
@@ -252,6 +253,7 @@ export default async function RootLayout({
               <CookieConsent />
               <ChatWidget />
               <A11yToolbar />
+              <ServiceWorkerRegister />
             </LanguageProvider>
           </AccessibilityProvider>
         </ThemeProvider>

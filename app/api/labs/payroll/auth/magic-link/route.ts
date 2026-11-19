@@ -39,7 +39,7 @@ export async function POST(req: Request) {
 
   // Only actually send when the email maps to a known tenant — but respond OK
   // either way (see OK above) so we don't leak which emails have accounts.
-  const tenant = getTenantByEmail(email)
+  const tenant = await getTenantByEmail(email)
   if (!tenant) {
     return NextResponse.json(OK)
   }

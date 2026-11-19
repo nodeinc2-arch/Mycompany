@@ -52,7 +52,7 @@ export async function POST(req: Request) {
       ranAt: new Date().toISOString(),
     })
     try {
-      const actor = getTenantById(tenantId)?.ownerEmail ?? tenantId
+      const actor = (await getTenantById(tenantId))?.ownerEmail ?? tenantId
       await recordAudit({ tenantId, actor, action: "run.calculated", target: runId })
     } catch {
       /* non-fatal */

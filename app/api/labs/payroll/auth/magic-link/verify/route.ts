@@ -30,7 +30,7 @@ export async function GET(req: Request) {
     return NextResponse.redirect(signInUrl("link_expired"))
   }
 
-  const tenant = getTenantByEmail(email)
+  const tenant = await getTenantByEmail(email)
   if (!tenant) {
     // Token was valid but the email no longer maps to a tenant.
     return NextResponse.redirect(signInUrl("no_account"))

@@ -35,7 +35,7 @@ export async function POST(
 
   // Critical event — money-movement source of funds changed.
   try {
-    const actor = getTenantById(tenantId)?.ownerEmail ?? tenantId
+    const actor = (await getTenantById(tenantId))?.ownerEmail ?? tenantId
     await recordAudit({ tenantId, actor, action: "bank.connected", target: connected.bankName })
   } catch {
     /* non-fatal */

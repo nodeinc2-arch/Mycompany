@@ -38,7 +38,7 @@ export async function DELETE(req: Request) {
 
   if (existing) {
     try {
-      const actor = getTenantById(tenantId)?.ownerEmail ?? tenantId
+      const actor = (await getTenantById(tenantId))?.ownerEmail ?? tenantId
       await recordAudit({ tenantId, actor, action: "bank.disconnected", target: existing.bankName })
     } catch {
       /* non-fatal */
