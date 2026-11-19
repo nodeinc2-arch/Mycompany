@@ -28,19 +28,21 @@ export function HeroSection() {
 
       <div className="max-w-7xl mx-auto relative">
         <div className="grid lg:grid-cols-2 gap-12 lg:gap-8 items-center">
-          {/* Left: copy + CTAs */}
-          <div className="max-w-2xl">
+          {/* Left: copy + CTAs. min-w-0 lets the grid column shrink instead of
+              letting long headline words overflow (and get clipped by the
+              section's overflow-hidden). */}
+          <div className="min-w-0 max-w-2xl">
             <p className="text-sm font-medium text-accent uppercase tracking-widest mb-8">
               {t.hero.tagline}
             </p>
 
-            <h1 className="text-5xl sm:text-6xl lg:text-6xl xl:text-7xl font-medium tracking-tight text-foreground leading-[1.05] mb-8">
+            <h1 className="text-balance text-pretty break-words text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-medium tracking-tight text-foreground leading-[1.05] mb-8">
               {t.hero.title.split(t.hero.intelligentWord)[0]}
               <em className="font-serif italic font-normal">{t.hero.intelligentWord}</em>
               {t.hero.title.split(t.hero.intelligentWord)[1]}
             </h1>
 
-            <p className="text-xl sm:text-2xl text-muted-foreground max-w-2xl leading-relaxed mb-12">
+            <p className="text-pretty text-lg sm:text-xl md:text-2xl text-muted-foreground max-w-2xl leading-relaxed mb-12">
               {t.hero.subtitle}
             </p>
 
